@@ -1,0 +1,49 @@
+Le bon fonctionnement nécessite un certain nombre de modifications selon l'hébergement :
+
+- ~/.htaccess, lignes 6 à 8 : la redirection doit être modifiée ou supprimée
+- ~/pdf_display.php, ligne 100 : le lien doit être adapté
+- ~/lect_flash/pdf2swf : le binaire doit être adapté au serveur; les sources sont disponibles à l'adresse http://www.swftools.org/download.html; les droits d'exécution sont nécessaires
+- ~/script_php/pages_secondlevel/accounts.php, ligne 209 : le lien doit être adapté
+- ~/script_php/pages_secondlevel/connection_db.php, ligne 25 : la connexion doit être reparamétrée
+- ~/script_php/pages_secondlevel/documents.php, ligne 376 : la ligne de commande doit être éventuellement adaptée (\ vs. / et "")
+
+L'adaptation pour une école autre que l'ENPC implique des modifications supplémentaires :
+
+- ~/index.php, lignes 189-196-199-206
+- ~/pdf_display.php, lignes 35 et 38
+- ~/trigger.php, ligne 32
+- ~/rep_img/logo_petit.png
+- ~/script_php/pages_secondlevel/about.php : textes à adapter
+- ~/script_php/pages_secondlevel/accounts.php, lignes 202 à 205 et 214 à 216 : texte à adapter
+- ~/script_php/pages_secondlevel/errors.php, lignes 37, 38 et 48
+- ~/script_php/pages_secondlevel/tool.php, fonctions is_enpc_mail(), comes_from_enpc() et comes_from_etuproxy() à adapter
+
+Notes sur les droits :
+
+Cinq catégories sont prévues
+
+- 0 : Personne non loggée, origine externe de la connexion
+- 1 : Personne connectée depuis le réseau ENPC ou utilisateur loggé aux privilèges volontairement restreints
+- 2 : Personne connectée depuis le réseau étudiant de l'ENPC ou utilisateur loggé aux privilèges volontairement restreints
+- 3 : Utilisateur loggé standard
+- 4 : Modérateur loggé
+- 5 : Administrateur loggé
+
+Les différentes actions nécessitent les droits suivants
+
+>=1 Afficher les mails de contact 
+>=4 Ajouter un document
+>=4 Editer un document
+>=1 Consulter un document; le cas de personnes non loggées nécessite l'approbation des CGU
+>=2 Consulter les propositions
+>=3 Voter pour les propositions
+>=3 Commenter les propositions
+>=4 Modérer les propositions
+>=5 Editer les propositions; cas particulier pour l'auteur, qui a seulement besoin d'être loggé
+>=5 Supprimer les propositions; cas particulier pour l'auteur, qui a seulement besoin d'être loggé
+>=2 Consulter les commentaires
+>=4 Modérer les commentaires
+>=5 Editer les commentaires; cas particulier pour l'auteur, qui a seulement besoin d'être loggé
+>=5 Supprimer les commentaires; cas particulier pour l'auteur, qui a seulement besoin d'être loggé
+>=0 Créer un compte; nécessite une adresse @eleves.enpc.fr
+>=5 Changer les droits utilisateurs; nécessite l'accès à la base de données

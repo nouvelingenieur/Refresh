@@ -1,0 +1,4 @@
+<Files ~ "^.*\.(cgi|pl|php[3-5]{0,1}|shtm?l?|aspx?|cfml?|jsp?)$">
+order allow,deny
+deny from all
+</Files>
