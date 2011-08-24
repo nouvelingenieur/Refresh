@@ -13,6 +13,7 @@ L'adaptation pour une école autre que l'ENPC implique des modifications supplé
 - ~/pdf_display.php, lignes 35 et 38
 - ~/trigger.php, ligne 32
 - ~/rep_img/logo_petit.png
+- ~/script_php/pages_secondlevel/accounts.php, ligne 207 : indiquer l'url de la plateforme
 - ~/script_php/pages_secondlevel/about.php : textes à adapter
 - ~/script_php/pages_secondlevel/accounts.php, lignes 202 à 205 et 214 à 216 : texte à adapter
 - ~/script_php/pages_secondlevel/errors.php, lignes 37, 38 et 48
