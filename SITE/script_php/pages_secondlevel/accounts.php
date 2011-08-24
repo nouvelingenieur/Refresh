@@ -235,7 +235,7 @@ function mail_change_password($mail, $new_pass)
 	fclose($handle_fic);
 	return true;
 	
-	//return(mail(htmlentities($mail), $subject, $mail_body, $header));
+	return(mail(htmlentities($mail), $subject, $mail_body, $header));
 }
 
 function create_account()
