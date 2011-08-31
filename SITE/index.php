@@ -24,6 +24,8 @@
 
 session_start();
 
+include_once("config.php");
+
 include_once("script_php/pages_secondlevel/documents.php");
 include_once("script_php/pages_secondlevel/accounts.php");
 include_once("script_php/pages_secondlevel/posts.php");
@@ -31,7 +33,7 @@ include_once("script_php/pages_secondlevel/comments.php");
 include_once("script_php/pages_secondlevel/tool.php");
 
 /********************************************************************************************************************************/
-// Sont appelées ici toutes les fonctions qui ne sont exécutées que de manière "transitoire" avant un retour sur une autre page //
+// Sont appelï¿½es ici toutes les fonctions qui ne sont exï¿½cutï¿½es que de maniï¿½re "transitoire" avant un retour sur une autre page //
 /********************************************************************************************************************************/
 $treat_post=true;
 if (isset($_GET["action"]) && is_string($_GET["action"]))
@@ -89,7 +91,7 @@ if (isset($_GET["action"]) && is_string($_GET["action"]))
 			break;
 		case "unrollcomment":
 			$treat_post=false;
-			if(isset($_GET["order"])) // Affichage des commentaires pour un thread donné
+			if(isset($_GET["order"])) // Affichage des commentaires pour un thread donnï¿½
 			{
 				if ($_GET["order"]==1)
 				{
@@ -103,7 +105,7 @@ if (isset($_GET["action"]) && is_string($_GET["action"]))
 					unset($_SESSION["unroll_comment"]);
 				}
 			}
-			// Nettoyage de restes de formulaires éventuels
+			// Nettoyage de restes de formulaires ï¿½ventuels
 			if (isset($_SESSION["text_new_comment_rest"]))
 			{
 				unset($_SESSION["text_new_comment_rest"]);
@@ -119,36 +121,36 @@ if (isset($_GET["action"]) && is_string($_GET["action"]))
 			new_comment();
 			header('Location:index.php?action=display_post');
 			break;
-		case "delete_account": // Assez inélégant, mais nécessaire à l'actualisation totale de la page après une suppression réussie qui entraîne la déconnexion
+		case "delete_account": // Assez inï¿½lï¿½gant, mais nï¿½cessaire ï¿½ l'actualisation totale de la page aprï¿½s une suppression rï¿½ussie qui entraï¿½ne la dï¿½connexion
 			$treat_post=false;
-			if(!isset($_SESSION["delete_account_state"])) // Cas vide, on arrive, il faut exécuter la fonction delete_account()
+			if(!isset($_SESSION["delete_account_state"])) // Cas vide, on arrive, il faut exï¿½cuter la fonction delete_account()
 			{
 				$_SESSION["delete_account_state"]="execute";
 			}
 			if($_SESSION["delete_account_state"]=="execute")
 			{
 				$_SESSION["delete_account_state"]="wait"; // On signale que la page est en attente d'actualisation
-				$_SESSION["delete_account_display"]=delete_account(); // Exécution proprement dite
+				$_SESSION["delete_account_display"]=delete_account(); // Exï¿½cution proprement dite
 				header('Location:index.php?action=delete_account'); // Redirection vers l'affichage
 			}
 			elseif ($_SESSION["delete_account_state"]=="wait")
 			{
-				$_SESSION["delete_account_state"]="display"; // La page a été réactualisée, on peut maintenant afficher les résultats
+				$_SESSION["delete_account_state"]="display"; // La page a ï¿½tï¿½ rï¿½actualisï¿½e, on peut maintenant afficher les rï¿½sultats
 			}
 			break;
-		case "new_document": // Similaire à "delete_account" : on ne peut se permettre une redirection *avant* le traitement, car le fichier temporaire uploadé est supprimé... 
+		case "new_document": // Similaire ï¿½ "delete_account" : on ne peut se permettre une redirection *avant* le traitement, car le fichier temporaire uploadï¿½ est supprimï¿½... 
 			$treat_post=false;
-			if(!isset($_SESSION["new_document_state"])) // On exécute dans le cas vide (typiquement, premier appel de la page)
+			if(!isset($_SESSION["new_document_state"])) // On exï¿½cute dans le cas vide (typiquement, premier appel de la page)
 			{
 				$_SESSION["new_document_state"]="execute";
 			}
 			if($_SESSION["new_document_state"]=="execute")
 			{
-				$_SESSION["new_document_state"]="wait"; // La page est en attente de réactualisation
-				$_SESSION["new_document_display"]=add_document(); // Exécution
+				$_SESSION["new_document_state"]="wait"; // La page est en attente de rï¿½actualisation
+				$_SESSION["new_document_display"]=add_document(); // Exï¿½cution
 				header('Location:index.php?action=new_document'); // Redirection vers l'affichage
 			}
-			elseif ($_SESSION["new_document_state"]=="wait") // La page a été actualisée
+			elseif ($_SESSION["new_document_state"]=="wait") // La page a ï¿½tï¿½ actualisï¿½e
 			{
 				$_SESSION["new_document_state"]="display"; // On passe en mode "affichage"
 			}
@@ -156,10 +158,10 @@ if (isset($_GET["action"]) && is_string($_GET["action"]))
 	}
 }
 
-// Gestion des problèmes d'actualisation avec $_POST (dans le cas où il n'y a pas déjà eu actualisation précédemment)
+// Gestion des problï¿½mes d'actualisation avec $_POST (dans le cas oï¿½ il n'y a pas dï¿½jï¿½ eu actualisation prï¿½cï¿½demment)
 if(isset($_POST) && !(empty($_POST)) && $treat_post)
 {
-	$_SESSION['post'] = $_POST ; // Passage en session et élimination
+	$_SESSION['post'] = $_POST ; // Passage en session et ï¿½limination
 	unset($_POST);
 	
 	if (isset($_SERVER['PHP_SELF'])) // Redirection vers l'adresse d'origine

@@ -37,13 +37,4 @@ define('DB_PASSWORD', 'mot_de_passe');
 /** Adresse de l'hébergement MySQL. */
 define('DB_HOST', 'serveur');
 
-/**
- * Préfixe de base de données pour les tables de Refresh.
- *
- * Vous pouvez installer plusieurs Refresh sur une seule base de données
- * si vous leur donnez chacune un préfixe unique.
- * N'utilisez que des chiffres, des lettres non-accentuées, et des caractères soulignés!
- */
-$table_prefix  = 'refresh_';
-
 ?>
