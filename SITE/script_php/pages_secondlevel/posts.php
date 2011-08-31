@@ -46,9 +46,9 @@ function modify_thread_display_filtering()
 				$_SESSION["thread_ordering"]=$display_order;
 			}
 		}
-		unset($_SESSION["thread_page"]); // Lorsque le filtrage change, le nombre de requête n'est plus valide ; la page affichée doit être écrasée en conséquence
+		unset($_SESSION["thread_page"]); // Lorsque le filtrage change, le nombre de requï¿½te n'est plus valide ; la page affichï¿½e doit ï¿½tre ï¿½crasï¿½e en consï¿½quence
 	}
-	unset($_POST); // Par précaution, la page est de toute façon rechargée juste après
+	unset($_POST); // Par prï¿½caution, la page est de toute faï¿½on rechargï¿½e juste aprï¿½s
 }
 
 function modify_thread_display_page()
@@ -63,13 +63,13 @@ function modify_thread_display_page()
 	}
 }
 
-function moderate_post() // Attention, générique, s'applique et aux posts et aux commentaires
+function moderate_post() // Attention, gï¿½nï¿½rique, s'applique et aux posts et aux commentaires
 {
 	$thread_id=-1;
 	$comment_id=-1;
 	$decision=-1;
 
-	// Récupération des arguments
+	// Rï¿½cupï¿½ration des arguments
 	if (isset($_GET["thread_id"]))
 	{
 		$thread_id=$_GET["thread_id"];
@@ -83,16 +83,16 @@ function moderate_post() // Attention, générique, s'applique et aux posts et aux
 		$decision=$_GET["order"];
 	}
 	
-    if (user_privilege_level()>3) // Droits d'administrateur nécessaires à la modération
+    if (user_privilege_level()>3) // Droits d'administrateur nï¿½cessaires ï¿½ la modï¿½ration
     {
-		if (($thread_id*$comment_id)>0) // Aucun objet désignés, ou deux types d'objet désignés à la fois
+		if (($thread_id*$comment_id)>0) // Aucun objet dï¿½signï¿½s, ou deux types d'objet dï¿½signï¿½s ï¿½ la fois
 		{
 			$_SESSION['transient_display']='<div class="warning">Impossible de d&eacute;terminer l\'objet auquel appliquer la commande de mod&eacute;ration</div>';
 		}
 		else
 		{
 			$query="";
-			if ($thread_id>0) // L'ordre s'applique à un post
+			if ($thread_id>0) // L'ordre s'applique ï¿½ un post
 			{
 				if ($decision==1)
 	            {
@@ -103,7 +103,7 @@ function moderate_post() // Attention, générique, s'applique et aux posts et aux
 	                $query=sprintf("UPDATE thread SET is_valid=0, already_mod=1 WHERE thread_id='%s'",mysql_real_escape_string($thread_id));
 	            }
 			}
-			else // L'ordre s'applique à un commentaire
+			else // L'ordre s'applique ï¿½ un commentaire
 			{
 				if ($decision==1)
 	            {
@@ -115,13 +115,13 @@ function moderate_post() // Attention, générique, s'applique et aux posts et aux
 	            }
 			}
 			
-			if (empty($query)) // Décision ni à 1 ni à 0
+			if (empty($query)) // Dï¿½cision ni ï¿½ 1 ni ï¿½ 0
             {
                 $_SESSION['transient_display']='<div class="warning">D&eacute;cision non valide</div>';
             }
             else
             {
-                if (@mysql_query($query)) // Exécution de la commande
+                if (@mysql_query($query)) // Exï¿½cution de la commande
                 {   
                     $_SESSION['transient_display']='<div class="success">Commande de mod&eacute;ration effectu&eacute;e</div>';
                 }
@@ -138,13 +138,13 @@ function moderate_post() // Attention, générique, s'applique et aux posts et aux
     }
 }
 
-function change_post_confidentiality_status() // Attention, générique, s'applique et aux posts et aux commentaires
+function change_post_confidentiality_status() // Attention, gï¿½nï¿½rique, s'applique et aux posts et aux commentaires
 {
 	$thread_id=-1;
 	$comment_id=-1;
 	$choice=-1;
 
-	// Récupération des arguments
+	// Rï¿½cupï¿½ration des arguments
 	if (isset($_GET["thread_id"]))
 	{
 		$thread_id=$_GET["thread_id"];
@@ -158,9 +158,9 @@ function change_post_confidentiality_status() // Attention, générique, s'appliqu
 		$choice=$_GET["order"];
 	}
 	
-	if (user_privilege_level()>2) // Le demandeur doit-être loggé et posséder des droits d'écriture
+	if (user_privilege_level()>2) // Le demandeur doit-ï¿½tre loggï¿½ et possï¿½der des droits d'ï¿½criture
     {
-		if (($thread_id*$comment_id)>0) // Aucun objet désignés, ou deux types d'objet désignés à la fois
+		if (($thread_id*$comment_id)>0) // Aucun objet dï¿½signï¿½s, ou deux types d'objet dï¿½signï¿½s ï¿½ la fois
 		{
 			$_SESSION['transient_display']='<div class="warning">Impossible de d&eacute;terminer l\'objet auquel appliquer la commande de mod&eacute;ration</div>';
 		}
@@ -168,12 +168,12 @@ function change_post_confidentiality_status() // Attention, générique, s'appliqu
 		{
 			$result="";
 			
-			// Vérification de l'appartenance de l'ID au demandeur (pourraît être intégré à la requête SQL si nécessaire)
-			if ($thread_id>0) // L'ordre s'applique à un post
+			// Vï¿½rification de l'appartenance de l'ID au demandeur (pourraï¿½t ï¿½tre intï¿½grï¿½ ï¿½ la requï¿½te SQL si nï¿½cessaire)
+			if ($thread_id>0) // L'ordre s'applique ï¿½ un post
 			{
 				$result=@mysql_query(sprintf("SELECT rand_prop,hash_prop FROM thread WHERE thread_id='%s'",mysql_real_escape_string($thread_id)));
 			}
-			else // L'ordre s'applique à un commentaire
+			else // L'ordre s'applique ï¿½ un commentaire
 			{
 				$result=@mysql_query(sprintf("SELECT rand_prop,hash_prop FROM comment WHERE comment_id='%s'",mysql_real_escape_string($comment_id)));
 			}
@@ -181,12 +181,12 @@ function change_post_confidentiality_status() // Attention, générique, s'appliqu
 			// L'ID existe bien
 			if ($result && $row=mysql_fetch_assoc($result))
 			{
-				// On vérifie l'appartenance au demandeur
+				// On vï¿½rifie l'appartenance au demandeur
 				if(check_property($row["rand_prop"],$row["hash_prop"]))
 				{
 					$query="";
-					// Commande de mise à jour
-					if ($thread_id>0) // L'ordre s'applique à un post
+					// Commande de mise ï¿½ jour
+					if ($thread_id>0) // L'ordre s'applique ï¿½ un post
 					{
 						if ($choice==1)
 						{
@@ -197,7 +197,7 @@ function change_post_confidentiality_status() // Attention, générique, s'appliqu
 							$query=sprintf("UPDATE thread SET possibly_name='%s' WHERE thread_id='%s'","",mysql_real_escape_string($thread_id));
 						}
 					}
-					else // L'ordre s'applique à un commentaire
+					else // L'ordre s'applique ï¿½ un commentaire
 					{
 						$query="";
 						if ($choice==1)
@@ -210,14 +210,14 @@ function change_post_confidentiality_status() // Attention, générique, s'appliqu
 						}
 					}
 					
-					// La décision n'était ni 0 ni 1
+					// La dï¿½cision n'ï¿½tait ni 0 ni 1
 					if (empty($query))
 					{
 						$_SESSION['transient_display']='<div class="warning">D&eacute;cision non valide</div>';
 					}
 					else
 					{
-						// On exécute la commande et note le résultat
+						// On exï¿½cute la commande et note le rï¿½sultat
 						if (@mysql_query($query))
 						{   
 							$_SESSION['transient_display']='<div class="success">Propri&eacute;t&eacute;s de confidentialit&eacute; correctement mises &agrave; jour</div>';
@@ -260,7 +260,7 @@ function vote_post()
 		$choice=$_GET["order"];
 	}
 
-	if (user_privilege_level()>2) // Il faut être loggé et posséder des droits d'écriture
+	if (user_privilege_level()>2) // Il faut ï¿½tre loggï¿½ et possï¿½der des droits d'ï¿½criture
     {
 		if (!($choice==-1 || $choice==0 || $choice==1))
 		{
@@ -268,20 +268,20 @@ function vote_post()
 		}
 		elseif ($thread_id>0)
 		{
-			// Sélection d'un éventuel vote dont on serait propriétaire pour ce post
+			// Sï¿½lection d'un ï¿½ventuel vote dont on serait propriï¿½taire pour ce post
 			$result=@mysql_query(sprintf("SELECT vote_id, vote FROM vote WHERE thread_id='%s' AND CAST(SHA1(CONCAT('%s',CAST(rand_prop AS CHAR))) AS CHAR)=hash_prop",mysql_real_escape_string($thread_id),mysql_real_escape_string($_SESSION['login_c'])));
 			if ($result)
 			{
-				$vote_prec=0; // On part du principe qu'on n'a pas voté au préalable
-				$id_vote=-1; // L'id est mis à jour si un vote est retrouvé
+				$vote_prec=0; // On part du principe qu'on n'a pas votï¿½ au prï¿½alable
+				$id_vote=-1; // L'id est mis ï¿½ jour si un vote est retrouvï¿½
 				if ($row=mysql_fetch_assoc($result))
 				{
 					$id_vote=$row["vote_id"];
-					if($row["vote"]==1) // On a voté pour au préalable
+					if($row["vote"]==1) // On a votï¿½ pour au prï¿½alable
 					{
 						$vote_prec=1;
 					}
-					elseif($row["vote"]==0) // On a voté contre au préalable
+					elseif($row["vote"]==0) // On a votï¿½ contre au prï¿½alable
 					{
 						$vote_prec=-1;
 					}
@@ -289,16 +289,16 @@ function vote_post()
 
 				if($choice==-1)
 				{
-					if($vote_prec==-1) // On a déjà voté contre
+					if($vote_prec==-1) // On a dï¿½jï¿½ votï¿½ contre
 					{
 						$_SESSION['transient_display']='<div class="warning">Vote d&eacute;j&agrave; enregistr&eacute;</div>';
 					}
-					elseif($vote_prec==0) // On souhaite voter pour la première fois contre
+					elseif($vote_prec==0) // On souhaite voter pour la premiï¿½re fois contre
 					{
 						$rand_prop=mt_rand(0,65535);
 						$hash_prop=sha1($_SESSION['login_c'].$rand_prop);
 						$thrad_id_sec=mysql_real_escape_string($thread_id);
-						if (@mysql_query("INSERT INTO `enpcref`.`vote` (`vote_id`,`thread_id`,`rand_prop`,`hash_prop`,`vote`) VALUES (NULL, '$thrad_id_sec','$rand_prop','$hash_prop','0')"))
+						if (@mysql_query("INSERT INTO `vote` (`vote_id`,`thread_id`,`rand_prop`,`hash_prop`,`vote`) VALUES (NULL, '$thrad_id_sec','$rand_prop','$hash_prop','0')"))
 						{
 							$_SESSION['transient_display']='<div class="success">Vote correctement pris en compte</div>';
 						}
@@ -307,7 +307,7 @@ function vote_post()
 							$_SESSION['transient_display']='<div class="warning">Erreur lors de l\'insertion du vote</div>';
 						}
 					}
-					elseif($vote_prec==1) // On souhaite passer d'un vote pour à un vote contre
+					elseif($vote_prec==1) // On souhaite passer d'un vote pour ï¿½ un vote contre
 					{
 						if (@mysql_query(sprintf("UPDATE vote SET vote=0 WHERE vote_id='%s'",mysql_real_escape_string($id_vote))))
 						{
@@ -339,7 +339,7 @@ function vote_post()
 				}
 				elseif($choice==1)
 				{
-					if($vote_prec==-1) // On souhaite passer d'un vote contre à un vote pour
+					if($vote_prec==-1) // On souhaite passer d'un vote contre ï¿½ un vote pour
 					{
 						if (@mysql_query(sprintf("UPDATE vote SET vote=1 WHERE vote_id='%s'",mysql_real_escape_string($id_vote))))
 						{
@@ -350,12 +350,12 @@ function vote_post()
 							$_SESSION['transient_display']='<div class="warning">Erreur lors de la mise &agrave; jour du vote</div>';
 						}
 					}
-					elseif($vote_prec==0) // On souhaite voter pour la première fois pour
+					elseif($vote_prec==0) // On souhaite voter pour la premiï¿½re fois pour
 					{
 						$rand_prop=mt_rand(0,65535);
 						$hash_prop=sha1($_SESSION['login_c'].$rand_prop);
 						$thrad_id_sec=mysql_real_escape_string($thread_id);
-						if (@mysql_query("INSERT INTO `enpcref`.`vote` (`vote_id`,`thread_id`,`rand_prop`,`hash_prop`,`vote`) VALUES (NULL, '$thrad_id_sec','$rand_prop','$hash_prop','1')"))
+						if (@mysql_query("INSERT INTO `vote` (`vote_id`,`thread_id`,`rand_prop`,`hash_prop`,`vote`) VALUES (NULL, '$thrad_id_sec','$rand_prop','$hash_prop','1')"))
 						{
 							$_SESSION['transient_display']='<div class="success">Vote correctement pris en compte</div>';
 						}
@@ -364,14 +364,14 @@ function vote_post()
 							$_SESSION['transient_display']='<div class="warning">Erreur lors de l\'insertion du vote</div>';
 						}
 					}
-					elseif($vote_prec==1) // On a déjà voté pour
+					elseif($vote_prec==1) // On a dï¿½jï¿½ votï¿½ pour
 					{
 						$_SESSION['transient_display']='<div class="warning">Vote d&eacute;j&agrave; enregistr&eacute;</div>';
 					}
 				}
 				@mysql_free_result($result);
 			}
-			else // Mieux vaux ne pas continuer si l'on n'a pas pu vérifier ce qui existait en base
+			else // Mieux vaux ne pas continuer si l'on n'a pas pu vï¿½rifier ce qui existait en base
 			{
 				$_SESSION['transient_display']='<div class="warning">Erreur lors de la requ&ecirc;te</div>';
 			}
@@ -393,7 +393,7 @@ function new_post()
 	{
 		echo('<h1>Publication d\'une nouvelle proposition :</h1>');
 
-		// Valeurs réintroduites dans le formulaire en cas d'erreur
+		// Valeurs rï¿½introduites dans le formulaire en cas d'erreur
 		$affich_form=true;
         $title_prec="";
         $text_prec="";
@@ -406,7 +406,7 @@ function new_post()
 			unset($_SESSION['post']);
 		}
 
-		// Le formulaire a été validé
+		// Le formulaire a ï¿½tï¿½ validï¿½
 		if (isset($_POST['form_name']) && $_POST['form_name']=="create_thread")
 		{
 			$check_1=(isset($_POST["title"]) && !empty($_POST["title"]));
@@ -414,7 +414,7 @@ function new_post()
 			$check_3=(!isset($_POST["anonymization"]) || $_POST["anonymization"]=="on");
             $check_4=(isset($_POST["category"]) && is_numeric($_POST["category"]) && $_POST["category"]>0);
  
-			// Vérification des arguments
+			// Vï¿½rification des arguments
 			if ($check_1)
 			{
 				$title_prec=$_POST["title"];
@@ -451,7 +451,7 @@ function new_post()
 				echo('<div class="warning">Cat&eacute;gorie incorrecte</div>');
 			}
             
-			if ($check_1 && $check_2 && $check_3 && $check_4) // Tous les arguments sont corrects, exécution du traitement du formulaire
+			if ($check_1 && $check_2 && $check_3 && $check_4) // Tous les arguments sont corrects, exï¿½cution du traitement du formulaire
 			{
                 $title_prec_sec=mysql_real_escape_string($title_prec);
                 $text_prec_sec=mysql_real_escape_string($text_prec);
@@ -468,7 +468,7 @@ function new_post()
                     $name_print=mysql_real_escape_string(construct_name_from_session());
                 }
 
-                if (@mysql_query("INSERT INTO `enpcref`.`thread` (`thread_id`,`rand_prop`,`hash_prop`,`title`,`text`,`date`,`category`,`is_valid`,`possibly_name`) VALUES (NULL, '$rand_prop', '$hash_prop','$title_prec_sec','$text_prec_sec',CURRENT_TIMESTAMP,'$cate_prec_sec',0,'$name_print')"))
+                if (@mysql_query("INSERT INTO `thread` (`thread_id`,`rand_prop`,`hash_prop`,`title`,`text`,`date`,`category`,`is_valid`,`possibly_name`) VALUES (NULL, '$rand_prop', '$hash_prop','$title_prec_sec','$text_prec_sec',CURRENT_TIMESTAMP,'$cate_prec_sec',0,'$name_print')"))
                 {
                     echo('<div class="success">Proposition correctement plac&eacute;e en attente de mod&eacute;ration</div>');
 					$affich_form=false;
@@ -480,7 +480,7 @@ function new_post()
             }
 		}
 			
-		if ($affich_form) // Affichage du formulaire en incluant d'éventuelles valeurs
+		if ($affich_form) // Affichage du formulaire en incluant d'ï¿½ventuelles valeurs
 		{
 			echo('
 			<div class="enlarge_lowresol">
@@ -598,7 +598,7 @@ function display_post()
 	$privileges=user_privilege_level();
 	if ($privileges>1)
 	{		
-		// Titre et messages éventuels
+		// Titre et messages ï¿½ventuels
 		echo('<h1>Consultation des propositions :</h1>');
 		
 		if(isset($_SESSION['transient_display']))
@@ -619,7 +619,7 @@ function display_post()
 						<select name="category_filter">
 							<option value="0">Toutes</option>');
 					
-		$result=@mysql_query("SELECT category_id,category_name FROM thread_category"); // Menu déroulant de choix de catégorie en fonction de ce qui est disponible en base
+		$result=@mysql_query("SELECT category_id,category_name FROM thread_category"); // Menu dï¿½roulant de choix de catï¿½gorie en fonction de ce qui est disponible en base
 		$tail='';
 		if ($result)
 		{
@@ -646,7 +646,7 @@ function display_post()
 					<td>
 						<select name="sorting">');
 
-		if (isset($_SESSION["thread_ordering"])) // Menu déroulant de choix de l'ordre d'affichage
+		if (isset($_SESSION["thread_ordering"])) // Menu dï¿½roulant de choix de l'ordre d'affichage
 		{
 			$thread_ordering=$_SESSION["thread_ordering"];
 			if($thread_ordering==1)
@@ -681,7 +681,7 @@ function display_post()
 		</form><br />');	
 
 		$is_admin=($privileges>3);
-		// Construction de la requête de rappatriement des thread
+		// Construction de la requï¿½te de rappatriement des thread
 		$query_p1="(SELECT T.thread_id, T.rand_prop, T.hash_prop, T.title, T.text, T.date, T.is_valid, T.possibly_name, T.already_mod, G.category_name,
 				SUM(V.vote) AS pro_vote, COUNT(V.vote) AS total_vote
 				FROM thread T, thread_category G, vote V
@@ -716,8 +716,8 @@ function display_post()
 		
 		$query=$query_p1.' GROUP BY T.thread_id, T.rand_prop, T.hash_prop, T.title, T.text, T.date, T.is_valid, T.possibly_name, G.category_name) UNION '.$query_p2.')';
 			
-		// Détermination du nombre résultats potentiellement retournés, pour connaître la répartition par pages
-		$num_res=-1; // Valeur par défaut en cas d'échec
+		// Dï¿½termination du nombre rï¿½sultats potentiellement retournï¿½s, pour connaï¿½tre la rï¿½partition par pages
+		$num_res=-1; // Valeur par dï¿½faut en cas d'ï¿½chec
 		$res=@mysql_query($query_count);
 		if ($res)
 		{
@@ -728,7 +728,7 @@ function display_post()
 			@mysql_free_result($res);
 		}
 		
-		// Suite de la construction de la requête, GROUP et ORDER BY
+		// Suite de la construction de la requï¿½te, GROUP et ORDER BY
 		if (isset($_SESSION["thread_ordering"]))
 		{
 			$ordering=$_SESSION["thread_ordering"];
@@ -750,9 +750,9 @@ function display_post()
 			$query.=" ORDER BY date DESC";
 		}
 		
-		// Fin de la construction de la requête, LIMIT selon la page affichée
+		// Fin de la construction de la requï¿½te, LIMIT selon la page affichï¿½e
 		$page_to_display=1;
-		if (!isset($_SESSION["thread_page"])) // Affichage de la première page par défaut, correction des arguments
+		if (!isset($_SESSION["thread_page"])) // Affichage de la premiï¿½re page par dï¿½faut, correction des arguments
 		{
 			$_SESSION["thread_page"]=1;
 		}
@@ -765,10 +765,10 @@ function display_post()
 				$page_to_display=1;
 			}
 		}
-		if ($num_res>-1) // On a été capable de vérifier combien de résultats étaient disponibles ; on ne limite pas la requête sinon, même si c'est plus long
+		if ($num_res>-1) // On a ï¿½tï¿½ capable de vï¿½rifier combien de rï¿½sultats ï¿½taient disponibles ; on ne limite pas la requï¿½te sinon, mï¿½me si c'est plus long
 		{
 			$offset=round(10*($page_to_display-1));
-			if ($offset>=$num_res) // On a dépassé, sans doute par erreur, on retourne à la page 1
+			if ($offset>=$num_res) // On a dï¿½passï¿½, sans doute par erreur, on retourne ï¿½ la page 1
 			{
 				$offset=0;
 				$_SESSION["thread_page"]=1;
@@ -777,7 +777,7 @@ function display_post()
 			//$query.=" LIMIT 5,10";
 		}
 
-		// Exécution de la requête et affichage des résultats
+		// Exï¿½cution de la requï¿½te et affichage des rï¿½sultats
 		$result=@mysql_query($query);
         if ($result)
         {
@@ -799,7 +799,7 @@ function display_post()
 				$agt_vote=$check_vote["against_votes"];
 				$per_vote=$check_vote["choice"];
 
-				// Hormis l'auteur ou un administrateur, affichage uniquement si le post a été modéré
+				// Hormis l'auteur ou un administrateur, affichage uniquement si le post a ï¿½tï¿½ modï¿½rï¿½
                 if ($is_valid || $is_proprio || $privileges>3)
                 {
 					if($need_separator)
@@ -809,7 +809,7 @@ function display_post()
 							</div>');
 					}
 					$need_separator=true;
-					// Titre et état de modération
+					// Titre et ï¿½tat de modï¿½ration
 					echo('<span class="newstitle">
 							'.htmlentities(stripslashes($row["title"])).'
 						</span>');
@@ -847,7 +847,7 @@ function display_post()
 					}
 					
 					// Votes
-					if ($privileges>2) // L'utilisateur peut voter, liens de vote, lien d'annulation le cas échéant
+					if ($privileges>2) // L'utilisateur peut voter, liens de vote, lien d'annulation le cas ï¿½chï¿½ant
 					{
 						echo('<span class="vote">');
 						if ($per_vote>0)
@@ -946,7 +946,7 @@ function display_post()
                     echo('<div class="newscontent">'.nl2br(htmlentities(stripslashes($row["text"]))).'</div>');
 
 					echo('<div class="newsendlinks">');
-                    if ($is_proprio || $is_admin) // Administrateurs et propriétaires peuvent éditer et supprimer
+                    if ($is_proprio || $is_admin) // Administrateurs et propriï¿½taires peuvent ï¿½diter et supprimer
                     {
 						echo('
 							<a href="?action=edit_post&amp;thread_id='.htmlentities($thread_id_affiche).'">Editer</a>
@@ -969,7 +969,7 @@ function display_post()
                 }
 			}
 			
-			// Affichage vide / d'un cadre de choix de page / d'un avertissement sur le nombre de résultats / selon les cas
+			// Affichage vide / d'un cadre de choix de page / d'un avertissement sur le nombre de rï¿½sultats / selon les cas
 			if ($result_returned)
 			{
 				if ($num_res>10)
@@ -991,7 +991,7 @@ function display_post()
 			}
 			else
 			{
-				echo('<div class="warning">Aucune proposition n\'est disponible selon les critères choisis</div>');
+				echo('<div class="warning">Aucune proposition n\'est disponible selon les critï¿½res choisis</div>');
 			}
 			@mysql_free_result($result);
         }

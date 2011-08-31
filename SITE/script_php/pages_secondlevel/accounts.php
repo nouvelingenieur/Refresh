@@ -309,7 +309,7 @@ function create_account()
 											// Plus propre de tout virer, on ne sait pas ce qui s'est pass� qui a forc� l'utilisateur � faire une deuxi�me demande
 											if (is_numeric($row["user_id"]))
 											{	
-												@mysql_query('DELETE FROM `enpcref`.`user` WHERE `user`.`user_id` = '.mysql_real_escape_string($row["user_id"]));	
+												@mysql_query('DELETE FROM `user` WHERE `user`.`user_id` = '.mysql_real_escape_string($row["user_id"]));	
 											}
 										}	
 									}
@@ -332,7 +332,7 @@ function create_account()
 										$hcconf=sha1($cconf);
 										
 										// Les hash n'ont pas besoin d'�tre �chapp�s
-										if (@mysql_query("INSERT INTO `enpcref`.`user` (`user_id`,`hash_mail`,`hash_pass`,`hash_conf`,`inscription_date`,`privileges`,`is_valid`) VALUES (NULL, '$hash_mail', '$hash_pass', '$hcconf', CURRENT_TIMESTAMP, 3, 0)"))
+										if (@mysql_query("INSERT INTO `user` (`user_id`,`hash_mail`,`hash_pass`,`hash_conf`,`inscription_date`,`privileges`,`is_valid`) VALUES (NULL, '$hash_mail', '$hash_pass', '$hcconf', CURRENT_TIMESTAMP, 3, 0)"))
 										{
 											mail_confirmation_subscription($mail,$hash_mail,$cconf);
 											echo('<div class="success">Inscription faite avec succ&egrave;s, un mail de confirmation vous a &eacute;t&eacute; envoy&eacute;</div>');
@@ -900,7 +900,7 @@ function delete_account()
 
 			if ($treat && $delete_conf) // Application des commandes
 			{
-				$query=sprintf("DELETE FROM `enpcref`.`user` WHERE `user`.`user_id`='%s'",mysql_real_escape_string($_SESSION['uid']));
+				$query=sprintf("DELETE FROM `user` WHERE `user`.`user_id`='%s'",mysql_real_escape_string($_SESSION['uid']));
 				if(@mysql_query($query)) // Lien adresse mail en cas d'erreur � passer en alias
 				{
 					$retour.='<div class="success">Compte correctement supprim&eacute</div>';
@@ -908,7 +908,7 @@ function delete_account()
 					
 					if ($delete_proposal) // Les votes et commentaires associ�s sont normalement supprim�s en cascade selon la contrainte sur la cl� �trang�re
 					{
-						$query=sprintf("DELETE FROM `enpcref`.`thread` WHERE CAST(SHA1(CONCAT('%s',CAST(rand_prop AS CHAR))) AS CHAR)=hash_prop",mysql_real_escape_string($default_value_mail));
+						$query=sprintf("DELETE FROM `thread` WHERE CAST(SHA1(CONCAT('%s',CAST(rand_prop AS CHAR))) AS CHAR)=hash_prop",mysql_real_escape_string($default_value_mail));
 						if(@mysql_query($query))
 						{
 							$retour.='<div class="success">Propositions correctement supprim&eacute;es</div>';
@@ -920,7 +920,7 @@ function delete_account()
 					}
 					if ($delete_comments)
 					{
-						$query=sprintf("DELETE FROM `enpcref`.`comment` WHERE CAST(SHA1(CONCAT('%s',CAST(rand_prop AS CHAR))) AS CHAR)=hash_prop",mysql_real_escape_string($default_value_mail));
+						$query=sprintf("DELETE FROM `comment` WHERE CAST(SHA1(CONCAT('%s',CAST(rand_prop AS CHAR))) AS CHAR)=hash_prop",mysql_real_escape_string($default_value_mail));
 						if(@mysql_query($query))
 						{
 							$retour.='<div class="success">Commentaires correctement supprim&eacute;es</div>';
@@ -932,7 +932,7 @@ function delete_account()
 					}
 					if ($delete_votes)
 					{
-						$query=sprintf("DELETE FROM `enpcref`.`vote` WHERE CAST(SHA1(CONCAT('%s',CAST(rand_prop AS CHAR))) AS CHAR)=hash_prop",mysql_real_escape_string($default_value_mail));
+						$query=sprintf("DELETE FROM `vote` WHERE CAST(SHA1(CONCAT('%s',CAST(rand_prop AS CHAR))) AS CHAR)=hash_prop",mysql_real_escape_string($default_value_mail));
 						if(@mysql_query($query))
 						{
 							$retour.='<div class="success">Votes correctement supprim&eacute;s</div>';

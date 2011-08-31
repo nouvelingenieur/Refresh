@@ -36,7 +36,7 @@ function new_comment()
 		unset($_SESSION["text_anonymous_rest"]);
 	}
 	
-	if (user_privilege_level()>2) // Loggé et pas en "lecture seule"
+	if (user_privilege_level()>2) // Loggï¿½ et pas en "lecture seule"
 	{
         $text_prec="";
         $anon_prec="";
@@ -80,7 +80,7 @@ function new_comment()
 					{
 						$text_prec=mysql_real_escape_string($text_prec);
 						$rand_prop=mt_rand(0,65535);
-						$hash_prop=sha1($_SESSION['login_c'].$rand_prop); // Anonymat relatif, car nombre d'adresses mails élèves dans l'école limité...
+						$hash_prop=sha1($_SESSION['login_c'].$rand_prop); // Anonymat relatif, car nombre d'adresses mails ï¿½lï¿½ves dans l'ï¿½cole limitï¿½...
 
 						if ($anon_prec=="on")
 						{
@@ -90,7 +90,7 @@ function new_comment()
 						{
 							$name_print=mysql_real_escape_string(construct_name_from_session());
 						}
-						if (@mysql_query("INSERT INTO `enpcref`.`comment` (`comment_id`,`thread_id`,`rand_prop`,`hash_prop`,`text`,`date`,`is_valid`,`possibly_name`) VALUES (NULL,'$thread_id','$rand_prop','$hash_prop','$text_prec',CURRENT_TIMESTAMP,0,'$name_print')"))
+						if (@mysql_query("INSERT INTO `comment` (`comment_id`,`thread_id`,`rand_prop`,`hash_prop`,`text`,`date`,`is_valid`,`possibly_name`) VALUES (NULL,'$thread_id','$rand_prop','$hash_prop','$text_prec',CURRENT_TIMESTAMP,0,'$name_print')"))
 						{
 							$_SESSION['transient_display']='<div class="success">Commentaire correctement plac&eacute; en attente de mod&eacute;ration</div>';
 							$succes_func=true;
@@ -131,11 +131,11 @@ function new_comment()
 function deletion()
 {
 	$priv=user_privilege_level();
-	if ($priv>2) // Loggé et pas en lecture seule (ne sera pas nécessairement suffisant)
+	if ($priv>2) // Loggï¿½ et pas en lecture seule (ne sera pas nï¿½cessairement suffisant)
 	{
 		echo('<h1>Suppression :</h1>');
 	
-		// Récupération des arguments
+		// Rï¿½cupï¿½ration des arguments
 		$id=-1;
 		$is_prop=0;
 		$mess_user="";
@@ -202,7 +202,7 @@ function deletion()
 			$warnings='<div class="warning">Id de l\'objet non pr&eacute;cis&eacute;</div>';
 		}
 		
-		if (empty($warnings) && $id>0) // Titre ou corps éventuellement vide, ce n'est pas une condition
+		if (empty($warnings) && $id>0) // Titre ou corps ï¿½ventuellement vide, ce n'est pas une condition
 		{
 			if (isset($_SESSION['post']))
 			{
@@ -210,7 +210,7 @@ function deletion()
 				unset($_SESSION['post']);
 			}
 
-			// Traitement d'un formulaire éventuellement déjà validé
+			// Traitement d'un formulaire ï¿½ventuellement dï¿½jï¿½ validï¿½
 			$affich_form=true;
 			if (isset($_POST['form_name']) && $_POST['form_name']=="deletion")
 			{
@@ -224,7 +224,7 @@ function deletion()
 					{
 						if ($type==0)
 						{
-							if (@mysql_query(sprintf("DELETE FROM thread WHERE thread_id='%s'",mysql_real_escape_string($id)))) // Pas besoin de s'embêter avec les commentaires/votes associés, tout est en cascade avec des clés étrangères
+							if (@mysql_query(sprintf("DELETE FROM thread WHERE thread_id='%s'",mysql_real_escape_string($id)))) // Pas besoin de s'embï¿½ter avec les commentaires/votes associï¿½s, tout est en cascade avec des clï¿½s ï¿½trangï¿½res
 							{
 								echo('<div class="success">Thread correctement supprim&eacute;</div>');
 								$affich_form=false;
@@ -254,7 +254,7 @@ function deletion()
 				}
 			}
 			
-			// Affichage du formulaire le cas échéant
+			// Affichage du formulaire le cas ï¿½chï¿½ant
 			if ($affich_form)
 			{
 				if ($type==0)
@@ -295,7 +295,7 @@ function edition()
 	{
 		echo('<h1>Edition :</h1>');
 	
-		// Récupération des arguments
+		// Rï¿½cupï¿½ration des arguments
 		$id=-1;
 		$is_prop=0;
 		$mess_user="";
@@ -368,7 +368,7 @@ function edition()
 			$warnings='<div class="warning">Id de l\'objet non pr&eacute;cis&eacute;</div>';
 		}
 		
-		if (empty($warnings) && $id>0) // Titre ou corps éventuellement vide, ce n'est pas une condition
+		if (empty($warnings) && $id>0) // Titre ou corps ï¿½ventuellement vide, ce n'est pas une condition
 		{
 			if (isset($_SESSION['post']))
 			{
@@ -376,13 +376,13 @@ function edition()
 				unset($_SESSION['post']);
 			}
 
-			// Traitement d'un formulaire éventuellement déjà validé
+			// Traitement d'un formulaire ï¿½ventuellement dï¿½jï¿½ validï¿½
 			$affich_form=true;
 			if (isset($_POST['form_name']) && $_POST['form_name']=="edition")
 			{
 				if ($priv>4 || $is_prop==1)
 				{
-					// Afficher les messages d'erreur en une fois, traitement parallèle
+					// Afficher les messages d'erreur en une fois, traitement parallï¿½le
 					if(isset($_POST["message"]) && is_string($_POST["message"]) && !empty($_POST["message"]))
 					{
 						$mess_user=$_POST["message"];
@@ -438,7 +438,7 @@ function edition()
 				}
 			}
 			
-			// Affichage du formulaire le cas échéant
+			// Affichage du formulaire le cas ï¿½chï¿½ant
 			if ($affich_form)
 			{
 				if ($type==0)
@@ -632,7 +632,7 @@ function affichage_comments($thread_id)
 						}
 						echo('</span>');		
 						
-						// Etat de modération
+						// Etat de modï¿½ration
 						if ($privileges>3)
 						{
 							if ($already_mod)

@@ -25,11 +25,11 @@
 include_once("tool.php");
 include_once("errors.php");
 
-function modify_docu_display_filtering() // Données non vérifiées, elles le sont à l'utilisation
+function modify_docu_display_filtering() // Donnï¿½es non vï¿½rifiï¿½es, elles le sont ï¿½ l'utilisation
 {
 	if (isset($_POST['form_name']) && $_POST['form_name']=="document_display_param")
 	{
-		if(isset($_POST["category_filter"])) // Pas de raison de protéger à ce niveau, les valeurs ne sont pas utilisées ici et sont recopiées directement 
+		if(isset($_POST["category_filter"])) // Pas de raison de protï¿½ger ï¿½ ce niveau, les valeurs ne sont pas utilisï¿½es ici et sont recopiï¿½es directement 
 		{
 			$_SESSION["document_category_filter"]=$_POST["category_filter"];
 		}
@@ -45,7 +45,7 @@ function modify_docu_display_filtering() // Données non vérifiées, elles le sont
 	unset($_POST);
 }
 
-function modify_docu_display_page() // Données non vérifiées, elles le sont à l'utilisation
+function modify_docu_display_page() // Donnï¿½es non vï¿½rifiï¿½es, elles le sont ï¿½ l'utilisation
 {
 	if (isset($_GET["num_page"]))
 	{
@@ -59,7 +59,7 @@ function display_documents()
 	if ($rights>0) // Les personnes sans droits ne peuvent afficher les documents
 	{
 		echo('<h1>Documentation :</h1>');
-		if(is_logged() || (isset($_SESSION['confirmation_agreement']) && $_SESSION['confirmation_agreement']=="ok")) // Il faut être loggé (donc avoir accepté les CGU une bonne fois pour toute) où les avoir temporairement approuvées pour pouvoir afficher la liste des documents
+		if(is_logged() || (isset($_SESSION['confirmation_agreement']) && $_SESSION['confirmation_agreement']=="ok")) // Il faut ï¿½tre loggï¿½ (donc avoir acceptï¿½ les CGU une bonne fois pour toute) oï¿½ les avoir temporairement approuvï¿½es pour pouvoir afficher la liste des documents
 		{
 			if(isset($_SESSION['transient_display']))
 			{
@@ -83,7 +83,7 @@ function display_documents()
 			{
 				while($row=@mysql_fetch_assoc($result))
 				{
-					// Autant se prémunir contre une corruption des données en base, ça ne coûte rien (sauf du CPU ^^)
+					// Autant se prï¿½munir contre une corruption des donnï¿½es en base, ï¿½a ne coï¿½te rien (sauf du CPU ^^)
 					if (isset($_SESSION["document_category_filter"]) && $row["category_id"]==$_SESSION["document_category_filter"])
 					{
 						$tail.='<option value="'.htmlentities($row["category_id"]).'" selected="selected">'.htmlentities($row["category_name"]).'</option>';		
@@ -196,9 +196,9 @@ function display_documents()
 			{
 				$query.=" ORDER BY filedate DESC";
 			}
-			if ($num_res>-1) // On a pu identifier sans problème le nombre de résultats potentiels
+			if ($num_res>-1) // On a pu identifier sans problï¿½me le nombre de rï¿½sultats potentiels
 			{
-				if(!isset($_SESSION["document_page"]) || !is_numeric($_SESSION["document_page"])) // Par défaut, on va toujours à la page 1
+				if(!isset($_SESSION["document_page"]) || !is_numeric($_SESSION["document_page"])) // Par dï¿½faut, on va toujours ï¿½ la page 1
 				{
 					$_SESSION["document_page"]=1;
 				}
@@ -207,7 +207,7 @@ function display_documents()
 					$_SESSION["document_page"]=1; 
 				}
 				$offset=round(10*($_SESSION["document_page"]-1));
-				if ($offset>=$num_res) // En cas de pépin, on retourne toujours à la page 1
+				if ($offset>=$num_res) // En cas de pï¿½pin, on retourne toujours ï¿½ la page 1
 				{
 					$offset=0;
 					$_SESSION["document_page"]=1;
@@ -219,7 +219,7 @@ function display_documents()
 				$_SESSION["document_page"]=1;
 			}	
 			
-			$result=@mysql_query($query); //	Exécution de la requête de recherche des documents proprement dite
+			$result=@mysql_query($query); //	Exï¿½cution de la requï¿½te de recherche des documents proprement dite
 			if ($result)
 			{
 				$compteur=0;
@@ -247,7 +247,7 @@ function display_documents()
 					<div class="newscontent">
 						'.$description.'
 					</div>');
-					if ($rights>3) // Les administrateurs - modérateurs peuvent éditer et supprimer les documents
+					if ($rights>3) // Les administrateurs - modï¿½rateurs peuvent ï¿½diter et supprimer les documents
 					{
 						echo('<div class="newsendlinks">
 							<a href="?action=edit_doc&amp;document_id='.$doc_id.'">Editer</a>
@@ -298,7 +298,7 @@ function add_document()
 {
 	$retour="<h1>Ajout de document :</h1>";
 	
-	if (user_privilege_level()>3) // Administrateurs - modérateurs
+	if (user_privilege_level()>3) // Administrateurs - modï¿½rateurs
 	{
 		$affich_form=true;
 		
@@ -309,7 +309,7 @@ function add_document()
 		if(isset($_POST['form_name']) && $_POST['form_name']=="new_document")
 		{
 			$treat=true;
-			// On se passe de ['type'] qui est aussi basé sur l'extension. D'autant que le type MIME renvoyé par le navigateur peut subir des variations ( PDF vs. File)
+			// On se passe de ['type'] qui est aussi basï¿½ sur l'extension. D'autant que le type MIME renvoyï¿½ par le navigateur peut subir des variations ( PDF vs. File)
 			if (isset($_FILES['uploaded_file']['name']) && isset($_FILES['uploaded_file']['size']) && is_numeric($_FILES['uploaded_file']['size']) && isset($_FILES['uploaded_file']['tmp_name']) && file_exists($_FILES['uploaded_file']['tmp_name']) && isset($_FILES['uploaded_file']['error']))
 			{
 				if (!(strtolower(strrchr($_FILES['uploaded_file']['name'],'.'))=='.pdf'))
@@ -370,18 +370,18 @@ function add_document()
 				$retour.='<div class="warning">Erreur dans le traitement de la cat&eacute;gorie</div>';
 			}
 
-			if ($treat) // Intégration du fichier
+			if ($treat) // Intï¿½gration du fichier
 			{
-				$name_newfile=sha1(uniqid('f').random_password(13)).'.swf'; // Génération d'un nom qui soit unique (statistiquement) et non devinable		
+				$name_newfile=sha1(uniqid('f').random_password(13)).'.swf'; // Gï¿½nï¿½ration d'un nom qui soit unique (statistiquement) et non devinable		
 				$commande='".\lect_flash\pdf2swf.exe" '.escapeshellarg($_FILES['uploaded_file']['tmp_name']).' ".\rep_documents\\'.$name_newfile.'" -T 9 -f';
 				@exec($commande,$vinu,$res_comm);
-				if ($res_comm!=0) // Conversion du pdf uploadé en flash stocké
+				if ($res_comm!=0) // Conversion du pdf uploadï¿½ en flash stockï¿½
 				{
 					$retour.='<div class="warning">Impossible de r&eacute;cup&eacute;rer ou convertir le fichier</div>';
 				}
 				else
 				{
-					$query=sprintf("INSERT INTO `enpcref`.`document` (`document_id`,`filename`,`name`,`description`,`filedate`,`category`) VALUES(NULL,'$name_newfile','%s','%s',CURRENT_TIMESTAMP,'%s')",mysql_real_escape_string($default_title),mysql_real_escape_string($default_description),mysql_real_escape_string($default_categ));  // Risque concernant un CATEGORY_ID erroné : au pire, non affichable; de toute façon, manipulation du formulaire d'upload exclue car réservé admin
+					$query=sprintf("INSERT INTO `document` (`document_id`,`filename`,`name`,`description`,`filedate`,`category`) VALUES(NULL,'$name_newfile','%s','%s',CURRENT_TIMESTAMP,'%s')",mysql_real_escape_string($default_title),mysql_real_escape_string($default_description),mysql_real_escape_string($default_categ));  // Risque concernant un CATEGORY_ID erronï¿½ : au pire, non affichable; de toute faï¿½on, manipulation du formulaire d'upload exclue car rï¿½servï¿½ admin
 					if (@mysql_query($query))
 					{
 						$affich_form=false;
@@ -503,7 +503,7 @@ function delete_doc()
 
 	$priv=user_privilege_level();
 	echo('<h1>Suppression d\'un document :</h1>');
-	if ($priv>3) // Administrateurs - modérateurs
+	if ($priv>3) // Administrateurs - modï¿½rateurs
 	{
 		$id=-1;
 		$titre="";
@@ -568,7 +568,7 @@ function delete_doc()
 					}
 				}
 			}
-			// Affichage du formulaire le cas échéant
+			// Affichage du formulaire le cas ï¿½chï¿½ant
 			if ($affich_form)
 			{
 				echo('<form method="post" action="?action=remove_doc&document_id='.htmlentities($id).'">');
@@ -605,7 +605,7 @@ function edit_doc()
 
 	$priv=user_privilege_level();
 	echo('<h1>Edition d\'un document :</h1>');
-	if ($priv>3) // Administrateurs - modérateurs
+	if ($priv>3) // Administrateurs - modï¿½rateurs
 	{
 		$id=-1;
 		$titre="";
@@ -681,7 +681,7 @@ function edit_doc()
 							
 					if ($trait)
 					{			
-						// On vérifie l'existence de la catégorie : le stockage MyIsam n'autorise pas une simple clé étrangère comme dans le cas des posts etc.
+						// On vï¿½rifie l'existence de la catï¿½gorie : le stockage MyIsam n'autorise pas une simple clï¿½ ï¿½trangï¿½re comme dans le cas des posts etc.
 						$res_temp=@mysql_query(sprintf("SELECT COUNT( * ) AS NUM_ENR FROM DOCUMENT_CATEGORY WHERE CATEGORY_ID = '%s'",mysql_real_escape_string($category)));
 						if($res_temp && $row=mysql_fetch_assoc($res_temp))
 						{
@@ -715,7 +715,7 @@ function edit_doc()
 				}
 			}
 						
-			// Affichage du formulaire le cas échéant
+			// Affichage du formulaire le cas ï¿½chï¿½ant
 			if ($affich_form)
 			{			
 				echo('
