@@ -4,7 +4,7 @@
 - ~/pdf_display.php, ligne 100 : le lien doit être adapté
 - ~/lect_flash/pdf2swf : le binaire doit être adapté au serveur; les sources sont disponibles à l'adresse http://www.swftools.org/download.html; les droits d'exécution sont nécessaires
 - ~/script_php/pages_secondlevel/accounts.php, ligne 209 : le lien doit être adapté
-- ~/script_php/pages_secondlevel/connection_db.php, ligne 25 : la connexion doit être reparamétrée
+- ~/config.php, saisir les informations de connexion à la base de données
 - ~/script_php/pages_secondlevel/documents.php, ligne 376 : la ligne de commande doit être éventuellement adaptée (\ vs. / et "")
 
 L'adaptation pour une école autre que l'ENPC implique des modifications supplémentaires :
