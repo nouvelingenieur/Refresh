@@ -1,7 +1,7 @@
 <?php
 
 /*
-	Plateforme web PPR - outil de crowdwourcing
+	Plateforme web PPR - outil de crowdsourcing
 	Copyright(C) 2011 Nicolas SEICHEPINE
 
 	This file is part of PPR.
@@ -19,17 +19,17 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
-	Contact : contact_ppr@seichepine.org
+	Contact : nicolas.seichepine.org/?action=contact
 */
 
 include_once("tool.php");
 include_once("errors.php");
 
-function modify_docu_display_filtering() // Donn�es non v�rifi�es, elles le sont � l'utilisation
+function modify_docu_display_filtering() // Données non vérifiées, elles le sont à l'utilisation
 {
 	if (isset($_POST['form_name']) && $_POST['form_name']=="document_display_param")
 	{
-		if(isset($_POST["category_filter"])) // Pas de raison de prot�ger � ce niveau, les valeurs ne sont pas utilis�es ici et sont recopi�es directement 
+		if(isset($_POST["category_filter"])) // Pas de raison de protéger à ce niveau, les valeurs ne sont pas utilisées ici et sont recopiées directement 
 		{
 			$_SESSION["document_category_filter"]=$_POST["category_filter"];
 		}
@@ -45,7 +45,7 @@ function modify_docu_display_filtering() // Donn�es non v�rifi�es, elles l
 	unset($_POST);
 }
 
-function modify_docu_display_page() // Donn�es non v�rifi�es, elles le sont � l'utilisation
+function modify_docu_display_page() // Données non vérifiées, elles le sont à l'utilisation
 {
 	if (isset($_GET["num_page"]))
 	{
@@ -59,7 +59,7 @@ function display_documents()
 	if ($rights>0) // Les personnes sans droits ne peuvent afficher les documents
 	{
 		echo('<h1>Documentation :</h1>');
-		if(is_logged() || (isset($_SESSION['confirmation_agreement']) && $_SESSION['confirmation_agreement']=="ok")) // Il faut �tre logg� (donc avoir accept� les CGU une bonne fois pour toute) o� les avoir temporairement approuv�es pour pouvoir afficher la liste des documents
+		if(is_logged() || (isset($_SESSION['confirmation_agreement']) && $_SESSION['confirmation_agreement']=="ok")) // Il faut être loggé (donc avoir accepté les CGU une bonne fois pour toute) où les avoir temporairement approuvées pour pouvoir afficher la liste des documents
 		{
 			if(isset($_SESSION['transient_display']))
 			{
@@ -69,7 +69,7 @@ function display_documents()
 		
 			// Formulaire de tri/filtrage des documents
 			echo('<div class="enlarge_lowresol"><form method="post" action="?action=docs_filter_change">
-			<table class="tab_form">
+			<table class="tab_form_close">
 			<tr>
 				<td>
 					Cat&eacute;gorie :
@@ -83,7 +83,7 @@ function display_documents()
 			{
 				while($row=@mysql_fetch_assoc($result))
 				{
-					// Autant se pr�munir contre une corruption des donn�es en base, �a ne co�te rien (sauf du CPU ^^)
+					// Autant se prémunir contre une corruption des données en base, ça ne coûte rien (sauf du CPU ^^)
 					if (isset($_SESSION["document_category_filter"]) && $row["category_id"]==$_SESSION["document_category_filter"])
 					{
 						$tail.='<option value="'.htmlentities($row["category_id"]).'" selected="selected">'.htmlentities($row["category_name"]).'</option>';		
@@ -139,7 +139,7 @@ function display_documents()
 				<td><input type="hidden" name="form_name" value="document_display_param" /></td>
 				<td><input type="submit" value="Valider" /></td>
 				</tr>
-			</table></form></div><br />');
+			</table></form></div>');
 
 			// Construction de la recherche
 			$need_to_search=false;
@@ -196,9 +196,9 @@ function display_documents()
 			{
 				$query.=" ORDER BY filedate DESC";
 			}
-			if ($num_res>-1) // On a pu identifier sans probl�me le nombre de r�sultats potentiels
+			if ($num_res>-1) // On a pu identifier sans problème le nombre de résultats potentiels
 			{
-				if(!isset($_SESSION["document_page"]) || !is_numeric($_SESSION["document_page"])) // Par d�faut, on va toujours � la page 1
+				if(!isset($_SESSION["document_page"]) || !is_numeric($_SESSION["document_page"])) // Par défaut, on va toujours à la page 1
 				{
 					$_SESSION["document_page"]=1;
 				}
@@ -207,7 +207,7 @@ function display_documents()
 					$_SESSION["document_page"]=1; 
 				}
 				$offset=round(10*($_SESSION["document_page"]-1));
-				if ($offset>=$num_res) // En cas de p�pin, on retourne toujours � la page 1
+				if ($offset>=$num_res) // En cas de pépin, on retourne toujours à la page 1
 				{
 					$offset=0;
 					$_SESSION["document_page"]=1;
@@ -217,9 +217,32 @@ function display_documents()
 			else // On ne limite pas
 			{
 				$_SESSION["document_page"]=1;
-			}	
+			}
 			
-			$result=@mysql_query($query); //	Ex�cution de la requ�te de recherche des documents proprement dite
+			$change_page="";
+			if ($num_res>10)
+			{
+				$change_page.='<div class="bottom_page_choice">';
+				for ($i=1;$i<ceil($num_res/10)+1;$i++)
+				{
+					if($i==$_SESSION["document_page"])
+					{
+						$change_page.="$i&nbsp;&nbsp;";
+					}
+					else
+					{
+						$change_page.='<a href="?action=change_document_page&amp;num_page='.$i.'">'.$i.'</a>&nbsp;&nbsp;';
+					}
+				}
+				$change_page.='</div><br/>';
+				echo($change_page);
+			}
+			else
+			{
+				echo('<br />');
+			}
+			
+			$result=@mysql_query($query); //	Exécution de la requête de recherche des documents proprement dite
 			if ($result)
 			{
 				$compteur=0;
@@ -239,15 +262,15 @@ function display_documents()
 					
 					echo('
 					<div class="newstitle">
-						<a href="pdf_display.php?document_id='.$doc_id.'">'.$name.'</a>
+						<a href="pdf_display.php?document_id='.$doc_id.'" target="_blank">'.$name.' [#'.$doc_id.']'.'</a>
 					</div>
 					<div class="newsundertitle">
 						'.$date.'&nbsp;-&nbsp;'.$category.'
 					</div>
 					<div class="newscontent">
-						'.$description.'
+						'.transfo_url($description).'
 					</div>');
-					if ($rights>3) // Les administrateurs - mod�rateurs peuvent �diter et supprimer les documents
+					if ($rights>3) // Les administrateurs - modérateurs peuvent éditer et supprimer les documents
 					{
 						echo('<div class="newsendlinks">
 							<a href="?action=edit_doc&amp;document_id='.$doc_id.'">Editer</a>
@@ -260,21 +283,9 @@ function display_documents()
 				{
 					echo('<div class="warning">Aucun document correspondant aux crit&egrave;res fix&eacute;s n\'est disponible pour le moment</div>');
 				}
-				elseif ($num_res>10)
+				else
 				{
-					echo('<div class="bottom_page_choice">');
-					for ($i=1;$i<ceil($num_res/10)+1;$i++)
-					{
-						if($i==$_SESSION["document_page"])
-						{
-							echo("$i&nbsp;&nbsp;");
-						}
-						else
-						{
-							echo('<a href="?action=change_document_page&amp;num_page='.$i.'">'.$i.'</a>&nbsp;&nbsp;');
-						}
-					}
-					echo('</div>');
+					echo($change_page.'<div class="newsterminator"><hr />Ponts ParisTech REFRESH</div>');
 				}
 				@mysql_free_result($result);
 			}
@@ -298,7 +309,7 @@ function add_document()
 {
 	$retour="<h1>Ajout de document :</h1>";
 	
-	if (user_privilege_level()>3) // Administrateurs - mod�rateurs
+	if (user_privilege_level()>3) // Administrateurs - modérateurs
 	{
 		$affich_form=true;
 		
@@ -309,7 +320,7 @@ function add_document()
 		if(isset($_POST['form_name']) && $_POST['form_name']=="new_document")
 		{
 			$treat=true;
-			// On se passe de ['type'] qui est aussi bas� sur l'extension. D'autant que le type MIME renvoy� par le navigateur peut subir des variations ( PDF vs. File)
+			// On se passe de ['type'] qui est aussi basé sur l'extension. D'autant que le type MIME renvoyé par le navigateur peut subir des variations ( PDF vs. File)
 			if (isset($_FILES['uploaded_file']['name']) && isset($_FILES['uploaded_file']['size']) && is_numeric($_FILES['uploaded_file']['size']) && isset($_FILES['uploaded_file']['tmp_name']) && file_exists($_FILES['uploaded_file']['tmp_name']) && isset($_FILES['uploaded_file']['error']))
 			{
 				if (!(strtolower(strrchr($_FILES['uploaded_file']['name'],'.'))=='.pdf'))
@@ -370,18 +381,18 @@ function add_document()
 				$retour.='<div class="warning">Erreur dans le traitement de la cat&eacute;gorie</div>';
 			}
 
-			if ($treat) // Int�gration du fichier
+			if ($treat) // Intégration du fichier
 			{
-				$name_newfile=sha1(uniqid('f').random_password(13)).'.swf'; // G�n�ration d'un nom qui soit unique (statistiquement) et non devinable		
+				$name_newfile=sha1(uniqid('f').random_password(13)).'.swf'; // Génération d'un nom qui soit unique (statistiquement) et non devinable		
 				$commande='".\lect_flash\pdf2swf.exe" '.escapeshellarg($_FILES['uploaded_file']['tmp_name']).' ".\rep_documents\\'.$name_newfile.'" -T 9 -f';
 				@exec($commande,$vinu,$res_comm);
-				if ($res_comm!=0) // Conversion du pdf upload� en flash stock�
+				if ($res_comm!=0) // Conversion du pdf uploadé en flash stocké
 				{
 					$retour.='<div class="warning">Impossible de r&eacute;cup&eacute;rer ou convertir le fichier</div>';
 				}
 				else
 				{
-					$query=sprintf("INSERT INTO `document` (`document_id`,`filename`,`name`,`description`,`filedate`,`category`) VALUES(NULL,'$name_newfile','%s','%s',CURRENT_TIMESTAMP,'%s')",mysql_real_escape_string($default_title),mysql_real_escape_string($default_description),mysql_real_escape_string($default_categ));  // Risque concernant un CATEGORY_ID erron� : au pire, non affichable; de toute fa�on, manipulation du formulaire d'upload exclue car r�serv� admin
+					$query=sprintf("INSERT INTO `document` (`document_id`,`filename`,`name`,`description`,`filedate`,`category`) VALUES(NULL,'$name_newfile','%s','%s',CURRENT_TIMESTAMP,'%s')",mysql_real_escape_string($default_title),mysql_real_escape_string($default_description),mysql_real_escape_string($default_categ));  // Risque concernant un CATEGORY_ID erroné : au pire, non affichable; de toute façon, manipulation du formulaire d'upload exclue car réservé admin
 					if (@mysql_query($query))
 					{
 						$affich_form=false;
@@ -478,7 +489,7 @@ function add_document()
 	}
 	else
 	{
-		$retour.='<div class="warning">Vous ne disposez pas des privil&egrave;ges n&eacute;cessaires &agravre; l\'ajout d\'un document</div>';
+		$retour.='<div class="warning">Vous ne disposez pas des privil&egrave;ges n&eacute;cessaires &agrave; l\'ajout d\'un document</div>';
 	}
 
 	if (isset($_POST))
@@ -503,7 +514,7 @@ function delete_doc()
 
 	$priv=user_privilege_level();
 	echo('<h1>Suppression d\'un document :</h1>');
-	if ($priv>3) // Administrateurs - mod�rateurs
+	if ($priv>3) // Administrateurs - modérateurs
 	{
 		$id=-1;
 		$titre="";
@@ -568,7 +579,7 @@ function delete_doc()
 					}
 				}
 			}
-			// Affichage du formulaire le cas �ch�ant
+			// Affichage du formulaire le cas échéant
 			if ($affich_form)
 			{
 				echo('<form method="post" action="?action=remove_doc&document_id='.htmlentities($id).'">');
@@ -605,7 +616,7 @@ function edit_doc()
 
 	$priv=user_privilege_level();
 	echo('<h1>Edition d\'un document :</h1>');
-	if ($priv>3) // Administrateurs - mod�rateurs
+	if ($priv>3) // Administrateurs - modérateurs
 	{
 		$id=-1;
 		$titre="";
@@ -681,8 +692,8 @@ function edit_doc()
 							
 					if ($trait)
 					{			
-						// On v�rifie l'existence de la cat�gorie : le stockage MyIsam n'autorise pas une simple cl� �trang�re comme dans le cas des posts etc.
-						$res_temp=@mysql_query(sprintf("SELECT COUNT( * ) AS NUM_ENR FROM DOCUMENT_CATEGORY WHERE CATEGORY_ID = '%s'",mysql_real_escape_string($category)));
+						// On vérifie l'existence de la catégorie : le stockage MyIsam n'autorise pas une simple clé étrangère comme dans le cas des posts etc.
+						$res_temp=@mysql_query(sprintf("SELECT COUNT( * ) AS NUM_ENR FROM document_category WHERE CATEGORY_ID = '%s'",mysql_real_escape_string($category)));
 						if($res_temp && $row=mysql_fetch_assoc($res_temp))
 						{
 							if ($row["NUM_ENR"]==1)
@@ -715,7 +726,7 @@ function edit_doc()
 				}
 			}
 						
-			// Affichage du formulaire le cas �ch�ant
+			// Affichage du formulaire le cas échéant
 			if ($affich_form)
 			{			
 				echo('

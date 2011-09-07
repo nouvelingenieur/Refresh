@@ -1,5 +1,5 @@
 /*
-	Plateforme web PPR - outil de crowdwourcing
+	Plateforme web PPR - outil de crowdsourcing
 	Copyright(C) 2011 Nicolas SEICHEPINE
 
 	This file is part of PPR.
@@ -17,7 +17,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
-	Contact : contact_ppr@seichepine.org
+	Contact : nicolas.seichepine.org/?action=contact
 */
 
 -- phpMyAdmin SQL Dump

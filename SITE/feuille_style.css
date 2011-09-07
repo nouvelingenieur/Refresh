@@ -1,5 +1,5 @@
 /*
-	Plateforme web PPR - outil de crowdwourcing
+	Plateforme web PPR - outil de crowdsourcing
 	Copyright(C) 2011 Nicolas SEICHEPINE
 
 	This file is part of PPR.
@@ -17,7 +17,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
-	Contact : contact_ppr@seichepine.org
+	Contact : nicolas.seichepine.org/?action=contact
 */
 
 /* ------------------------ */
@@ -91,18 +91,18 @@ table#menu td.menu_title_first {
 }
 
 table#menu td.menu_title_first a {
-	color:rgb(166,166,166);
+	color:rgb(120,120,120);
 	text-decoration:none;
 }
 
 table#menu td.menu_title_selected_first {
-	color:rgb(127,127,127);
+	color:rgb(85,85,85);
 	font-weight:bold;
 	width:18%;
 }
 
 table#menu td.menu_title_selected_first a {
-	color:rgb(127,127,127);
+	color:rgb(85,85,85);
 	font-weight:bold;
 	text-decoration:none;
 }
@@ -115,19 +115,19 @@ table#menu td.menu_title {
 }
 
 table#menu td.menu_title a {
-	color:rgb(166,166,166);
+	color:rgb(120,120,120);
 	text-decoration:none;
 }
 
 table#menu td.menu_title_selected {
-	color:rgb(127,127,127);
+	color:rgb(85,85,85);
 	font-weight:bold;
 	border-left:solid 1px rgb(191,191,191);
 	width:18%;
 }
 
 table#menu td.menu_title_selected a {
-	color:rgb(127,127,127);
+	color:rgb(85,85,85);
 	font-weight:bold;
 	text-decoration:none;
 }
@@ -175,9 +175,13 @@ table#menu td.menu_title_selected a {
 	color:rgb(67,56,230);
 }
 
+.footnote {
+	font-size:10pt;
+}
+
 .enlarge_lowresol{
-	margin-left:-16%;
-	margin-right:-16%;
+	margin-left:-17%;
+	margin-right:-17%;
 	margin-top:0px;
 	margin-bottom:0px;
 	text-align:center;
@@ -189,6 +193,24 @@ table#menu td.menu_title_selected a {
 	border-collapse:separate;
 	border-spacing:20px 10px;
 	text-align:left;
+}
+
+#corps table.tab_form_close {
+	margin-left:auto;
+	margin-right:auto;
+	border-collapse:separate;
+	border-spacing:5px 5px;
+	text-align:left;
+	white-space: nowrap;
+	font-size:8pt;
+}
+
+#corps table.tab_form_close select{
+	font-size:8pt;
+}
+
+#corps table.tab_form_close input{
+	font-size:8pt;
 }
 
 #corps table.tab_form tr.submit_center {
@@ -252,15 +274,15 @@ table#menu td.menu_title_selected a {
 #corps .newsundertitle{
 	text-align:left;
 	font-weight:bold;
-	font-size:10pt;
+	font-size:8pt;
 	text-indent:0px;
-	color:rgb(127,127,127);
+	color:rgb(166,166,166);
 	margin-top:5px;
 	margin-left:10px;
 }
 
 #corps .newsundertitle a{
-	color:rgb(127,127,127);
+	color:rgb(166,166,166);
 	text-decoration:underline;
 }
 
@@ -272,6 +294,12 @@ table#menu td.menu_title_selected a {
 	margin-top:10px;
 	margin-left:10px;
 	margin-bottom:10px;
+}
+
+#corps div.newscontent a{
+	color:rgb(0,0,0);
+	font-weight:normal;
+	text-decoration:underline;
 }
 
 #corps .votebar{
@@ -307,6 +335,17 @@ table#menu td.menu_title_selected a {
 	margin: 0px 0px 0px 0px;
 }
 
+#corps .votebarannotation_pro{
+	display:inline-block;
+	float:left;
+	margin-left:11px;
+	background-color:rgb(255,255,255);
+	white-space:nowrap;
+	height:100%;
+	font-weight:bold;
+	font-size:10pt;
+}
+
 #corps .votebarannotation{
 	display:inline-block;
 	float:left;
@@ -327,6 +366,7 @@ table#menu td.menu_title_selected a {
 }
 
 #corps .newsendlinks a{
+	float:left;
 	color:rgb(70,95,150);
 	text-decoration:underline;
 	text-align:left;
@@ -344,19 +384,32 @@ table#menu td.menu_title_selected a {
 	text-align:right;
 }
 
-#corps div.newsendlinks .speccom .newslinkcomment_unroll{
-	font-size:10pt;
+#corps div.newsendlinks .speccom a{
+	float:none;
+}
+
+.newslinkcomment_unroll{
+	font-size:13pt;
 	font-weight:bold;
 	color:rgb(70,95,150);
+	text-decoration:underline;
 }
 
-#corps div.newsendlinks .speccom .newslinkcomment_roll{
-	font-size:10pt;
+.newslinkcomment_roll{
+	font-size:13pt;
 	font-weight:bold;
 	color:rgb(255,0,0);
+	text-decoration:underline;
 }
 
-#corps div.newsendlinks .speccom .imglinknews{
+.newslinkcomment_inactive{
+	font-size:13pt;
+	font-weight:bold;
+	color:rgb(0,0,0);
+	text-decoration:underline;
+}
+
+#corps div.newsendlinks .speccom  .imglinknews{
 	float:right;
 	vertical-align:top;
 	margin-left:10px;
@@ -382,6 +435,12 @@ table#menu td.menu_title_selected a {
 	margin-right:10px;
 	margin-top:10px;
 	margin-bottom:10px;
+}
+
+#corps div.newscomment .newscommentcontent a{
+	color:rgb(0,0,0);
+	font-weight:normal;
+	text-decoration:underline;
 }
 
 #corps div.newsformcomment{
@@ -434,7 +493,7 @@ table#menu td.menu_title_selected a {
 p a img#logo_p {
 	position:absolute;
 	border:0; 
-	left:18%;
+	left:2%;
 	top:20px;
 }
 

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	Plateforme web PPR - outil de crowdwourcing
+	Plateforme web PPR - outil de crowdsourcing
 	Copyright(C) 2011 Nicolas SEICHEPINE
 
 	This file is part of PPR.
@@ -19,7 +19,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
-	Contact : contact_ppr@seichepine.org
+	Contact : nicolas.seichepine.org/?action=contact
 */
 
 // Lis le fichier demandé après avoir vérifié les droits d'accès; permet de :
@@ -56,7 +56,7 @@ if (isset($_SESSION['hidden_authorize_pdf_gate_use']))
 							{
 								header('Content-Description: File Transfer');
 								header('Content-Type: application/octet-stream');
-								header('Content-Disposition: attachment; filename='.basename($name));
+								header('Content-Disposition: attachment; filename=fichier.swf'); // Important : ne pas trahir ici le véritable nom du fichier !
 								header('Content-Transfer-Encoding: binary');
 								header('Expires: 0');
 								header('Cache-Control: must-revalidate, post-check=0, pre-check=0');

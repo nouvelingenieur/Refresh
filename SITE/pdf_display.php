@@ -19,7 +19,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
-	Contact : contact_ppr@seichepine.org
+	Contact : nicolas.seichepine.org/?action=contact
 */
 
 // Sert de couche d'analyse d'erreur et d'affichage dans l'affichage des documents
@@ -124,7 +124,7 @@ if ($success) // On ajoute le javascript de lecture; NB : le <noscript> dans <he
 				
 				swfobject.embedSWF(
 					"./lect_flash/FlexPaperViewer.swf", "flashContent", 
-					"1000", "500", 
+					"1000", "570", 
 					swfVersionStr, xiSwfUrlStr, 
 					flashvars, params, attributes);
 				
@@ -139,8 +139,7 @@ if ($success) // On ajoute le javascript de lecture; NB : le <noscript> dans <he
 			</noscript> 
 		</head>	
 		<body> 
-
-			<div style="position:absolute;top:10px;left:50%;margin-left:-500px;">
+			<div style="position:absolute;top:5px;left:50%;margin-left:-500px;">
 				<div id="flashContent"> 
 					Flash Player version 9.0.124 ou post&eacute;rieure est n&eacute;cessaire...
 				</div>
@@ -152,9 +151,7 @@ if ($success) // On ajoute le javascript de lecture; NB : le <noscript> dans <he
 else // Affichage générique
 {
 	$content.='</head>
-
 	<body>
-
 		<div id="corps">
 			<h1>Affichage d\'un document :</h1>'.$corps.'
 		</div>';

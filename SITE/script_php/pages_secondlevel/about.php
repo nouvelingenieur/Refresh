@@ -1,7 +1,7 @@
 <?php
 
 /*
-	Plateforme web PPR - outil de crowdwourcing
+	Plateforme web PPR - outil de crowdsourcing
 	Copyright(C) 2011 Nicolas SEICHEPINE
 
 	This file is part of PPR.
@@ -19,7 +19,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
-	Contact : contact_ppr@seichepine.org
+	Contact : nicolas.seichepine.org/?action=contact
 */
 
 include_once("tool.php");
@@ -30,18 +30,18 @@ function about_nouvelingenieur()
 
 	<h1><img src="rep_img/nouvelingenieur.jpg" alt="Nouvel Ing&eacute;nieur" /></h1>
 
-	<h2>Le Nouvel Ing&eacute;nieur</h2>
+	<h2>Nouvel Ing&eacute;nieur</h2>
 
 	<p>
-		<a href="http://www.nouvelingenieur.fr/">Le Nouvel Ing&eacute;nieur</a>, partenaire de Ponts ParisTech Refresh, 
-		est un mouvement national lanc&eacute; d&eacute;but 2011 par deux &eacute;l&egrave;ves-ing&eacute;nieurs ENAC, et qui vise &agrave; adapter 
-		et faire &eacute;voluer la formation d\'ing&eacute;nieur, notamment gr&acirc;ce aux contributions des &eacute;l&egrave;ves en &eacute;cole.
-		L\'association, qui compte d&eacute;sormais une dizaine d\'&eacute;tudiants, dont deux Ponts, a lanc&eacute; une r&eacute;flexion &agrave; 
+		<a href="http://www.nouvelingenieur.fr/" target="_blank">Le Nouvel Ing&eacute;nieur</a>, partenaire de Ponts ParisTech Refresh, 
+		est un mouvement national &eacute;tudiant lanc&eacute; d&eacute;but 2011 par deux &eacute;l&egrave;ves-ing&eacute;nieurs ENAC. Il vise &agrave; adapter 
+		et faire &eacute;voluer la formation d\'ing&eacute;nieur, notamment gr&acirc;ce aux contributions des &eacute;l&egrave;ves en &eacute;coles.
+		L\'association, qui compte d&eacute;sormais plusieurs dizaines d\'&eacute;tudiants, dont quelques Ponts, a lanc&eacute; une r&eacute;flexion &agrave; 
 		l\'&eacute;chelle nationale et cherche maintenant &agrave; s\'&eacute;tendre &agrave; de nouvelles &eacute;coles d\'ing&eacute;nieurs. Mais 
 		avant d\'&ecirc;tre une association, le Nouvel Ing&eacute;nieur est un &eacute;tat d\'esprit : rejoignez la 
-		<a href="http://www.facebook.com/LeNouvelIngenieur">page facebook</a>, 
-		<a href="http://www.picbadges.com/nouvel-ingenieur/1560081/?ref=wdgt2">arborez le badge du Nouvel Ing&eacute;nieur</a> et 
-		faites avancer <a href="http://www.google.com/moderator/#16/e=4cc65">le d&eacute;bat</a>, qui pourra alimenter Ponts ParisTech Refresh !
+		<a href="http://www.facebook.com/LeNouvelIngenieur" target="_blank">page facebook</a>, faites avancer
+		<a href="http://www.google.com/moderator/#16/e=4cc65" target="_blank">le d&eacute;bat</a> ou consultez 
+		<a href="http://fr.wikibooks.org/wiki/CASES" target="_blank">le projet p&eacute;dagogique CASES</a>... Et participez vous aussi au changement &agrave; l\'&Eacute;cole sur Ponts ParisTech Refresh.
 	</p>
 
 	');
@@ -55,37 +55,22 @@ function about_ppr()
 	<h1>Bienvenue sur Ponts ParisTech Refresh</h1>
 
 	<p>
-		Ce site a pour but de se faire la voix des &eacute;l&egrave;ves de l\'&Eacute;cole des Ponts ParisTech aupr&egrave;s de 
-		l\'administration, afin d\'accompagner le changement dans notre &Eacute;cole. Les &eacute;l&egrave;ves &eacute;tant amen&eacute;s &agrave; 
-		occuper des postes &agrave; responsabilit&eacute; au c&oelig;ur d\'un monde &eacute;conomique en mouvement, qu\'ils d&eacute;couvrent 
-		d&eacute;j&agrave; lors de la scolarit&eacute;, ils sont tout &agrave; fait &agrave; m&ecirc;me  de se faire force de proposition concernant 
-		la scolarit&eacute; et la vie aux Ponts. Le code de la plateforme est libre et disponible <a href="./sourcecode/sourcecode.7z">ici</a>. Vous pouvez 
-		
-	';
+		Ce site a pour but de se faire la voix des &eacute;l&egrave;ves de l\'&Eacute;cole des Ponts ParisTech aupr&egrave;s de l\'administration, afin d\'accompagner le changement dans notre &Eacute;cole.
+	</p>
 
-	if (user_privilege_level()>0)
-	{
-		$to_print.='<a href="mailto:ponts_refresh@enpc.org">nous contacter</a>';
-	}
-	else
-	{
-		$to_print.='nous contacter';
-	}
-
-	$to_print.=' 
-
-		si vous &ecirc;tes int&eacute;ress&eacute;s, rejoindre notre <a href="http://www.facebook.com/pages/Ponts-ParisTech-Refresh/207608979259601">page facebook</a> pour rester au courant de l\'avancement du projet ou vous inscrire pour participer.
-		
+	<p>
+		Amen&eacute;s &agrave; occuper des postes &agrave; responsabilit&eacute; au c&oelig;ur d\'un monde &eacute;conomique en mouvement, les &eacute;l&egrave;ves sont force de proposition et cela commence par leur scolarit&eacute; 
+		et la vie aux Ponts ! Le lancement de la plateforme au sein de l\'&Eacute;cole &eacute;tant pr&eacute;vu pour la <b>seconde moiti&eacute; d\'octobre</b>, tenez-vous pr&ecirc;ts &agrave; faire entendre votre voix !
 	</p>
 
 	<h2>Le projet et l\'&eacute;quipe</h2>
 
 	<p>
 		Le projet Ponts ParisTech Refresh a &eacute;t&eacute; lanc&eacute; en mars 2011 sur les traces de 
-		<a href="http://www.facebook.com/pages/T%C3%A9l%C3%A9com-Refresh-La-bo%C3%AEte-%C3%A0-id%C3%A9es-de-T%C3%A9l%C3%A9com-ParisTech/108679235875881">Telecom Refresh</a>, un projet similaire lanc&eacute; &agrave; Telecom ParisTech et couronn&eacute; de succ&egrave;s. 
-		L\'&eacute;quipe du projet est constitu&eacute;e de :
+		<a href="http://www.facebook.com/pages/T%C3%A9l%C3%A9com-Refresh-La-bo%C3%AEte-%C3%A0-id%C3%A9es-de-T%C3%A9l%C3%A9com-ParisTech/108679235875881" target="_blank">Telecom Refresh</a>, un projet similaire couronn&eacute; de succ&egrave;s 
+		lanc&eacute; &agrave; Telecom ParisTech. L\'&eacute;quipe du projet est constitu&eacute;e de :
 	</p>
-	
+
 	<ul>
 		<li>Pierre Simonnin \'011</li>
 		<li>Alexandre Combessie \'012</li>
@@ -95,7 +80,25 @@ function about_ppr()
 		<li>Thibault Duchemin \'013</li>
 		<li>Roshan Valecha \'013</li> 
 	</ul>
-	';
+
+	<p>
+		Vous pouvez ';
+
+	if (user_privilege_level()>0)
+	{
+		$to_print.='<a href="mailto:ponts_refresh@enpc.org">nous contacter</a>';
+	}
+	else
+	{
+		$to_print.='nous contacter &agrave; l\'adresse ponts_refresh{at}enpc.org';
+	}
+
+	$to_print.=' pour toute question ou remarque, ou rejoindre notre <a href="http://www.facebook.com/pages/Ponts-ParisTech-Refresh/207608979259601" target="_blank">page facebook</a> pour rester au courant de l\'avancement du projet.
+	</p>
+
+	<p>
+		Le code de la plateforme est libre et disponible <a href="./sourcecode/sourcecode.7z">ici</a>.
+	</p>';
 
 	echo($to_print);
 

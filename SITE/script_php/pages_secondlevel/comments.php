@@ -1,7 +1,7 @@
 <?php
 
 /*
-	Plateforme web PPR - outil de crowdwourcing
+	Plateforme web PPR - outil de crowdsourcing
 	Copyright(C) 2011 Nicolas SEICHEPINE
 
 	This file is part of PPR.
@@ -19,7 +19,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
-	Contact : contact_ppr@seichepine.org
+	Contact : nicolas.seichepine.org/?action=contact
 */
 
 include_once("tool.php");
@@ -36,7 +36,7 @@ function new_comment()
 		unset($_SESSION["text_anonymous_rest"]);
 	}
 	
-	if (user_privilege_level()>2) // Logg� et pas en "lecture seule"
+	if (user_privilege_level()>2) // Loggé et pas en "lecture seule"
 	{
         $text_prec="";
         $anon_prec="";
@@ -74,13 +74,13 @@ function new_comment()
 					$result=@mysql_query(sprintf("SELECT thread_id FROM thread WHERE thread_id='%s'",$thread_id));
 					if (!$result || mysql_num_rows($result)<1)
 					{
-						$_SESSION['transient_display']='<div class="warning">Thread introuvable lors de l\'ajout du nouveau commentaire</div>';
+						$_SESSION['transient_display']='<div class="warning">Proposition introuvable lors de l\'ajout du nouveau commentaire</div>';
 					}
 					else
 					{
 						$text_prec=mysql_real_escape_string($text_prec);
 						$rand_prop=mt_rand(0,65535);
-						$hash_prop=sha1($_SESSION['login_c'].$rand_prop); // Anonymat relatif, car nombre d'adresses mails �l�ves dans l'�cole limit�...
+						$hash_prop=sha1($_SESSION['login_c'].$rand_prop); // Anonymat relatif, car nombre d'adresses mails élèves dans l'école limité...
 
 						if ($anon_prec=="on")
 						{
@@ -104,7 +104,7 @@ function new_comment()
 				}
 				else
 				{
-					$_SESSION['transient_display']='<div class="warning">Thread introuvable lors de l\'ajout du nouveau commentaire</div>';
+					$_SESSION['transient_display']='<div class="warning">Proposition introuvable lors de l\'ajout du nouveau commentaire</div>';
 					return;
 				}
             }					
@@ -124,18 +124,18 @@ function new_comment()
 	}
 	else
 	{
-		$_SESSION['transient_display']='<div class="warning">Privil&egrave;ges insuffisants pour ajouter un commentaire</div>';
+		$_SESSION['transient_display']='<div class="warning">Droits insuffisants pour ajouter un commentaire</div>';
 	}
 }
 
 function deletion()
 {
 	$priv=user_privilege_level();
-	if ($priv>2) // Logg� et pas en lecture seule (ne sera pas n�cessairement suffisant)
+	if ($priv>2) // Loggé et pas en lecture seule (ne sera pas nécessairement suffisant)
 	{
 		echo('<h1>Suppression :</h1>');
 	
-		// R�cup�ration des arguments
+		// Récupération des arguments
 		$id=-1;
 		$is_prop=0;
 		$mess_user="";
@@ -147,7 +147,7 @@ function deletion()
 			
 		if ($exist_c && $exist_t)
 		{
-			$warnings='<div class="warning">Impossible de d&eacute;terminer la cat&eacute; d\'objet &agrave; supprimer</div>';
+			$warnings='<div class="warning">Impossible de d&eacute;terminer la cat&eacute;gorie de l\'objet &agrave; supprimer</div>';
 		}
 		elseif ($exist_c)
 		{
@@ -181,7 +181,7 @@ function deletion()
 				$result=@mysql_query(sprintf("SELECT thread_id,title,rand_prop,hash_prop FROM thread WHERE thread_id='%s'",mysql_real_escape_string($_GET["thread_id"])));
 				if (!$result || mysql_num_rows($result)<1)
 				{
-					$warnings='<div class="warning">Thread inexistant</div>';
+					$warnings='<div class="warning">Proposition inexistante</div>';
 				}
 				else
 				{
@@ -194,7 +194,7 @@ function deletion()
 			}
 			else
 			{
-				$warnings='<div class="warning">Thread inexistant</div>';
+				$warnings='<div class="warning">Proposition inexistante</div>';
 			}	
 		}
 		else
@@ -202,7 +202,7 @@ function deletion()
 			$warnings='<div class="warning">Id de l\'objet non pr&eacute;cis&eacute;</div>';
 		}
 		
-		if (empty($warnings) && $id>0) // Titre ou corps �ventuellement vide, ce n'est pas une condition
+		if (empty($warnings) && $id>0) // Titre ou corps éventuellement vide, ce n'est pas une condition
 		{
 			if (isset($_SESSION['post']))
 			{
@@ -210,7 +210,7 @@ function deletion()
 				unset($_SESSION['post']);
 			}
 
-			// Traitement d'un formulaire �ventuellement d�j� valid�
+			// Traitement d'un formulaire éventuellement déjà validé
 			$affich_form=true;
 			if (isset($_POST['form_name']) && $_POST['form_name']=="deletion")
 			{
@@ -224,14 +224,14 @@ function deletion()
 					{
 						if ($type==0)
 						{
-							if (@mysql_query(sprintf("DELETE FROM thread WHERE thread_id='%s'",mysql_real_escape_string($id)))) // Pas besoin de s'emb�ter avec les commentaires/votes associ�s, tout est en cascade avec des cl�s �trang�res
+							if (@mysql_query(sprintf("DELETE FROM thread WHERE thread_id='%s'",mysql_real_escape_string($id)))) // Pas besoin de s'embêter avec les commentaires/votes associés, tout est en cascade avec des clés étrangères
 							{
-								echo('<div class="success">Thread correctement supprim&eacute;</div>');
+								echo('<div class="success">Proposition correctement supprim&eacute;e</div>');
 								$affich_form=false;
 							}
 							else
 							{
-								echo('<div class="warning">Erreur lors de la suppression du thread</div>');
+								echo('<div class="warning">Erreur lors de la suppression de la proposition</div>');
 							}
 						}
 						else
@@ -254,22 +254,29 @@ function deletion()
 				}
 			}
 			
-			// Affichage du formulaire le cas �ch�ant
+			// Affichage du formulaire le cas échéant
 			if ($affich_form)
 			{
-				if ($type==0)
+				if ($priv>4 || $is_prop==1)
 				{
-					echo('<form method="post" action="?action=remove_post&amp;thread_id='.htmlentities($id).'">');
-					echo('<br />Souhaitez-vous r&eacute;ellement supprimer le thread suivant ?<br /><br />"');
+					if ($type==0)
+					{
+						echo('<form method="post" action="?action=remove_post&amp;thread_id='.htmlentities($id).'">');
+						echo('<br />Souhaitez-vous r&eacute;ellement supprimer la proposition suivante ?<br /><br />"');
+					}
+					else
+					{
+						echo('<form method="post" action="?action=remove_post&comment_id='.htmlentities($id).'">');
+						echo('Souhaitez-vous r&eacute;ellement supprimer le commentaire suivant ?<br />"');
+					}
+					echo(nl2br(htmlentities(stripslashes($mess_user))).'"<br /><br />');
+					echo('<input type="checkbox" name="validation" id="v_check" /><label for="v_check">Oui, supprimer !</label>');
+					echo('<input type="hidden" name="form_name" value="deletion" />&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Valider" /></form>');
 				}
 				else
 				{
-					echo('<form method="post" action="?action=remove_post&comment_id='.htmlentities($id).'">');
-					echo('Souhaitez-vous r&eacute;ellement supprimer le commentaire suivant ?<br />"');
+					echo('<div class="warning">Vous ne disposez pas des droits n&eacute;cessaires</div>');
 				}
-				echo(nl2br(htmlentities(stripslashes($mess_user))).'"<br /><br />');
-				echo('<input type="checkbox" name="validation" id="v_check" /><label for="v_check">Oui, supprimer !</label>');
-				echo('<input type="hidden" name="form_name" value="deletion" />&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Valider" /></form>');
 			}	
 		}
 		elseif (!empty($warnings))
@@ -295,7 +302,7 @@ function edition()
 	{
 		echo('<h1>Edition :</h1>');
 	
-		// R�cup�ration des arguments
+		// Récupération des arguments
 		$id=-1;
 		$is_prop=0;
 		$mess_user="";
@@ -309,7 +316,7 @@ function edition()
 			
 		if ($exist_c && $exist_t)
 		{
-			$warnings='<div class="warning">Impossible de d&eacute;terminer la cat&eacute; d\'objet &agrave; &eacute;diter</div>';
+			$warnings='<div class="warning">Impossible de d&eacute;terminer la cat&eacute;gorie de l\'objet &agrave; &eacute;diter</div>';
 		}
 		elseif ($exist_c)
 		{
@@ -345,7 +352,7 @@ function edition()
 				$result=@mysql_query(sprintf("SELECT thread_id,text,title,category,rand_prop,hash_prop FROM thread WHERE thread_id='%s'",$thread_id));
 				if (!$result || mysql_num_rows($result)<1)
 				{
-					$warnings='<div class="warning">Thread inexistant</div>';
+					$warnings='<div class="warning">Proposition inexistante</div>';
 				}
 				else
 				{
@@ -360,7 +367,7 @@ function edition()
 			}
 			else
 			{
-				$warnings='<div class="warning">Thread inexistant</div>';
+				$warnings='<div class="warning">Proposition inexistante</div>';
 			}	
 		}
 		else
@@ -368,7 +375,7 @@ function edition()
 			$warnings='<div class="warning">Id de l\'objet non pr&eacute;cis&eacute;</div>';
 		}
 		
-		if (empty($warnings) && $id>0) // Titre ou corps �ventuellement vide, ce n'est pas une condition
+		if (empty($warnings) && $id>0) // Titre ou corps éventuellement vide, ce n'est pas une condition
 		{
 			if (isset($_SESSION['post']))
 			{
@@ -376,13 +383,13 @@ function edition()
 				unset($_SESSION['post']);
 			}
 
-			// Traitement d'un formulaire �ventuellement d�j� valid�
+			// Traitement d'un formulaire éventuellement déjà validé
 			$affich_form=true;
 			if (isset($_POST['form_name']) && $_POST['form_name']=="edition")
 			{
 				if ($priv>4 || $is_prop==1)
 				{
-					// Afficher les messages d'erreur en une fois, traitement parall�le
+					// Afficher les messages d'erreur en une fois, traitement parallèle
 					if(isset($_POST["message"]) && is_string($_POST["message"]) && !empty($_POST["message"]))
 					{
 						$mess_user=$_POST["message"];
@@ -396,12 +403,12 @@ function edition()
 									$cate_prec=$_POST["category"];
 									if (@mysql_query(sprintf("UPDATE thread SET is_valid=0,text='%s',title='%s',category='%s',already_mod=0 WHERE thread_id='%s'",mysql_real_escape_string($mess_user),mysql_real_escape_string($title_prec),mysql_real_escape_string($cate_prec),mysql_real_escape_string($thread_id))))
 									{
-										echo('<div class="success">Thread correctement modifi&eacute;</div>');
+										echo('<div class="success">Proposition correctement modifi&eacute;e</div>');
 										$affich_form=false;
 									}
 									else
 									{
-										echo('<div class="warning">Erreur lors de l\'&eacute;dition du thread</div>');
+										echo('<div class="warning">Erreur lors de l\'&eacute;dition</div>');
 									}
 								}	
 								else
@@ -438,86 +445,93 @@ function edition()
 				}
 			}
 			
-			// Affichage du formulaire le cas �ch�ant
+			// Affichage du formulaire le cas échéant
 			if ($affich_form)
 			{
-				if ($type==0)
+				if ($priv>4 || $is_prop==1)
 				{
-					echo('<form method="post" action="?action=edit_post&amp;thread_id='.htmlentities($id).'"><table class="tab_form">');
+					if ($type==0)
+					{
+						echo('<form method="post" action="?action=edit_post&amp;thread_id='.htmlentities($id).'"><table class="tab_form">');
+					}
+					else
+					{
+						echo('<form method="post" action="?action=edit_post&amp;comment_id='.htmlentities($id).'"><table class="tab_form">');				
+					}
+
+					if ($type==0)
+					{
+						echo('<tr>
+								<td>
+									Titre :
+								</td>
+								<td>');
+						if (empty($title_prec))
+						{
+							echo('<input type="text" name="title" />');
+						}
+						else
+						{
+							echo('<input type="text" name="title" value="'.htmlentities(stripslashes($title_prec)).'" />');
+						}
+						echo('</td>
+							</tr>
+							<tr>
+								<td>
+									Cat&eacute;gorie :
+								</td>
+								<td>
+									<select name="category">');
+						
+						$tail="";
+						$result=@mysql_query("SELECT category_id,category_name FROM thread_category");
+						if ($result)
+						{
+							while($row=mysql_fetch_assoc($result))
+							{
+								if($cate_prec==$row["category_id"])
+								{
+									$tail.='<option value="'.htmlentities($row["category_id"]).'" selected="selected">'.htmlentities($row["category_name"]).'</option>';
+								}
+								else
+								{
+									$tail.='<option value="'.htmlentities($row["category_id"]).'">'.htmlentities($row["category_name"]).'</option>';
+								}
+							}
+							@mysql_free_result($result);
+						}
+						if (empty($tail))
+						{
+							$tail='<option value="0">Defaut</option>';
+						}
+
+						echo($tail.'</select>
+								</td>
+							</tr>
+							');			
+					}	
+					echo('<tr>
+								<td colspan="2">
+									<textarea name="message" rows="15" cols="80">'.htmlentities(stripslashes($mess_user)).'</textarea>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<input type="hidden" name="form_name" value="edition" />
+								</td>
+							</tr>
+							<tr class="submit_center">
+								<td colspan="2" rowspan="1">
+									<input type="submit" value="Valider" />
+								</td>
+							</tr>
+						</table>
+					</form>');
 				}
 				else
 				{
-					echo('<form method="post" action="?action=edit_post&amp;comment_id='.htmlentities($id).'"><table class="tab_form">');				
+					echo('<div class="warning">Vous ne disposez pas des droits n&eacute;cessaires</div>');
 				}
-
-				if ($type==0)
-				{
-					echo('<tr>
-							<td>
-								Titre :
-							</td>
-							<td>');
-		            if (empty($title_prec))
-		            {
-		                echo('<input type="text" name="title" />');
-		            }
-		            else
-		            {
-		                echo('<input type="text" name="title" value="'.htmlentities(stripslashes($title_prec)).'" />');
-		            }
-					echo('</td>
-						</tr>
-						<tr>
-							<td>
-								Cat&eacute;gorie :
-							</td>
-							<td>
-								<select name="category">');
-			        
-					$tail="";
-			        $result=@mysql_query("SELECT category_id,category_name FROM thread_category");
-			        if ($result)
-			        {
-			            while($row=mysql_fetch_assoc($result))
-			            {
-							if($cate_prec==$row["category_id"])
-							{
-								$tail.='<option value="'.htmlentities($row["category_id"]).'" selected="selected">'.htmlentities($row["category_name"]).'</option>';
-							}
-							else
-							{
-								$tail.='<option value="'.htmlentities($row["category_id"]).'">'.htmlentities($row["category_name"]).'</option>';
-							}
-						}
-						@mysql_free_result($result);
-			        }
-					if (empty($tail))
-			        {
-			            $tail='<option value="0">Defaut</option>';
-			        }
-
-					echo($tail.'</select>
-							</td>
-						</tr>
-						');			
-				}	
-				echo('<tr>
-							<td colspan="2">
-								<textarea name="message" rows="15" cols="80">'.htmlentities(stripslashes($mess_user)).'</textarea>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<input type="hidden" name="form_name" value="edition" />
-							</td>
-						</tr>
-						<tr class="submit_center">
-							<td colspan="2" rowspan="1">
-								<input type="submit" value="Valider" />
-							</td>
-						</tr>
-					</table>
-				</form>');
 			}			
 		}
 		elseif (!empty($warnings))
@@ -536,259 +550,361 @@ function edition()
 	}
 }
 
-function affichage_comments($thread_id)
+function affichage_comments($thread_id,$moderation_mode)
 {
 	$privileges=user_privilege_level();
 	$is_admin=($privileges>3);
+	$ancre=htmlentities($thread_id);
 	
-	if ($privileges>1)
+	if ($moderation_mode)
 	{
-		if (isset($_SESSION["unroll_comment"]) && $_SESSION["unroll_comment"]==$thread_id)
+		if ($is_admin)
 		{
-			$result=@mysql_query(sprintf("SELECT comment_id,rand_prop,hash_prop,text,date,is_valid,already_mod,possibly_name FROM comment WHERE thread_id='%s'",mysql_real_escape_string($thread_id)));
+			$result=@mysql_query("SELECT comment_id,rand_prop,hash_prop,text,date,possibly_name FROM comment WHERE already_mod=0 ORDER BY DATE DESC");		
 			if($result)
 			{
-				if($privileges>3)
-				{
-					$result_temp=@mysql_query(sprintf("SELECT COUNT(*) AS NB_COMMENT FROM comment WHERE thread_id='%s'",mysql_real_escape_string($thread_id)));
-				}
-				else
-				{
-					if (is_logged())
-					{
-						$result_temp=@mysql_query(sprintf("SELECT COUNT(*) AS NB_COMMENT FROM comment WHERE thread_id='%s' AND (is_valid=1 OR (CAST(SHA1(CONCAT('%s',CAST(rand_prop AS CHAR))) AS CHAR)=hash_prop))",mysql_real_escape_string($thread_id),mysql_real_escape_string($_SESSION['login_c'])));	
-					}
-					else
-					{
-						$result_temp=@mysql_query(sprintf("SELECT COUNT(*) AS NB_COMMENT FROM comment WHERE is_valid=1 AND thread_id='%s'",mysql_real_escape_string($thread_id)));
-					}
-				}
-				if($result && $row=mysql_fetch_assoc($result_temp))
-				{
-					if($row["NB_COMMENT"]==1)
-					{
-						echo('<div class="speccom">
-									<span class="newslinkcomment_roll">
-										1&nbsp;commentaire
-									</span>
-									<a href="?action=unrollcomment&amp;order=0&amp;thread_id='.htmlentities($thread_id).'">
-										<img src="rep_img/roll_arrow.png" alt="Masquer" class="imglinknews" />
-									</a>
-								</div>
-							</div>');
-					}
-					else
-					{
-						echo('<div class="speccom">
-									<span class="newslinkcomment_roll">
-										'.htmlentities($row["NB_COMMENT"]).'&nbsp;commentaires
-									</span>
-									<a href="?action=unrollcomment&amp;order=0&amp;thread_id='.htmlentities($thread_id).'">
-										<img src="rep_img/roll_arrow.png" alt="Masquer" class="imglinknews" />
-									</a>
-								</div>
-							</div>');
-					}
-				}
-				else
-				{
-					echo('<div class="speccom">
-								<span class="newslinkcomment_roll">
-									?&nbsp;commentaires
-								</span>
-								<a href="?action=unrollcomment&amp;order=0&amp;thread_id='.htmlentities($thread_id).'">
-									<img src="rep_img/roll_arrow.png" alt="Masquer" class="imglinknews" />
-								</a>
-							</div>
-						</div>');
-				}
-				@mysql_free_result($result_temp);
+				$result_returned=false;
 				while($row=mysql_fetch_assoc($result))
 				{
+					$result_returned=true;
 					$is_proprio=check_property($row["rand_prop"],$row["hash_prop"]);
-					$is_valid=$row["is_valid"];
-					$already_mod=$row["already_mod"];
-					$comment_id=$row["comment_id"];
-					if ($is_valid || $is_proprio || $privileges>3)
+					$ancre=htmlentities($row["comment_id"]);
+
+					// Informations de contexte
+					echo('<div class="newscomment" id="'.$ancre.'">
+							<span class="newsundertitle">
+								'.htmlentities(transfo_date($row["date"])));									
+					if (!empty($row["possibly_name"]))
 					{
-						// Informations de contexte
-						echo('<div class="newscomment">
-								<span class="newsundertitle">
-									'.htmlentities(transfo_date($row["date"])));									
-						if ($is_proprio)
-						{
-							if (!empty($row["possibly_name"]))
+						echo('&nbsp;-&nbsp;'.htmlentities($row["possibly_name"]));
+					}
+					echo('</span>');		
+					
+					// Etat de modération
+					echo('<img src="rep_img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
+
+					// Corps du commentaire
+					echo('<div class="newscommentcontent">'.text_display_prepare($row["text"]).'</div>');
+					
+					// Liens administratifs sur le commentaire
+					echo('<div class="newsendlinks">');
+					if ($is_proprio || $privileges>4)
+					{
+						echo('
+							<a href="?action=edit_post&amp;comment_id='.$ancre.'">Editer</a>
+							<a href="?action=remove_post&amp;comment_id='.$ancre.'">Supprimer</a>');
+							if ($is_proprio)
 							{
-								echo('&nbsp;-&nbsp;<a href="?action=anonymization&amp;order=0&amp;comment_id='.htmlentities($comment_id).'">'.htmlentities($row["possibly_name"]).'</a>');
-							}
-							else
-							{
-								echo('&nbsp;-&nbsp;<a href="?action=anonymization&amp;order=1&amp;comment_id='.htmlentities($comment_id).'">Faire afficher mon nom</a>');
-							}
-						}
-						elseif (!empty($row["possibly_name"]))
-						{
-							echo('&nbsp;-&nbsp;'.htmlentities($row["possibly_name"]));
-						}
-						echo('</span>');		
-						
-						// Etat de mod�ration
-						if ($privileges>3)
-						{
-							if ($already_mod)
-							{
-								if ($is_valid)
+								if (!empty($row["possibly_name"]))
 								{
-									echo('<img src="rep_img/modere.png" alt="Mod&eacute;r&eacute;" class="imgtitlecomment" />');
+									echo('<a href="?action=anonymization&amp;order=0&amp;comment_id='.$ancre.'#'.$ancre.'">Masquer mon nom</a>');
 								}
 								else
 								{
-									echo('<img src="rep_img/masque.png" alt="Masqu&eacute;" class="imgtitlecomment" />');
+									echo('<a href="?action=anonymization&amp;order=1&amp;comment_id='.$ancre.'#'.$ancre.'">Afficher mon nom</a>');
 								}
 							}
-							else
-							{
-								echo('<img src="rep_img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
-							}
-						}
-						elseif ($is_proprio)
-						{
-							if ($already_mod)
-							{
-								if (!$is_valid)
-								{
-									echo('<img src="rep_img/masque.png" alt="Masqu&eacute;" class="imgtitlecomment" />');
-								}
-							}
-							else
-							{
-								echo('<img src="rep_img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
-							}
-						}
-						
-						// Corps du commentaire
-						echo('<div class="newscommentcontent">'.nl2br(htmlentities(stripslashes($row["text"]))).'</div>');
-						
-						// Liens administratifs sur le commentaire
-						if ($is_proprio || $is_admin)
-						{
-							echo('<div class="newsendlinks">
-								<a href="?action=edit_post&amp;comment_id='.htmlentities($comment_id).'">Editer</a>
-								<a href="?action=remove_post&amp;comment_id='.htmlentities($comment_id).'">Supprimer</a>');
-							if ($is_admin) // L'administrateur peut afficher ou masquer le post
-							{
-								if($is_valid || !$already_mod)
-								{
-									echo('<a href="?action=moderation&amp;order=0&amp;comment_id='.htmlentities($comment_id).'">Refuser</a>');
-								}
-								if(!$is_valid || !$already_mod)
-								{
-									echo('<a href="?action=moderation&amp;order=1&amp;comment_id='.htmlentities($comment_id).'">Accepter</a>');
-								}			
-							}
-							echo('</div>');
-						}
-						echo('</div>');
 					}
+					echo('
+							<a href="?action=moderation&amp;order=0&amp;comment_id='.$ancre.'">Refuser</a>
+							<a href="?action=moderation&amp;order=1&amp;comment_id='.$ancre.'">Accepter</a>
+						</div>
+					</div>');
 				}
-				$text_prec="";
-				$anon_prec="";
-				if (isset($_SESSION["text_new_comment_rest"]))
+				if(!$result_returned)
 				{
-					$text_prec=$_SESSION["text_new_comment_rest"];
+					echo('<div class="warning">Aucun commentaire n\'est disponible selon les critères choisis</div>');
 				}
-				if (isset($_SESSION["text_anonymous_rest"]))
-				{
-					$anon_prec=1;
-				}
-				if ($privileges>2)
-				{
-					echo('<div class="newsformcomment">
-							<form method="post" action="?action=comment_post&amp;thread_id='.htmlentities($thread_id).'"><p>
-								<textarea name="message" rows="15" cols="80">'.htmlentities($text_prec).'</textarea>
-									<span class="checkcommentform">');
-					if (empty($anon_prec))
-					{
-						echo('<input type="checkbox" name="anonymization" />');
-					}   
-					else
-					{
-						echo('<input type="checkbox" name="anonymization" checked="checked" />');
-					}
-
-					echo('Anonymiser le commentaire
-								</span>
-								<input type="hidden" name="form_name" value="create_comment" />
-								<span class="validatecommentform">
-									<input type="submit" value="Valider" />
-								</span>
-							</p></form>
-						</div>');
-				}
-				if (isset($_SESSION["text_new_comment_rest"]))
-				{
-					unset($_SESSION["text_new_comment_rest"]);
-				}
-				if (isset($_SESSION["text_anonymous_rest"]))
-				{
-					unset($_SESSION["text_anonymous_rest"]);
-				}
-				@mysql_free_result($result);
 			}
 			else
 			{
-				echo('<div class="warning">Erreur lors de la recherche des commentaires</div></div>');
+				echo('<div class="warning">Erreur lors de la recherche des commentaires non mod&eacute;r&eacute;s</div>');
 			}
+			@mysql_free_result($result);
 		}
 		else
 		{
-			if($privileges>3)
+			echo('<div class="warning">Vous ne disposez pas des droits n&eacute;cessaires</div>');
+		}
+	}
+	else
+	{
+		if ($privileges>1)
+		{
+			if (isset($_SESSION["unroll_comment"]) && $_SESSION["unroll_comment"]==$thread_id)
 			{
-				$result=@mysql_query(sprintf("SELECT COUNT(*) AS NB_COMMENT FROM comment WHERE thread_id='%s'",mysql_real_escape_string($thread_id)));
-			}
-			else
-			{	
-				if (is_logged())
+				$result=@mysql_query(sprintf("SELECT comment_id,rand_prop,hash_prop,text,date,is_valid,already_mod,possibly_name FROM comment WHERE thread_id='%s'",mysql_real_escape_string($thread_id)));
+				if($result)
 				{
-					$result=@mysql_query(sprintf("SELECT COUNT(*) AS NB_COMMENT FROM comment WHERE thread_id='%s' AND (is_valid=1 OR (CAST(SHA1(CONCAT('%s',CAST(rand_prop AS CHAR))) AS CHAR)=hash_prop))",mysql_real_escape_string($thread_id),mysql_real_escape_string($_SESSION['login_c'])));	
+					if($privileges>3)
+					{
+						$result_temp=@mysql_query(sprintf("SELECT COUNT(*) AS NB_COMMENT FROM comment WHERE thread_id='%s'",mysql_real_escape_string($thread_id)));
+					}
+					else
+					{
+						if (is_logged())
+						{
+							$result_temp=@mysql_query(sprintf("SELECT COUNT(*) AS NB_COMMENT FROM comment WHERE thread_id='%s' AND (is_valid=1 OR (CAST(SHA1(CONCAT('%s',CAST(rand_prop AS CHAR))) AS CHAR)=hash_prop))",mysql_real_escape_string($thread_id),mysql_real_escape_string($_SESSION['login_c'])));	
+						}
+						else
+						{
+							$result_temp=@mysql_query(sprintf("SELECT COUNT(*) AS NB_COMMENT FROM comment WHERE is_valid=1 AND thread_id='%s'",mysql_real_escape_string($thread_id)));
+						}
+					}
+					if($result && $row=mysql_fetch_assoc($result_temp))
+					{
+						if($row["NB_COMMENT"]==0)
+						{
+							echo('<div class="speccom">
+										<a href="?action=unrollcomment&amp;order=0&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
+											<span class="newslinkcomment_inactive">
+												0&nbsp;commentaires
+											</span>
+											<img src="rep_img/roll_arrow_inactive.png" alt="Masquer" class="imglinknews" />
+										</a>
+									</div>
+								</div>');
+						}
+						elseif($row["NB_COMMENT"]==1)
+						{
+							echo('<div class="speccom">
+										<a href="?action=unrollcomment&amp;order=0&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
+											<span class="newslinkcomment_roll">
+												1&nbsp;commentaire
+											</span>
+											<img src="rep_img/roll_arrow.png" alt="Masquer" class="imglinknews" />
+										</a>
+									</div>
+								</div>');
+						}
+						else
+						{
+							echo('<div class="speccom">
+										<a href="?action=unrollcomment&amp;order=0&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
+											<span class="newslinkcomment_roll">
+												'.htmlentities($row["NB_COMMENT"]).'&nbsp;commentaires
+											</span>
+											<img src="rep_img/roll_arrow.png" alt="Masquer" class="imglinknews" />
+										</a>
+									</div>
+								</div>');
+						}
+					}
+					else
+					{
+						echo('<div class="speccom">
+									<a href="?action=unrollcomment&amp;order=0&amp;thread_id='.'#'.$ancre.htmlentities($thread_id).'">
+										<span class="newslinkcomment_roll">
+											?&nbsp;commentaires
+										</span>	
+										<img src="rep_img/roll_arrow.png" alt="Masquer" class="imglinknews" />
+									</a>
+								</div>
+							</div>');
+					}
+					@mysql_free_result($result_temp);
+					while($row=mysql_fetch_assoc($result))
+					{
+						$is_proprio=check_property($row["rand_prop"],$row["hash_prop"]);
+						$is_valid=$row["is_valid"];
+						$already_mod=$row["already_mod"];
+						$comment_id=$row["comment_id"];
+						if ($is_valid || $is_proprio || $privileges>3)
+						{
+							// Informations de contexte
+							echo('<div class="newscomment">
+									<span class="newsundertitle">
+										'.htmlentities(transfo_date($row["date"])));									
+							if (!empty($row["possibly_name"]))
+							{
+								echo('&nbsp;-&nbsp;'.htmlentities($row["possibly_name"]));
+							}
+							echo('</span>');		
+							
+							// Etat de modération
+							if ($privileges>3)
+							{
+								if ($already_mod)
+								{
+									if ($is_valid)
+									{
+										echo('<img src="rep_img/modere.png" alt="Mod&eacute;r&eacute;" class="imgtitlecomment" />');
+									}
+									else
+									{
+										echo('<img src="rep_img/masque.png" alt="Masqu&eacute;" class="imgtitlecomment" />');
+									}
+								}
+								else
+								{
+									echo('<img src="rep_img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
+								}
+							}
+							elseif ($is_proprio)
+							{
+								if ($already_mod)
+								{
+									if (!$is_valid)
+									{
+										echo('<img src="rep_img/masque.png" alt="Masqu&eacute;" class="imgtitlecomment" />');
+									}
+								}
+								else
+								{
+									echo('<img src="rep_img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
+								}
+							}
+							
+							// Corps du commentaire
+							echo('<div class="newscommentcontent">'.text_display_prepare($row["text"]).'</div>');
+							
+							// Liens administratifs sur le commentaire
+							if ($is_proprio || $is_admin)
+							{
+								echo('<div class="newsendlinks">');
+								if ($is_proprio || $privileges>4)
+								{
+									echo('<a href="?action=edit_post&amp;comment_id='.htmlentities($comment_id).'">Editer</a>
+									<a href="?action=remove_post&amp;comment_id='.htmlentities($comment_id).'">Supprimer</a>');
+									if ($is_proprio)
+									{
+										if (!empty($row["possibly_name"]))
+										{
+											echo('<a href="?action=anonymization&amp;order=0&amp;comment_id='.htmlentities($comment_id).'#'.$ancre.'">Masquer mon nom</a>');
+										}
+										else
+										{
+											echo('<a href="?action=anonymization&amp;order=1&amp;comment_id='.htmlentities($comment_id).'#'.$ancre.'">Afficher mon nom</a>');
+										}
+									}
+								}
+								if ($is_admin) // L'administrateur peut afficher ou masquer le post
+								{
+									if($is_valid || !$already_mod)
+									{
+										echo('<a href="?action=moderation&amp;order=0&amp;comment_id='.htmlentities($comment_id).'#'.$ancre.'">Refuser</a>');
+									}
+									if(!$is_valid || !$already_mod)
+									{
+										echo('<a href="?action=moderation&amp;order=1&amp;comment_id='.htmlentities($comment_id).'#'.$ancre.'">Accepter</a>');
+									}			
+								}
+								echo('</div>');
+							}
+							echo('</div>');
+						}
+					}
+					$text_prec="";
+					$anon_prec="";
+					if (isset($_SESSION["text_new_comment_rest"]))
+					{
+						$text_prec=$_SESSION["text_new_comment_rest"];
+					}
+					if (isset($_SESSION["text_anonymous_rest"]))
+					{
+						$anon_prec=1;
+					}
+					if ($privileges>2)
+					{
+						echo('<div class="newsformcomment">
+								<form method="post" action="?action=comment_post&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'"><p>
+									<textarea name="message" rows="15" cols="80">'.htmlentities($text_prec).'</textarea>
+										<span class="checkcommentform">');
+						if (empty($anon_prec))
+						{
+							echo('<input type="checkbox" name="anonymization" />');
+						}   
+						else
+						{
+							echo('<input type="checkbox" name="anonymization" checked="checked" />');
+						}
+
+						echo('Anonymiser le commentaire
+									</span>
+									<input type="hidden" name="form_name" value="create_comment" />
+									<span class="validatecommentform">
+										<input type="submit" value="Valider" />
+									</span>
+								</p></form>
+							</div>');
+					}
+					if (isset($_SESSION["text_new_comment_rest"]))
+					{
+						unset($_SESSION["text_new_comment_rest"]);
+					}
+					if (isset($_SESSION["text_anonymous_rest"]))
+					{
+						unset($_SESSION["text_anonymous_rest"]);
+					}
+					@mysql_free_result($result);
 				}
 				else
 				{
-					$result=@mysql_query(sprintf("SELECT COUNT(*) AS NB_COMMENT FROM comment WHERE is_valid=1 AND thread_id='%s'",mysql_real_escape_string($thread_id)));
-				}
-			}
-			if($result && $row=mysql_fetch_assoc($result))
-			{
-				if($row["NB_COMMENT"]==1)
-				{
-					echo('<div class="speccom">
-								<span class="newslinkcomment_unroll">
-									1&nbsp;commentaire
-								</span>
-								<a href="?action=unrollcomment&amp;order=1&amp;thread_id='.htmlentities($thread_id).'">
-									<img src="rep_img/unroll_arrow.png" alt="Afficher" class="imglinknews" />
-								</a>
-							</div>
-						</div>');
-				}
-				else
-				{
-					echo('<div class="speccom">
-								<span class="newslinkcomment_unroll">
-									'.htmlentities($row["NB_COMMENT"]).'&nbsp;commentaires
-								</span>
-								<a href="?action=unrollcomment&amp;order=1&amp;thread_id='.htmlentities($thread_id).'">
-									<img src="rep_img/unroll_arrow.png" alt="Afficher" class="imglinknews" />
-								</a>
-							</div>
-						</div>');
+					echo('<div class="warning">Erreur lors de la recherche des commentaires</div></div>');
 				}
 			}
 			else
 			{
-				echo('<div class="warning">Erreur lors de la recherche des commentaires</div></div>');
+				if($privileges>3)
+				{
+					$result=@mysql_query(sprintf("SELECT COUNT(*) AS NB_COMMENT FROM comment WHERE thread_id='%s'",mysql_real_escape_string($thread_id)));
+				}
+				else
+				{	
+					if (is_logged())
+					{
+						$result=@mysql_query(sprintf("SELECT COUNT(*) AS NB_COMMENT FROM comment WHERE thread_id='%s' AND (is_valid=1 OR (CAST(SHA1(CONCAT('%s',CAST(rand_prop AS CHAR))) AS CHAR)=hash_prop))",mysql_real_escape_string($thread_id),mysql_real_escape_string($_SESSION['login_c'])));	
+					}
+					else
+					{
+						$result=@mysql_query(sprintf("SELECT COUNT(*) AS NB_COMMENT FROM comment WHERE is_valid=1 AND thread_id='%s'",mysql_real_escape_string($thread_id)));
+					}
+				}
+				if($result && $row=mysql_fetch_assoc($result))
+				{
+					if($row["NB_COMMENT"]==0)
+					{
+						echo('<div class="speccom">
+									<a href="?action=unrollcomment&amp;order=1&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
+										<span class="newslinkcomment_inactive">
+											0&nbsp;commentaires
+										</span>
+										<img src="rep_img/unroll_arrow_inactive.png" alt="Afficher" class="imglinknews" />
+									</a>
+								</div>
+							</div>');
+					}
+					elseif($row["NB_COMMENT"]==1)
+					{
+						echo('<div class="speccom">
+									<a href="?action=unrollcomment&amp;order=1&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
+										<span class="newslinkcomment_unroll">
+											1&nbsp;commentaire
+										</span>
+										<img src="rep_img/unroll_arrow.png" alt="Afficher" class="imglinknews" />
+									</a>
+								</div>
+							</div>');
+					}
+					else
+					{
+						echo('<div class="speccom">
+									<a href="?action=unrollcomment&amp;order=1&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
+										<span class="newslinkcomment_unroll">
+											'.htmlentities($row["NB_COMMENT"]).'&nbsp;commentaires
+										</span>
+										<img src="rep_img/unroll_arrow.png" alt="Afficher" class="imglinknews" />
+									</a>
+								</div>
+							</div>');
+					}
+				}
+				else
+				{
+					echo('<div class="warning">Erreur lors de la recherche des commentaires</div></div>');
+				}
+				@mysql_free_result($result);
 			}
-			@mysql_free_result($result);
 		}
 	}
 }

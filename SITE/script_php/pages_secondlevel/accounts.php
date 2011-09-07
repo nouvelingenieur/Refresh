@@ -1,7 +1,7 @@
 <?php
 
 /*
-	Plateforme web PPR - outil de crowdwourcing
+	Plateforme web PPR - outil de crowdsourcing
 	Copyright(C) 2011 Nicolas SEICHEPINE
 
 	This file is part of PPR.
@@ -19,7 +19,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
-	Contact : contact_ppr@seichepine.org
+	Contact : nicolas.seichepine.org/?action=contact
 */
 
 include_once("tool.php");
@@ -87,9 +87,9 @@ function log_in()
 					{
 						if ($valid==1)
 						{
-							// Il n'est pas id�al de conserver ces donn�es en clair (cf. notamment vol de session, firesheep, ...)
-							// N�anmoins indispensable pour le m�canisme d'anonymat permettant tout de m�me � l'auteur un contr�le sur ses posts et la proposition d'ajout de nom
-							// En toute g�n�ralit�, forcer le SSL serait une option int�ressante
+							// Il n'est pas idéal de conserver ces données en clair (cf. notamment vol de session, firesheep, ...)
+							// Néanmoins indispensable pour le mécanisme d'anonymat permettant tout de même à l'auteur un contrôle sur ses posts et la proposition d'ajout de nom
+							// En toute généralité, forcer le SSL serait une option intéressante
 							$_SESSION['login_c']=$login_clair;
 							$_SESSION['passw']=sha1($passw_clair);
 							$_SESSION['uid']=$uid;
@@ -138,7 +138,7 @@ function log_in()
 				<table class="tab_form">
 					<tr>
 						<td>
-							Login (adresse mail donn&eacute;e &agrave; l\'inscription) :
+							Login (prenom.nom@eleves.enpc.fr) :
 						</td>
 						<td>
 							<input type="text" name="login" value="'.htmlentities($login_clair).'" />
@@ -179,7 +179,7 @@ function log_in()
 
 function log_out($loc_appel=0)
 {
-	// D�connexion effective
+	// Déconnexion effective
 	if ($loc_appel==1)
 	{
 		if (isset($_SESSION))
@@ -188,7 +188,7 @@ function log_out($loc_appel=0)
 		}
 		@session_destroy();
 	}
-	// Affichage du message de d�connexion
+	// Affichage du message de déconnexion
 	elseif ($loc_appel==0)
 	{
 		echo('<h1>D&eacute;connexion :</h1>');
@@ -196,18 +196,18 @@ function log_out($loc_appel=0)
 	}
 }
 
-// Fonctions mails � mettre en commun !
+// Fonctions mails à mettre en commun !
 function mail_confirmation_subscription($mail,$hash_mail,$cconf)
 {
 	$nexp="Ponts Paristech Refresh";
 	$email="webmaster_ppr@enpc.org";
-	$subject="Confirmation de votre inscription � Ponts Paristech refresh";
+	$subject="Confirmation de votre inscription à Ponts Paristech refresh";
 	$header = "From: ". $nexp . " <" . $email . ">\r\n";
 
 	$link_deb="http://localhost/refresh/index.php?action=confirm_subscribe";
 	//$link_deb="http://refresh.enpc.org/dev_loc2/index.php?action=confirm_subscribe";
 	
-	$mail_body = "Bonjour,\n\nMerci de cliquer sur le lien suivant pour valider votre inscription : $link_deb&mail=$hash_mail&cconf=$cconf\n\nCordialement,\n\nl'�quipe Ponts Paristech Refresh";
+	$mail_body = "Bonjour,\n\nMerci de cliquer sur le lien suivant pour valider votre inscription : $link_deb&mail=$hash_mail&cconf=$cconf\n\nCordialement,\n\nl'équipe Ponts Paristech Refresh";
 	
 	$handle_fic = fopen('mail.txt', 'w+');
 	fputs($handle_fic, $subject);
@@ -216,7 +216,7 @@ function mail_confirmation_subscription($mail,$hash_mail,$cconf)
 	fclose($handle_fic);
 	return true;
 	
-	return(mail($mail, $subject, $mail_body, $header));
+	//return(mail($mail, mb_convert_encoding($subject,"ASCII","ISO-8859-1"), mb_convert_encoding($mail_body,"ASCII","ISO-8859-1"), $header));
 }
 
 function mail_change_password($mail, $new_pass)
@@ -226,7 +226,7 @@ function mail_change_password($mail, $new_pass)
 	$subject="Changement mot de passe Ponts Paristech refresh";
 	$header = "From: ". $nexp . " <" . $email . ">\r\n";
 	$pass_secure=htmlentities($new_pass);
-	$mail_body = "Bonjour,\n\nVoici votre nouveau mot de passe : $pass_secure\nIl est recommand� de le changer rapidement.\n\nCordialement,\n\nl'�quipe Ponts Paristech Refresh";
+	$mail_body = "Bonjour,\n\nVoici votre nouveau mot de passe : $pass_secure\nIl est recommandé de le changer rapidement.\n\nCordialement,\n\nl'équipe Ponts Paristech Refresh";
 	
 	$handle_fic = fopen('mail.txt', 'w+');
 	fputs($handle_fic, $subject);
@@ -235,7 +235,7 @@ function mail_change_password($mail, $new_pass)
 	fclose($handle_fic);
 	return true;
 	
-	return(mail(htmlentities($mail), $subject, $mail_body, $header));
+	//return(mail(htmlentities($mail), mb_convert_encoding($subject,"ASCII","ISO-8859-1"), mb_convert_encoding($mail_body,"ASCII","ISO-8859-1"), $header));
 }
 
 function create_account()
@@ -292,7 +292,7 @@ function create_account()
 								$result=@mysql_query(sprintf("SELECT user_id,is_valid FROM user WHERE hash_mail='%s'",mysql_real_escape_string($hash_mail)));
 								if (!$result)
 								{
-									echo('<div class="warning">Erreur lors de la req&ecirc;te</div>');
+									echo('<div class="warning">Erreur lors de la requ&ecirc;te</div>');
 								}
 								else
 								{
@@ -306,7 +306,7 @@ function create_account()
 										else
 										{
 											$situation=1;
-											// Plus propre de tout virer, on ne sait pas ce qui s'est pass� qui a forc� l'utilisateur � faire une deuxi�me demande
+											// Plus propre de tout virer, on ne sait pas ce qui s'est passé qui a forcé l'utilisateur à faire une deuxième demande
 											if (is_numeric($row["user_id"]))
 											{	
 												@mysql_query('DELETE FROM `user` WHERE `user`.`user_id` = '.mysql_real_escape_string($row["user_id"]));	
@@ -314,15 +314,15 @@ function create_account()
 										}	
 									}
 									
-									// Adresse mail inscrite et compte activ�, on ne fait rien
+									// Adresse mail inscrite et compte activé, on ne fait rien
 									if ($situation==2)
 									{
 										echo('<div class="warning">Adresse mail d&eacute;j&agrave; inscrite et compte activ&eacute;</div>');
 									}
-									// Adresse mail � inscrire
+									// Adresse mail à inscrire
 									else
 									{
-										// Adresse mail inscrite, compte non activ�
+										// Adresse mail inscrite, compte non activé
 										if ($situation==1)
 										{
 											echo('<div class="warning">Pr&eacute;c&eacute;dente demande d\'inscription de cette adresse annul&eacute;e</div>');
@@ -331,7 +331,7 @@ function create_account()
 										$cconf=random_password(40);
 										$hcconf=sha1($cconf);
 										
-										// Les hash n'ont pas besoin d'�tre �chapp�s
+										// Les hash n'ont pas besoin d'être échappés
 										if (@mysql_query("INSERT INTO `user` (`user_id`,`hash_mail`,`hash_pass`,`hash_conf`,`inscription_date`,`privileges`,`is_valid`) VALUES (NULL, '$hash_mail', '$hash_pass', '$hcconf', CURRENT_TIMESTAMP, 3, 0)"))
 										{
 											mail_confirmation_subscription($mail,$hash_mail,$cconf);
@@ -525,7 +525,7 @@ function change_password($forgotten_passw=false)
 	{
 		if ($_POST['form_name']=="mdp_oubli" && $forgotten_passw)
 		{
-			if (isset($_POST["mail"]) && !empty($_POST["mail"])) // On ne v�rifie pas le type "x.x@eleves.enpc.fr" pour permettre la gestion de comptes sp�ciaux (administration, ...)
+			if (isset($_POST["mail"]) && !empty($_POST["mail"])) // On ne vérifie pas le type "x.x@eleves.enpc.fr" pour permettre la gestion de comptes spéciaux (administration, ...)
 			{
 				$default_value_mail=strtolower($_POST['mail']);
 				$new_pass=random_password(8);
@@ -568,7 +568,7 @@ function change_password($forgotten_passw=false)
 		{
 			$treat=true;
 			
-			// On v�rifie les donn�es en base, pour se prot�ger contre tout probl�me li� � la s�curit� de la session
+			// On vérifie les données en base, pour se protéger contre tout problème lié à la sécurité de la session
 			$expected_password="";
 			$expected_mail="";
 			$res=@mysql_query(sprintf("SELECT hash_pass, hash_mail FROM user WHERE user_id='%s'",mysql_real_escape_string($_SESSION['uid'])));
@@ -637,12 +637,12 @@ function change_password($forgotten_passw=false)
 					$treat=false;
 					echo('<div class="warning">Nouveaux mots de passe saisis diff&eacute;rents</div>');
 				}
-				elseif(!empty($default_value_newpass_1)) //$default_value_newpass_1 a � ce stade la m�me longueur que $default_value_newpass_2
+				elseif(!empty($default_value_newpass_1)) //$default_value_newpass_1 a à ce stade la même longueur que $default_value_newpass_2
 				{
 					if(strlen($default_value_newpass_1)<6)
 					{
 						$treat=false;
-						echo('<div class="warning">Les mots de passe doivent &ecirc;tre compos�s d\'au moins 6 caract�res</div>');
+						echo('<div class="warning">Les mots de passe doivent &ecirc;tre composés d\'au moins 6 caractères</div>');
 					}
 				}
 			}
@@ -688,7 +688,7 @@ function change_password($forgotten_passw=false)
 				<table class="tab_form">
 					<tr>
 						<td>
-							Adresse mail inscrite (adresse longue @eleves.enpc.fr) :
+							Adresse mail inscrite (prenom.nom@eleves.enpc.fr) :
 						</td>
 						<td>
 							<input type="text" name="mail" value="'.htmlentities($default_value_mail).'" />
@@ -813,7 +813,7 @@ function delete_account()
 				$retour.='<div class="warning">Impossible de v&eacute;rifier l\'identit&eacute; en base</div>';
 			}
 			
-			if ($treat) // V�rifications sur les arguments
+			if ($treat) // Vérifications sur les arguments
 			{
 				if(isset($_POST["mail"]) && !empty($_POST["mail"]))
 				{
@@ -901,12 +901,12 @@ function delete_account()
 			if ($treat && $delete_conf) // Application des commandes
 			{
 				$query=sprintf("DELETE FROM `user` WHERE `user`.`user_id`='%s'",mysql_real_escape_string($_SESSION['uid']));
-				if(@mysql_query($query)) // Lien adresse mail en cas d'erreur � passer en alias
+				if(@mysql_query($query)) // Lien adresse mail en cas d'erreur à passer en alias
 				{
 					$retour.='<div class="success">Compte correctement supprim&eacute</div>';
 					$affich_form=false;
 					
-					if ($delete_proposal) // Les votes et commentaires associ�s sont normalement supprim�s en cascade selon la contrainte sur la cl� �trang�re
+					if ($delete_proposal) // Les votes et commentaires associés sont normalement supprimés en cascade selon la contrainte sur la clé étrangère
 					{
 						$query=sprintf("DELETE FROM `thread` WHERE CAST(SHA1(CONCAT('%s',CAST(rand_prop AS CHAR))) AS CHAR)=hash_prop",mysql_real_escape_string($default_value_mail));
 						if(@mysql_query($query))
@@ -923,7 +923,7 @@ function delete_account()
 						$query=sprintf("DELETE FROM `comment` WHERE CAST(SHA1(CONCAT('%s',CAST(rand_prop AS CHAR))) AS CHAR)=hash_prop",mysql_real_escape_string($default_value_mail));
 						if(@mysql_query($query))
 						{
-							$retour.='<div class="success">Commentaires correctement supprim&eacute;es</div>';
+							$retour.='<div class="success">Commentaires correctement supprim&eacute;s</div>';
 						}
 						else
 						{

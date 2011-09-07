@@ -1,7 +1,7 @@
 <?php
 
 /*
-	Plateforme web PPR - outil de crowdwourcing
+	Plateforme web PPR - outil de crowdsourcing
 	Copyright(C) 2011 Nicolas SEICHEPINE
 
 	This file is part of PPR.
@@ -19,7 +19,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	
-	Contact : contact_ppr@seichepine.org
+	Contact : nicolas.seichepine.org/?action=contact
 */
 
 include_once("connection_db.php");
@@ -138,9 +138,47 @@ function transfo_date($string_entr)
 	}
 	else
 	{
-		list($annee,$mois,$jour)=explode("-",substr($string_entr,0,10));
-		return $jour.'/'.$mois.'/'.$annee;
+		return implode("/",array_reverse(explode("-",substr($string_entr,0,10))));
 	}
+}
+
+function text_display_prepare($string_entr)
+{
+	return transfo_url(nl2br(htmlentities(stripslashes($string_entr))));
+}
+
+function troncature_string($value, $length = 20)
+{
+	if (strlen($value) > $length)
+	{
+		return substr($value , 0, round(3*$length/4)).'...'.substr($value , -1*round($length/4));
+	}
+	else
+	{
+		return $value;
+	}
+}
+function identif_url($value, $http = '', $end = '')
+{
+	if (!preg_match("!^http!", $value[2]))
+	{
+		$http = 'http://';
+	}
+	if (preg_match("!([\.,\?\!]+)$!", $value[2], $match))
+	{
+		$end = $match[1];
+		$value[2] = preg_replace("!([\.,\?\!]+)$!", "", $value[2]);
+	}
+	return $value[1] . '<a href="' . $http . $value[2] . '"  target="_blank">' . troncature_string($value[2]) . '</a>' . $end;
+}
+
+function transfo_url($text)
+{
+	$ret = ' ' . $text;
+	$ret = preg_replace_callback("!(^|[\n ])(https?://[^ \"\n\r\t<]*)!is", "identif_url", $ret);
+	$ret = preg_replace_callback("!(^|[\n ])((www|ftp)\.[^ \"\t\n\r<]*)!is", "identif_url", $ret);
+	$ret = substr($ret, 1);
+	return($ret);
 }
 
 ?>
