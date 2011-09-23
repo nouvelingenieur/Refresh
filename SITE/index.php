@@ -237,6 +237,7 @@ if(isset($_POST) && !(empty($_POST)) && $treat_post)
 	<body>
 	
 		<div id="title_princ">
+				<a href="?action=go_home"><img src="rep_img/logo_petit.png" alt="Logo" id="logo_p" height="107" /></a><br />
 			<?=NOM_ECOLE?>
 			<span id="title_princ_second_part">
 				REFRESH
@@ -269,9 +270,6 @@ if(isset($_POST) && !(empty($_POST)) && $treat_post)
 			<?php include("./script_php/menu_compte.php") ?>
 		</div>
 
-		<p>
-			<a href="?action=go_home"><img src="rep_img/logo_petit.png" alt="Logo" id="logo_p" height="107" /></a>
-		</p>
 		
 	</body>
 
