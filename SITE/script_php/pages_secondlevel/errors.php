@@ -34,8 +34,8 @@ function need_ecole_member_privilege($level=1)
 		echo('
 
 		<h1>Vous n\'avez pas le droit d\'acc&eacute;der &agrave; cette page</h1>
-		<h2><a href="?action=login">Identifiez-vous</a>, visitez ce site depuis le r&eacute;seau &eacute;tudiant de l\'ecole ou utilisez un 
-		<a href="http://eleves.ecole.fr/rsf/accesrsf.htm">VPN</a></h2>
+		<h2><a href="?action=login">Identifiez-vous</a>'.((LIMIT_IP)?', visitez ce site depuis le r&eacute;seau &eacute;tudiant de l\'ecole ou utilisez un 
+		<a href="'.URL_VPN.'">VPN</a>':'').'</h2>
 
 		');
 	}
@@ -44,8 +44,8 @@ function need_ecole_member_privilege($level=1)
 		echo('
 
 		<h1>Vous n\'avez pas le droit d\'acc&eacute;der &agrave; cette page</h1>
-		<h2><a href="?action=login">Identifiez-vous</a>, visitez ce site depuis l\'&Eacute;cole ou utilisez un 
-		<a href="http://eleves.ecole.fr/rsf/accesrsf.htm">VPN</a></h2>
+		<h2 align=center><a href="?action=login">Identifiez-vous</a>'.((LIMIT_IP)?', visitez ce site depuis le r&eacute;seau &eacute;tudiant de l\'ecole ou utilisez un 
+		<a href="'.URL_VPN.'">VPN</a>':'').'</h2>
 
 		');
 	}

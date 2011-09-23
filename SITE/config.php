@@ -51,15 +51,23 @@ define('MAIL_CONTACT', 'contact@nouvelingenieur.fr');
 /** Mots clés caractérisant le Refresh. */
 define('KEYWORDS', 'Education, Refresh, Innovation, Nouvel Ingénieur, Nouveaux Etudiants');
 
-///////////////////////////////////
-// ** Paramètres de sécurité. ** //
-///////////////////////////////////
+////////////////////////////////////////
+// ** Paramètres de sécurité mail. ** //
+////////////////////////////////////////
 /** Limitations à un domaine pour les adresses mail. */
 define('LIMIT_MAIL', false); // boolean
 /** Indique les adresses mail à autoriser en expression régulière. */
 define('PREGMATCH_MAIL', '#^([a-z][\-_]?)*[a-z]+\.([a-z][\-_]?)*[a-z]+@eleves\.ecole\.fr$#'); // regular expression 
 /** Indique les adresses mail à autoriser en langage compréhensible. */
-define('PREGMATCH_MAIL_HUMAN_READABLE', 'de type prenom.nom@eleve.ecole.fr'); // regular expression 
+define('PREGMATCH_MAIL_HUMAN_READABLE', 'de type prenom.nom@eleve.ecole.fr'); // regular expression
+
+//////////////////////////////////////////
+// ** Paramètres de sécurité réseau. ** //
+//////////////////////////////////////////
+/** Limitations aux adresses IP. */
+define('LIMIT_IP', false); // boolean
+/** Url du VPN. */
+define('URL_VPN', 'http://ecole.fr/accesVPN.htm');
 
 
 ?>
