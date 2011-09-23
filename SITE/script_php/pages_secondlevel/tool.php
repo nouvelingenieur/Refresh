@@ -24,9 +24,12 @@
 
 include_once("connection_db.php");
 
-function is_enpc_mail($ccar)
+function is_ecole_mail($ccar)
 {
-	return preg_match('#^([a-z][\-_]?)*[a-z]+\.([a-z][\-_]?)*[a-z]+@eleves\.enpc\.fr$#',strtolower($ccar));
+	if (LIMIT_MAIL) {
+	return preg_match(PREGMATCH_MAIL,strtolower($ccar));
+	}
+	return true;
 }
 
 function construct_name_from_session()
@@ -50,7 +53,7 @@ function comes_from_etuproxy()
 	return ip2long('195.221.194.14')==ip2long($_SERVER['REMOTE_ADDR']);
 }
 
-function comes_from_enpc()
+function comes_from_ecole()
 {
 	$borne_1=ip2long('194.57.247.0');
 	$borne_2=ip2long('194.57.247.255');
@@ -96,7 +99,7 @@ function user_privilege_level()
 	{
 		return 2; // NON LOGGE, mais accès en lecture seule
 	}
-	elseif (comes_from_enpc())
+	elseif (comes_from_ecole())
 	{
 		return 1; // NON LOGGE, mais accès en lecture seule à certaines parties
 	}

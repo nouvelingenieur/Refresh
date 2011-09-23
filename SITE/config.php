@@ -24,7 +24,9 @@
 /** Define ABSPATH as this files directory */
 define( 'ABSPATH', dirname(__FILE__) . '/' );
 
+////////////////////////////////////////////////////////////////////////////////
 // ** Réglages MySQL - Votre hébergeur doit vous fournir ces informations. ** //
+////////////////////////////////////////////////////////////////////////////////
 /** Nom de la base de données de WordPress. */
 define('DB_NAME', 'nom_de_la_base');
 
@@ -36,5 +38,28 @@ define('DB_PASSWORD', 'mot_de_passe');
 
 /** Adresse de l'hébergement MySQL. */
 define('DB_HOST', 'serveur');
+
+///////////////////////////////////////////////////
+// ** Paramètres de customisation de l'école. ** //
+///////////////////////////////////////////////////
+/** Nom de l'école. */
+define('NOM_ECOLE', 'Education');
+
+/** Adresse mail du contact en charge de modérer la plateforme. */
+define('MAIL_CONTACT', 'contact@nouvelingenieur.fr');
+
+/** Mots clés caractérisant le Refresh. */
+define('KEYWORDS', 'Education, Refresh, Innovation, Nouvel Ingénieur, Nouveaux Etudiants');
+
+///////////////////////////////////
+// ** Paramètres de sécurité. ** //
+///////////////////////////////////
+/** Limitations à un domaine pour les adresses mail. */
+define('LIMIT_MAIL', false); // boolean
+/** Indique les adresses mail à autoriser en expression régulière. */
+define('PREGMATCH_MAIL', '#^([a-z][\-_]?)*[a-z]+\.([a-z][\-_]?)*[a-z]+@eleves\.ecole\.fr$#'); // regular expression 
+/** Indique les adresses mail à autoriser en langage compréhensible. */
+define('PREGMATCH_MAIL_HUMAN_READABLE', 'de type @eleve.ecole.fr'); // regular expression 
+
 
 ?>

@@ -34,7 +34,7 @@ function get_votes_from_thread($thread_id)
 	{
 		if ($rights>2) // L'utilisateur est loggé et a droit de vote, on doit vérifier s'il a déjà voté et si oui dans quel sens
 		{
-			// Vaut-il mieux faire porter la charge sur le serveur SQL en utilisant deux requêtes dont une vérifiant les hashs, ou sur ENPC.org en effectuant les vérifications dans la boucle PHP ?
+			// Vaut-il mieux faire porter la charge sur le serveur SQL en utilisant deux requêtes dont une vérifiant les hashs, ou sur ecole.org en effectuant les vérifications dans la boucle PHP ?
 			$result=@mysql_query(sprintf("SELECT vote_id,rand_prop,hash_prop,vote FROM vote WHERE thread_id='%s'",mysql_real_escape_string($thread_id)));
 			if ($result)
 			{

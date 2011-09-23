@@ -138,7 +138,7 @@ function log_in()
 				<table class="tab_form">
 					<tr>
 						<td>
-							Login (prenom.nom@eleves.enpc.fr) :
+							Login (prenom.nom@eleves.ecole.fr) :
 						</td>
 						<td>
 							<input type="text" name="login" value="'.htmlentities($login_clair).'" />
@@ -199,15 +199,15 @@ function log_out($loc_appel=0)
 // Fonctions mails à mettre en commun !
 function mail_confirmation_subscription($mail,$hash_mail,$cconf)
 {
-	$nexp="Ponts Paristech Refresh";
-	$email="webmaster_ppr@enpc.org";
-	$subject="Confirmation de votre inscription à Ponts Paristech refresh";
+	$nexp=NOM_ECOLE." Refresh";
+	$email=MAIL_CONTACT;
+	$subject="Confirmation de votre inscription à ".NOM_ECOLE." refresh";
 	$header = "From: ". $nexp . " <" . $email . ">\r\n";
 
 	$link_deb="http://localhost/refresh/index.php?action=confirm_subscribe";
-	//$link_deb="http://refresh.enpc.org/dev_loc2/index.php?action=confirm_subscribe";
+	//$link_deb="http://refresh.ecole.org/dev_loc2/index.php?action=confirm_subscribe";
 	
-	$mail_body = "Bonjour,\n\nMerci de cliquer sur le lien suivant pour valider votre inscription : $link_deb&mail=$hash_mail&cconf=$cconf\n\nCordialement,\n\nl'équipe Ponts Paristech Refresh";
+	$mail_body = "Bonjour,\n\nMerci de cliquer sur le lien suivant pour valider votre inscription : $link_deb&mail=$hash_mail&cconf=$cconf\n\nCordialement,\n\nl'équipe ".NOM_ECOLE." Refresh";
 	
 	$handle_fic = fopen('mail.txt', 'w+');
 	fputs($handle_fic, $subject);
@@ -221,12 +221,12 @@ function mail_confirmation_subscription($mail,$hash_mail,$cconf)
 
 function mail_change_password($mail, $new_pass)
 {
-	$nexp="Ponts Paristech Refresh";
-	$email="webmaster_ppr@enpc.org";
-	$subject="Changement mot de passe Ponts Paristech refresh";
+	$nexp=NOM_ECOLE." Refresh";
+	$email=MAIL_CONTACT;
+	$subject="Changement mot de passe ".NOM_ECOLE." refresh";
 	$header = "From: ". $nexp . " <" . $email . ">\r\n";
 	$pass_secure=htmlentities($new_pass);
-	$mail_body = "Bonjour,\n\nVoici votre nouveau mot de passe : $pass_secure\nIl est recommandé de le changer rapidement.\n\nCordialement,\n\nl'équipe Ponts Paristech Refresh";
+	$mail_body = "Bonjour,\n\nVoici votre nouveau mot de passe : $pass_secure\nIl est recommandé de le changer rapidement.\n\nCordialement,\n\nl'équipe ".NOM_ECOLE." Refresh";
 	
 	$handle_fic = fopen('mail.txt', 'w+');
 	fputs($handle_fic, $subject);
@@ -284,7 +284,7 @@ function create_account()
 					{
 						if (strlen($pass_1)>5)
 						{
-							if (is_enpc_mail($mail))
+							if (is_ecole_mail($mail))
 							{
 								$hash_mail=sha1($mail);
 								$hash_pass=sha1($pass_1);
@@ -432,13 +432,12 @@ function create_account()
 
 		<br /><br />
 		<p>
-			Une adresse mail ne vous est demand&eacute;e qu\'&agrave; des fins d\'authentification (unicit&eacute; des votes) et pour garantir l\'acc&egrave;s aux seuls &eacute;l&egrave;ves des Ponts. Ne sont conserv&eacute;s 
+			Une adresse mail ne vous est demand&eacute;e qu\'&agrave; des fins d\'authentification (unicit&eacute; des votes) et pour garantir l\'acc&egrave;s aux seuls &eacute;l&egrave;ves de l\'&eacute;cole. Ne sont conserv&eacute;s 
 			que des hashs, et tout est fait pour garantir votre confidentialit&eacute;
 		</p>
 
 			<ul>
-				<li>L\'adresse mail fournie doit-&ecirc;tre une adresse du type "@eleves.enpc.fr"</li>
-				<li>Vous devez utiliser votre adresse longue, "prenom.nom@eleves.enpc.fr"</li>
+				<li>L\'adresse mail fournie doit-&ecirc;tre une adresse '.PREGMATCH_MAIL_HUMAN_READABLE.'</li>
 			</ul>
 
 
@@ -525,7 +524,7 @@ function change_password($forgotten_passw=false)
 	{
 		if ($_POST['form_name']=="mdp_oubli" && $forgotten_passw)
 		{
-			if (isset($_POST["mail"]) && !empty($_POST["mail"])) // On ne vérifie pas le type "x.x@eleves.enpc.fr" pour permettre la gestion de comptes spéciaux (administration, ...)
+			if (isset($_POST["mail"]) && !empty($_POST["mail"])) // On ne vérifie pas le type "x.x@eleves.ecole.fr" pour permettre la gestion de comptes spéciaux (administration, ...)
 			{
 				$default_value_mail=strtolower($_POST['mail']);
 				$new_pass=random_password(8);
@@ -688,7 +687,7 @@ function change_password($forgotten_passw=false)
 				<table class="tab_form">
 					<tr>
 						<td>
-							Adresse mail inscrite (prenom.nom@eleves.enpc.fr) :
+							Adresse mail inscrite (prenom.nom@eleves.ecole.fr) :
 						</td>
 						<td>
 							<input type="text" name="mail" value="'.htmlentities($default_value_mail).'" />
@@ -915,7 +914,7 @@ function delete_account()
 						}
 						else
 						{
-							$retour.='<div class="warning">Erreur lors de la suppression des propositions ; veuillez vous adresser au <a href="mailto:webmaster_ppr@enpc.org">webmaster</a></div>';
+							$retour.='<div class="warning">Erreur lors de la suppression des propositions ; veuillez vous adresser au <a href="mailto:webmaster_ppr@ecole.org">webmaster</a></div>';
 						}
 					}
 					if ($delete_comments)
@@ -927,7 +926,7 @@ function delete_account()
 						}
 						else
 						{
-							$retour.='<div class="warning">Erreur lors de la suppression des commentaires ; veuillez vous adresser au <a href="mailto:webmaster_ppr@enpc.org">webmaster</a></div>';
+							$retour.='<div class="warning">Erreur lors de la suppression des commentaires ; veuillez vous adresser au <a href="mailto:webmaster_ppr@ecole.org">webmaster</a></div>';
 						}
 					}
 					if ($delete_votes)
@@ -939,7 +938,7 @@ function delete_account()
 						}
 						else
 						{
-							$retour.='<div class="warning">Erreur lors de la suppression des votes ; veuillez vous adresser au <a href="mailto:webmaster_ppr@enpc.org">webmaster</a></div>';
+							$retour.='<div class="warning">Erreur lors de la suppression des votes ; veuillez vous adresser au <a href="mailto:webmaster_ppr@ecole.org">webmaster</a></div>';
 						}
 					}
 					

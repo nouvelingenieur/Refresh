@@ -227,17 +227,17 @@ if(isset($_POST) && !(empty($_POST)) && $treat_post)
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
 	
 	<head>
-		<title>Ponts ParisTech Refresh</title>
+		<title><?=NOM_ECOLE?> Refresh</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
-		<meta name="keywords" content="ENPC,Ponts,ParisTech,Refresh,PPR" />
+		<meta name="keywords" content="<?=KEYWORDS?>" />
 		<link rel="stylesheet" type="text/css" href="feuille_style.css" />
 	</head>
 
 	<body>
 	
 		<div id="title_princ">
-			Ponts ParisTech
+			<?=NOM_ECOLE?>
 			<span id="title_princ_second_part">
 				REFRESH
 			</span>	
@@ -270,7 +270,7 @@ if(isset($_POST) && !(empty($_POST)) && $treat_post)
 		</div>
 
 		<p>
-			<a href="?action=go_home"><img src="rep_img/logo_petit.png" alt="Logo" id="logo_p" /></a>
+			<a href="?action=go_home"><img src="rep_img/logo_petit.png" alt="Logo" id="logo_p" height="107" /></a>
 		</p>
 		
 	</body>

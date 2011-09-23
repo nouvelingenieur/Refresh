@@ -1284,7 +1284,7 @@ function display_post()
 				// Affichage vide / d'un cadre de choix de page / d'un avertissement sur le nombre de résultats / selon les cas
 				if ($result_returned)
 				{
-					echo($change_page.'<div class="newsterminator"><hr />Ponts ParisTech REFRESH</div>');
+					echo($change_page.'<div class="newsterminator"><hr />'.NOM_ECOLE.' REFRESH</div>');
 				}
 				else
 				{
@@ -1300,7 +1300,7 @@ function display_post()
 	}
 	else
 	{
-		need_enpc_member_privilege(2);
+		need_ecole_member_privilege(2);
 	}
 }
 

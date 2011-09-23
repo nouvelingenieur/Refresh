@@ -285,7 +285,7 @@ function display_documents()
 				}
 				else
 				{
-					echo($change_page.'<div class="newsterminator"><hr />Ponts ParisTech REFRESH</div>');
+					echo($change_page.'<div class="newsterminator"><hr />'.NOM_ECOLE.' REFRESH</div>');
 				}
 				@mysql_free_result($result);
 			}
@@ -301,7 +301,7 @@ function display_documents()
 	}
 	else
 	{
-		need_enpc_member_privilege(1);
+		need_ecole_member_privilege(1);
 	}
 }
 

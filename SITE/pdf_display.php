@@ -26,22 +26,23 @@
 
 session_start();
 
+include_once("config.php");
 include_once("script_php/pages_secondlevel/tool.php");
 
 $corps='';
 $content='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
 	<head>
-		<title>Ponts ParisTech Refresh</title>
+		<title>'.NOM_ECOLE.' Refresh</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
-		<meta name="keywords" content="ENPC,Ponts,ParisTech,Refresh,PPR" />
+		<meta name="keywords" content="'.KEYWORDS.'" />
 		<link rel="stylesheet" type="text/css" href="feuille_style.css" />';
 
 $success=false;
 $name="";
 
-if (user_privilege_level()>0) // Pour afficher le document, l'utilisateur doit être loggé ou se connecter depuis l'ENPC et avoir accepté les CGU
+if (user_privilege_level()>0) // Pour afficher le document, l'utilisateur doit être loggé ou se connecter depuis l'ecole et avoir accepté les CGU
 {
 	if(is_logged() || (isset($_SESSION['confirmation_agreement']) && $_SESSION['confirmation_agreement']=="ok"))
 	{

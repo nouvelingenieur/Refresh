@@ -33,7 +33,7 @@ function about_nouvelingenieur()
 	<h2>Nouvel Ing&eacute;nieur</h2>
 
 	<p>
-		<a href="http://www.nouvelingenieur.fr/" target="_blank">Le Nouvel Ing&eacute;nieur</a>, partenaire de Ponts ParisTech Refresh, 
+		<a href="http://www.nouvelingenieur.fr/" target="_blank">Le Nouvel Ing&eacute;nieur</a>, partenaire de Refresh, 
 		est un mouvement national &eacute;tudiant lanc&eacute; d&eacute;but 2011 par deux &eacute;l&egrave;ves-ing&eacute;nieurs ENAC. Il vise &agrave; adapter 
 		et faire &eacute;voluer la formation d\'ing&eacute;nieur, notamment gr&acirc;ce aux contributions des &eacute;l&egrave;ves en &eacute;coles.
 		L\'association, qui compte d&eacute;sormais plusieurs dizaines d\'&eacute;tudiants, dont quelques Ponts, a lanc&eacute; une r&eacute;flexion &agrave; 
@@ -52,52 +52,19 @@ function about_ppr()
 
 	$to_print='
 
-	<h1>Bienvenue sur Ponts ParisTech Refresh</h1>
+	<h1>Bienvenue sur '.NOM_ECOLE.' Refresh</h1>
 
 	<p>
-		Ce site a pour but de se faire la voix des &eacute;l&egrave;ves de l\'&Eacute;cole des Ponts ParisTech aupr&egrave;s de l\'administration, afin d\'accompagner le changement dans notre &Eacute;cole.
+		Ce site a pour but de se faire la voix des &eacute;l&egrave;ves aupr&egrave;s de l\'administration, afin d\'accompagner le changement dans l\'&Eacute;ducation.
 	</p>
 
 	<p>
 		Amen&eacute;s &agrave; occuper des postes &agrave; responsabilit&eacute; au c&oelig;ur d\'un monde &eacute;conomique en mouvement, les &eacute;l&egrave;ves sont force de proposition et cela commence par leur scolarit&eacute; 
-		et la vie aux Ponts ! Le lancement de la plateforme au sein de l\'&Eacute;cole &eacute;tant pr&eacute;vu pour la <b>seconde moiti&eacute; d\'octobre</b>, tenez-vous pr&ecirc;ts &agrave; faire entendre votre voix !
-	</p>
-
-	<h2>Le projet et l\'&eacute;quipe</h2>
-
-	<p>
-		Le projet Ponts ParisTech Refresh a &eacute;t&eacute; lanc&eacute; en mars 2011 sur les traces de 
-		<a href="http://www.facebook.com/pages/T%C3%A9l%C3%A9com-Refresh-La-bo%C3%AEte-%C3%A0-id%C3%A9es-de-T%C3%A9l%C3%A9com-ParisTech/108679235875881" target="_blank">Telecom Refresh</a>, un projet similaire couronn&eacute; de succ&egrave;s 
-		lanc&eacute; &agrave; Telecom ParisTech. L\'&eacute;quipe du projet est constitu&eacute;e de :
-	</p>
-
-	<ul>
-		<li>Pierre Simonnin \'011</li>
-		<li>Alexandre Combessie \'012</li>
-		<li>Nicolas Seichepine \'011</li>
-		<li>Sylvain Durand \'012</li>
-		<li>Antoine Derch&eacute; \'011</li>
-		<li>Thibault Duchemin \'013</li>
-		<li>Roshan Valecha \'013</li> 
-	</ul>
-
-	<p>
-		Vous pouvez ';
-
-	if (user_privilege_level()>0)
-	{
-		$to_print.='<a href="mailto:ponts_refresh@enpc.org">nous contacter</a>';
-	}
-	else
-	{
-		$to_print.='nous contacter &agrave; l\'adresse ponts_refresh{at}enpc.org';
-	}
-
-	$to_print.=' pour toute question ou remarque, ou rejoindre notre <a href="http://www.facebook.com/pages/Ponts-ParisTech-Refresh/207608979259601" target="_blank">page facebook</a> pour rester au courant de l\'avancement du projet.
+		et la vie pendant leurs &eacutetudes !
 	</p>
 
 	<p>
-		Le code de la plateforme est libre et disponible <a href="./sourcecode/sourcecode.7z">ici</a>.
+		Le code de la plateforme est libre et disponible <a href="https://github.com/nouvelingenieur/Refresh">ici</a>.
 	</p>';
 
 	echo($to_print);
@@ -108,15 +75,13 @@ function display_userterms()
 {
 	echo('<h1>Conditions d\'utilisation :</h1>
 		<p>
-En m\'inscrivant &agrave; ce service gratuit fourni pas les &eacute;l&egrave;ves de l\'&eacute;cole des
-Ponts ParisTech, je m\'engage :
+En m\'inscrivant &agrave; ce service gratuit fourni pas les &eacute;l&egrave;ves, je m\'engage :
 </p>
 <ul>
 <li>A consid&eacute;rer cette plateforme d\'&eacute;change comme interne &agrave; l\'&eacute;cole,
 et par cons&eacute;quent &agrave; ne pas faire mention de tout ou partie des d&eacute;bats,
 id&eacute;es, votes et document pr&eacute;sents sur la plateforme &agrave; toute personne, hors
-&eacute;l&egrave;ves, enseignants, chercheurs et personnel administratif de l\'&eacute;cole des
-Ponts ParisTech ;</li>
+&eacute;l&egrave;ves, enseignants, chercheurs et personnel administratif de l\'&eacute;cole;</li>
 
 <li>A ne pas reproduire (t&eacute;l&eacute;chargement, impression, copie d\'&eacute;cran,
 copie manuelle...) tout ou partie des documents disponibles en consultation
@@ -147,7 +112,7 @@ r&eacute;putation des personnes concern&eacute;es, tant &eacute;l&egrave;ves qu\
 ou personnels administratifs.</p>
 <p>
 
-L\'&eacute;quipe Ponts ParisTech Refresh
+L\'&eacute;quipe Refresh
 
 		</p>');
 		
