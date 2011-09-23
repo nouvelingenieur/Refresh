@@ -59,7 +59,7 @@ define('LIMIT_MAIL', false); // boolean
 /** Indique les adresses mail à autoriser en expression régulière. */
 define('PREGMATCH_MAIL', '#^([a-z][\-_]?)*[a-z]+\.([a-z][\-_]?)*[a-z]+@eleves\.ecole\.fr$#'); // regular expression 
 /** Indique les adresses mail à autoriser en langage compréhensible. */
-define('PREGMATCH_MAIL_HUMAN_READABLE', 'de type @eleve.ecole.fr'); // regular expression 
+define('PREGMATCH_MAIL_HUMAN_READABLE', 'de type prenom.nom@eleve.ecole.fr'); // regular expression 
 
 
 ?>

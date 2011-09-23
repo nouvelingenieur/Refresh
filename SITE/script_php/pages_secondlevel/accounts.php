@@ -138,7 +138,7 @@ function log_in()
 				<table class="tab_form">
 					<tr>
 						<td>
-							Login (prenom.nom@eleves.ecole.fr) :
+							Login '.((LIMIT_MAIL)?'('.PREGMATCH_MAIL_HUMAN_READABLE.')':'').' :
 						</td>
 						<td>
 							<input type="text" name="login" value="'.htmlentities($login_clair).'" />
@@ -433,12 +433,12 @@ function create_account()
 		<br /><br />
 		<p>
 			Une adresse mail ne vous est demand&eacute;e qu\'&agrave; des fins d\'authentification (unicit&eacute; des votes) et pour garantir l\'acc&egrave;s aux seuls &eacute;l&egrave;ves de l\'&eacute;cole. Ne sont conserv&eacute;s 
-			que des hashs, et tout est fait pour garantir votre confidentialit&eacute;
-		</p>
-
-			<ul>
+			que des hashs, et tout est fait pour garantir votre confidentialit&eacute;.
+		</p>'.((LIMIT_MAIL)?'<ul>
 				<li>L\'adresse mail fournie doit-&ecirc;tre une adresse '.PREGMATCH_MAIL_HUMAN_READABLE.'</li>
-			</ul>
+			</ul>':'').'
+
+			
 
 
 		');
@@ -687,7 +687,7 @@ function change_password($forgotten_passw=false)
 				<table class="tab_form">
 					<tr>
 						<td>
-							Adresse mail inscrite (prenom.nom@eleves.ecole.fr) :
+							Adresse mail inscrite '.((LIMIT_MAIL)?'('.PREGMATCH_MAIL_HUMAN_READABLE.')':'').' :
 						</td>
 						<td>
 							<input type="text" name="mail" value="'.htmlentities($default_value_mail).'" />
