@@ -214,7 +214,6 @@ function mail_confirmation_subscription($mail,$hash_mail,$cconf)
 	fputs($handle_fic, "\n\n\n");
 	fputs($handle_fic, $mail_body);
 	fclose($handle_fic);
-	return true;
 	
 	return(mail($mail, mb_convert_encoding($subject,"ASCII","ISO-8859-1"), mb_convert_encoding($mail_body,"ASCII","ISO-8859-1"), $header));
 }
@@ -226,14 +225,13 @@ function mail_change_password($mail, $new_pass)
 	$subject="Changement mot de passe ".NOM_ECOLE." refresh";
 	$header = "From: ". $nexp . " <" . $email . ">\r\n";
 	$pass_secure=htmlentities($new_pass);
-	$mail_body = "Bonjour,\n\nVoici votre nouveau mot de passe : $pass_secure\nIl est recommandé de le changer rapidement.\n\nCordialement,\n\nl'équipe ".NOM_ECOLE." Refresh";
+	$mail_body = "Bonjour,\n\nVoici votre nouveau mot de passe : $pass_secure\nIl est recommande de le changer rapidement.\n\nCordialement,\n\nl'equipe ".NOM_ECOLE." Refresh";
 	
 	$handle_fic = fopen('mail.txt', 'w+');
 	fputs($handle_fic, $subject);
 	fputs($handle_fic, "\n\n\n");
 	fputs($handle_fic, $mail_body);
 	fclose($handle_fic);
-	return true;
 	
 	return(mail(htmlentities($mail), mb_convert_encoding($subject,"ASCII","ISO-8859-1"), mb_convert_encoding($mail_body,"ASCII","ISO-8859-1"), $header));
 }
