@@ -216,7 +216,7 @@ function mail_confirmation_subscription($mail,$hash_mail,$cconf)
 	fclose($handle_fic);
 	return true;
 	
-	//return(mail($mail, mb_convert_encoding($subject,"ASCII","ISO-8859-1"), mb_convert_encoding($mail_body,"ASCII","ISO-8859-1"), $header));
+	return(mail($mail, mb_convert_encoding($subject,"ASCII","ISO-8859-1"), mb_convert_encoding($mail_body,"ASCII","ISO-8859-1"), $header));
 }
 
 function mail_change_password($mail, $new_pass)
@@ -235,7 +235,7 @@ function mail_change_password($mail, $new_pass)
 	fclose($handle_fic);
 	return true;
 	
-	//return(mail(htmlentities($mail), mb_convert_encoding($subject,"ASCII","ISO-8859-1"), mb_convert_encoding($mail_body,"ASCII","ISO-8859-1"), $header));
+	return(mail(htmlentities($mail), mb_convert_encoding($subject,"ASCII","ISO-8859-1"), mb_convert_encoding($mail_body,"ASCII","ISO-8859-1"), $header));
 }
 
 function create_account()
