@@ -52,7 +52,7 @@ div#title_princ {
 #title_princ_second_part {
 	font-style:italic;
 	font-weight:bold;
-	color:rgb(67,56,230);
+	color:#367add;
 }
 
 #sub_title_princ {
@@ -172,7 +172,7 @@ table#menu td.menu_title_selected a {
 #corps a {
 	text-decoration:none;
 	font-weight:bold;
-	color:rgb(67,56,230);
+	color:#367add;
 }
 
 .footnote {
@@ -226,7 +226,7 @@ table#menu td.menu_title_selected a {
 
 #corps div.success {
 	text-align:center;
-	color:rgb(67,56,230);
+	color:#367add;
 	font-weight:bold;
 	font-style:italic;
 }
@@ -511,7 +511,7 @@ div#account_handling {
 
 div#account_handling a {
 	text-decoration:none;
-	color:rgb(67,56,230);
+	color:#367add;
 	display:block;
 
 }
