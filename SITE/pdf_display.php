@@ -98,7 +98,7 @@ if ($success) // On ajoute le javascript de lecture; NB : le <noscript> dans <he
 				var swfVersionStr = "9.0.124";
 				var xiSwfUrlStr="";
 				var flashvars = { '.
-					  'SwfFile : escape("http://localhost/refresh/pdf_gate.php?document_id='.htmlentities($_GET["document_id"]).'"),'.
+					  'SwfFile : escape("http://'.$_SERVER['HTTP_HOST'].'/pdf_gate.php?document_id='.htmlentities($_GET["document_id"]).'"),'.
 					  'Scale : 0.6, 
 					  ZoomTransition : "easeOut",
 					  ZoomTime : 0.5,

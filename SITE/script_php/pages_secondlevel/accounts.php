@@ -204,7 +204,7 @@ function mail_confirmation_subscription($mail,$hash_mail,$cconf)
 	$subject="Confirmation de votre inscription à ".NOM_ECOLE." refresh";
 	$header = "From: ". $nexp . " <" . $email . ">\r\n";
 
-	$link_deb="http://localhost/refresh/index.php?action=confirm_subscribe";
+	$link_deb="http://".$_SERVER['HTTP_HOST']."/index.php?action=confirm_subscribe";
 	//$link_deb="http://refresh.ecole.org/dev_loc2/index.php?action=confirm_subscribe";
 	
 	$mail_body = "Bonjour,\n\nMerci de cliquer sur le lien suivant pour valider votre inscription : $link_deb&mail=$hash_mail&cconf=$cconf\n\nCordialement,\n\nl'équipe ".NOM_ECOLE." Refresh";
