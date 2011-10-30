@@ -178,3 +178,11 @@ ALTER TABLE `thread`
 --
 ALTER TABLE `vote`
   ADD CONSTRAINT `vote_ibfk_1` FOREIGN KEY (`thread_id`) REFERENCES `thread` (`thread_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+--
+-- Ajout de la categorie par defaut
+--
+
+INSERT INTO `thread_category` (`category_id`, `category_name`) VALUES
+(1, 'Idees Generales');
