@@ -26,10 +26,16 @@ include_once("tool.php");
 include_once("errors.php");
 include_once("votes.php");
 
+// conversion des variables POST en variables SESSION
 function modify_thread_display_filtering()
 {
 	if (isset($_POST['form_name']) && $_POST['form_name']=="thread_display_param")
 	{
+		if(isset($_POST["admin_recherche"]))
+		{
+			$category_choice=$_POST["admin_recherche"];
+			$_SESSION["thread_admin_recherche"]=$category_choice;
+		}
 		if(isset($_POST["category_filter"]))
 		{
 			$category_choice=$_POST["category_filter"];
@@ -632,12 +638,23 @@ function display_post()
 		// Formulaire pour gérer le filtrage/l'ordonnancement des propositions //
 		// ******************************************************************* //
 		
-		// Menu de choix de catégorie
+		
+		// Menu de sélection des idées
 		$tail='<div class="enlarge_lowresol">
 			<form method="post" action="?action=post_filter_change">
 				<table class="tab_form_close">
-					<tr>
-						<td>
+					<tr>';
+					
+		// Champ de recherche
+		$tail.='<td>
+			Recherche :
+		</td>
+		<td>
+			<input type="text" name="admin_recherche" value="'.$_SESSION["thread_admin_recherche"].'">
+		</td>';
+		
+		// Choix de catégorie
+		$tail.='<td>
 							Cat&eacute;gorie :
 						</td>
 						<td>
@@ -665,6 +682,7 @@ function display_post()
 		// Menu de filtrage pour les utilisateurs loggés
 		if(is_logged())
 		{
+			
 			$tail.='<td>
 				Filtre :
 			</td>
@@ -828,15 +846,17 @@ function display_post()
 			// Construction de la requête de rappatriement des propositions //
 			// ************************************************************ //
 			
+			$recherche = "(T.text LIKE '%".mysql_real_escape_string($_SESSION['thread_admin_recherche'])."%' OR T.title LIKE '%".mysql_real_escape_string($_SESSION['thread_admin_recherche'])."%') AND";
+			
 			// Requête de base (deux parties pour prendre en comptes les propositions sans votes)
 			$query_p1="(SELECT T.thread_id, T.rand_prop, T.hash_prop, T.title, T.text, T.date, T.is_valid, T.possibly_name, T.already_mod, G.category_name,
 					SUM(V.vote) AS pro_vote, COUNT(V.vote) AS total_vote
 					FROM thread T, thread_category G, vote V
-					WHERE V.thread_id=T.thread_id AND G.category_id=T.category";
+					WHERE ".$recherche." V.thread_id=T.thread_id AND G.category_id=T.category";
 			$query_p2="(SELECT T.thread_id, T.rand_prop, T.hash_prop, T.title, T.text, T.date, T.is_valid, T.possibly_name, T.already_mod, G.category_name,
 					0 AS pro_vote, 0 AS total_vote
 					FROM thread T, thread_category G 
-					WHERE T.thread_id <> ALL (SELECT thread_id FROM vote) AND G.category_id=T.category";
+					WHERE ".$recherche." T.thread_id <> ALL (SELECT thread_id FROM vote) AND G.category_id=T.category";
 			$query_count="SELECT COUNT(T.thread_id) AS NUM_RES FROM thread T, thread_category G WHERE G.category_id=T.category"; // Requête à part pour déterminer préalablement le nombre de résultats
 			
 			
@@ -1060,7 +1080,7 @@ function display_post()
 			////////////////////////////////////////////////////////
 			// Exécution de la requête et affichage des résultats //
 			////////////////////////////////////////////////////////
-			
+
 			$result=@mysql_query($query);
 			if ($result)
 			{
