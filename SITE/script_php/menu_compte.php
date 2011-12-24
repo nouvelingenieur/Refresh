@@ -28,10 +28,10 @@ if (is_logged())
 {
 	echo('
 	
-	<a href="?action=logout">D&eacute;connexion</a>
-	<a href="?action=change_pass">Changer mon mot de passe</a>
-	<a href="?action=delete_account">D&eacute;sinscription</a>
-	<a href="?action=display_useterms">Conditions d\'utilisation</a>
+	<a href="?action=logout">'.$WORDS['DISCONNECT'].'</a>
+	<a href="?action=change_pass">'.$WORDS['CHANGEPWD'].'</a>
+	<a href="?action=delete_account">'.$WORDS['UNSUBSCRIBE'].'</a>
+	<a href="?action=display_useterms">'.$WORDS['USERCOND'].'</a>
 
 	');
 	
