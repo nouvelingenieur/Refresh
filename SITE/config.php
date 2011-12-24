@@ -69,5 +69,9 @@ define('LIMIT_IP', false); // boolean
 /** Url du VPN. */
 define('URL_VPN', 'http://ecole.fr/accesVPN.htm');
 
+///////////////////////////////////////////////////
+// ** Paramètres de langue. ** //
+///////////////////////////////////////////////////
+define("LANG", 'en');
 
 ?>
