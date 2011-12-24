@@ -50,6 +50,18 @@ function about_nouvelingenieur()
 function about_ppr()
 {
 
+	$result=@mysql_query(sprintf("SELECT COUNT(*) as nb FROM user"));
+	$res = mysql_fetch_assoc($result);
+	$nb_users = $res['nb'];
+	
+	$result=@mysql_query(sprintf("SELECT COUNT(*) as nb FROM thread"));
+	$res = mysql_fetch_assoc($result);
+	$nb_threads = $res['nb'];
+	
+	$result=@mysql_query(sprintf("SELECT COUNT(*) as nb FROM vote"));
+	$res = mysql_fetch_assoc($result);
+	$nb_votes = $res['nb'];
+		
 	$to_print='
 
 	<h1>Bienvenue sur '.NOM_ECOLE.' Refresh</h1>
@@ -61,6 +73,11 @@ function about_ppr()
 	<p>
 		Amen&eacute;s &agrave; occuper des postes &agrave; responsabilit&eacute; au c&oelig;ur d\'un monde &eacute;conomique en mouvement, les &eacute;l&egrave;ves sont force de proposition et cela commence par leur scolarit&eacute; 
 		et la vie pendant leurs &eacutetudes !
+	</p>
+	
+	<p>
+		'.$nb_users.' personnes ont envoy&eacute; '.$nb_threads.' suggestions et enregistr&eacute; '.$nb_votes.' votes.
+		Qu\'en pensez-vous, de votre côt&eacute; ?
 	</p>
 
 	<p>
