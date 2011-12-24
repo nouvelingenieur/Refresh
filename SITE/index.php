@@ -26,6 +26,21 @@ session_start();
 
 include_once("config.php");
 
+/********************************************************************************************************************************/
+// Chargement de la table de la langue
+/********************************************************************************************************************************/
+
+$WORDS = array();
+$file = 'lang/refresh_'.LANG.'.po';
+$file_handle = fopen($file, "r");
+while (!feof($file_handle)) {
+   $line = fgets($file_handle);
+   $explode = explode(' "',$line);
+   $WORDS[$explode[0]] = str_replace('"', '', $explode[1]);
+}
+fclose($file_handle);
+
+
 include_once("script_php/pages_secondlevel/documents.php");
 include_once("script_php/pages_secondlevel/accounts.php");
 include_once("script_php/pages_secondlevel/posts.php");
