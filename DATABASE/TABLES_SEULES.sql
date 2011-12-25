@@ -151,6 +151,7 @@ CREATE TABLE IF NOT EXISTS `vote` (
   `rand_prop` int(16) NOT NULL,
   `hash_prop` varchar(40) NOT NULL,
   `vote` tinyint(1) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`vote_id`),
   KEY `thread_id` (`thread_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
