@@ -15,3 +15,11 @@ college students, +18 years
 similar to google moderator, but can be private
 
 free mobile multiplatform development?
+
+
+TODO list:
+native hello world using sencha touch + phone gap
+wireframes
+informal specifications
+server side
+phone side
