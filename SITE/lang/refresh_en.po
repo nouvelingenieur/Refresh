@@ -1,5 +1,0 @@
-HOME "Home"
-DISCONNECT "Disconnect"
-CHANGEPWD "Change password"
-UNSUBSCRIBE "Unsubscribe"
-USERCOND "Terms of use"

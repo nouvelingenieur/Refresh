@@ -1,6 +1,0 @@
-HOME "Acceuil"
-HOME2 "Acceuil2"
-DISCONNECT "D&eacute;connexion"
-CHANGEPWD "Changer le mot de passe"
-UNSUBSCRIBE "D&eacute;sinscription"
-USERCOND "Conditions d'utilisation"
