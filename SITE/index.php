@@ -287,16 +287,7 @@ if(isset($_POST) && !(empty($_POST)) && $treat_post)
 			</form>
 		</div>
 	</nav>
-	<!--
-	<header>
-		<h1><?=NOM_ECOLE?></h1>
-		<a href="?action=go_home">
-			<img src="rep_img/logo_petit.png" alt="Logo" id="logo_p" height="107" />
-		</a>
-		
-		<p>REFRESH <span>L'innovation en marche</span></p>	
-	</header>
-	-->
+	
 <div id="main">
 	<div class="ym-grid">
 		<div class="ym-g75 ym-gl content">
