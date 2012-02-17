@@ -237,54 +237,97 @@ if(isset($_POST) && !(empty($_POST)) && $treat_post)
 
 -->
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
-	
-	<head>
-		<title><?=NOM_ECOLE?> Refresh</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-		<meta http-equiv="Content-Style-Type" content="text/css" />
-		<meta name="keywords" content="<?=KEYWORDS?>" />
-		<link rel="stylesheet" type="text/css" href="feuille_style.css" />
-	</head>
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="keywords" content="<?=KEYWORDS?>" />
 
-	<body>
+
+	<title><?=NOM_ECOLE?> Refresh</title>
+
+	<!-- Mobile viewport optimisation -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!--[if lte IE 7]>
+	<link href="../yaml/core/iehacks.css" rel="stylesheet" type="text/css" />
+	<![endif]-->
+
+	<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" href="css/style.css">
+
+	<script src="js/libs/modernizr-2.5.2.min.js"></script>
+
+<body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 	
-		<div id="title_princ">
-				<a href="?action=go_home"><img src="rep_img/logo_petit.png" alt="Logo" id="logo_p" height="107" /></a><br />
-			<?=NOM_ECOLE?>
-			<span id="title_princ_second_part">
-				REFRESH
-			</span>	
-			<br />
-			<span id="sub_title_princ">
-				L'innovation en marche
-			</span>
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter)</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter)</a></li>
+</ul>
+<div class="ym-wrapper">
+
+<div class="ym-wbox">
+	<nav id="menu">
+		<div class="ym-hlist" >
+			<ul>
+			<?php include("./script_php/menu_principal.php"); ?>
+			</ul>
+		
+			<form class="ym-searchform">
+				<input class="ym-searchfield" type="search" placeholder="Search..." />
+				<input class="ym-searchbutton" type="submit" value="Search" />
+			</form>
 		</div>
-	
-		<table id="menu">
-			<tr class="menu_margin">
-				<td rowspan="1" colspan="5">
-				</td>
-			</tr>
-			<tr>
-				<?php include("./script_php/menu_principal.php"); ?>
-			</tr>
-			<tr class="menu_margin">
-				<td rowspan="1" colspan="5">
-				</td>
-			</tr>
-		</table>
-
-		<div id="corps">
+	</nav>
+	<!--
+	<header>
+		<h1><?=NOM_ECOLE?></h1>
+		<a href="?action=go_home">
+			<img src="rep_img/logo_petit.png" alt="Logo" id="logo_p" height="107" />
+		</a>
+		
+		<p>REFRESH <span>L'innovation en marche</span></p>	
+	</header>
+	-->
+<div id="main">
+	<div class="ym-column linearize-level-1">
+		<div class="ym-g75 ym-gl content">
 			<?php include("./script_php/corps.php"); ?>
 		</div>
-		
-		<div id="account_handling">
+		<aside class="ym-g25 ym-gr">
+			<div class="box info">
 			<?php include("./script_php/menu_compte.php") ?>
-		</div>
+			</div>
+		</aside>
+	</div>
+</div>
+<footer>
+	
+</footer>
+</div><!-- end ym-wrapper -->
 
-		
-	</body>
+<!-- some scripts -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
 
+<script src="js/plugins.js"></script>
+<script src="js/script.js"></script>
+<script>
+	var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+	(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+	g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+	s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+
+
+</body>
 </html>
