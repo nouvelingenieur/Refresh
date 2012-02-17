@@ -40,8 +40,9 @@
 
 <h4 id="feed_title" tabindex="1">
   <?php echo _('Feed')?>
-  <span class="label"><?php echo _('Settings')?></span>
+  <span class="label"><a href="#" class="feed-settings"><?php echo _('Settings')?></a></span>
 </h4>
+<?php display_post() ?>
 
 <article class="feed_item ym-grid v-grid linearize-level-1" id="1">
   <div class="ym-g25 ym-gl">

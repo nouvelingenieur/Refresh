@@ -27,6 +27,7 @@ include_once("pages_secondlevel/tool.php");
 if (is_logged())
 {
 
+						
 	$email = "$_SESSION[login_c]";
 	$defaultavatar = "img/default-avatar.png";
 	$size = 80;
@@ -38,7 +39,6 @@ if (is_logged())
 	<li><a href="?action=logout">'._('Disconnect').'</a></li>
 	<li><a href="?action=change_pass">'._('Change password').'</a></li>
 	<li><a href="?action=delete_account">'._('Unsubscribe').'</a></li>
-	<li><a href="?action=display_useterms">'._('Terms of use').'</a></li>
 
 	');
 	

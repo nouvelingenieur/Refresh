@@ -626,7 +626,7 @@ function display_post()
 	if ($privileges>1)
 	{		
 		// Titre et messages éventuels
-		echo('<h1>Consultation des propositions :</h1>');
+
 		
 		if(isset($_SESSION['transient_display']))
 		{

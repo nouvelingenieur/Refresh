@@ -73,6 +73,13 @@ form.shareidea label {
 
 /*  NewsFeed  -----------------------------------------------*/
 
+.tab_form_close {
+display:none
+}
+
+a.feed-settings {
+color:#EEE
+}
 h4#feed_title {
 border-bottom : 1px solid #ccc;
 text-align: right
