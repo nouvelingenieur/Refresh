@@ -27,3 +27,101 @@
 
 /* import print layout | Druck-Layout einbinden */
 @import url(yaml/print/print.css);
+
+
+/*  General  -----------------------------------------------*/
+div.clear { clear:both }
+header { background-color : transparent}
+
+.content {
+}
+/*  Header  -----------------------------------------------*/
+
+header#branding a {
+	background: url("../uploads/logo.jpg")no-repeat top center;
+	display:block;
+	text-indent:-9000px;
+	width: 200px;
+	height: 110px;
+}
+
+header#branding div.school { 
+	float:left;
+	width:300px
+}
+
+header#branding div.refresh { 
+	float:right;
+	width:400px
+}
+
+header#branding div.refresh p { 
+	font-size: 15pt
+}
+
+
+form.shareidea input, form.shareidea input#category, form.shareidea textarea {
+	width:95%;
+	margin: 10px !important
+}
+
+
+form.shareidea label {
+	display:none
+}
+
+
+/*  NewsFeed  -----------------------------------------------*/
+
+h4#feed_title {
+border-bottom : 1px solid #ccc;
+text-align: right
+}
+
+.feed_item {
+   margin: 0.5em 0 0.5em 0
+}
+
+
+.feed_item .ym-gbox-left { padding:1em }
+
+.feed_item header h3 { margin:0 }
+.feed_item header .title_block { margin-left : 0.5em;    width: 500px}
+footer.utils { padding:0.5em}
+
+.comments {padding:1.5em}
+.comments textarea { width: 100% }
+.comments form .ym-fbox-button {text-align:right}
+
+
+/*  Sidebar  -----------------------------------------------*/
+
+.widget-title {
+	background-color:#ccc;
+	padding:5px
+}
+
+
+/*  Footer  -----------------------------------------------*/
+
+footer nav, footer nav div.ym-hlist { background: #EEE; text-align:center}
+.ym-hlist ul li a {text-shadow : none}
+p.license { text-align:center; color:#ccc}
+.bottom .sns-links {float:right}
+.bottom nav {float:left}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

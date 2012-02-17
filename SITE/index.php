@@ -275,7 +275,6 @@ if(isset($_POST) && !(empty($_POST)) && $treat_post)
 </ul>
 <div class="ym-wrapper">
 
-<div class="ym-wbox">
 	<nav id="menu">
 		<div class="ym-hlist" >
 			<ul>
@@ -299,20 +298,89 @@ if(isset($_POST) && !(empty($_POST)) && $treat_post)
 	</header>
 	-->
 <div id="main">
-	<div class="ym-column linearize-level-1">
+	<div class="ym-grid">
 		<div class="ym-g75 ym-gl content">
+		  <div class="ym-gbox">
 			<?php include("./script_php/corps.php"); ?>
+		  </div>
 		</div>
 		<aside class="ym-g25 ym-gr">
+		  <div class="ym-gbox">
 			<div class="box info">
 			<?php include("./script_php/menu_compte.php") ?>
 			</div>
+			<div class="info">
+				<div class="box widget">
+					<h4 class="widget-title"><?php echo _('Latest posts')?></h4>
+					<ul>
+						<li>Item 1</li>
+						<li>Item 2</li>
+						<li>Item 3</li>
+						<li>Item 4</li>
+						<li>Item 5</li>
+					</ul>
+				</div>
+				<div class="box widget">
+					<h4 class="box widget-title"><?php echo _('Medias')?></h4>
+					<ul>
+						<li>Item 1</li>
+						<li>Item 2</li>
+						<li>Item 3</li>
+					</ul>
+				</div>
+				<div class="box widget">
+					<h4 class="widget-title"><?php echo _('Most readed')?></h4>
+					<ul>
+						<li>Item 1</li>
+						<li>Item 2</li>
+						<li>Item 3</li>
+					</ul>
+				</div>
+				<div class="box widget">
+					<h4 class="widget-title"><?php echo _('Some links')?></h4>
+					<ul>
+						<li>Item 1</li>
+						<li>Item 2</li>
+						<li>Item 3</li>
+					</ul>
+				</div>
+			</div>
+		  </div>
 		</aside>
 	</div>
 </div>
-<footer>
+<footer class="bottom ym-clearfix">
+   <nav>
+	<div class="ym-hlist">
+	   <ul>
+		
+		<li class="menu_title_selected_first">
+			<a href="?action=go_home">Accueil</a>
+		</li>
+		<li class="menu_title">
+			<a href="?action=display_nouvelingenieur">Le Nouvel Ingénieur</a>
+		</li>
+		<li class="menu_title">
+			<a href="#">FAQ</a>
+		</li>
+		<li class="menu_title">
+			<a href="#">Term of uses</a>
+		</li>
+		<li class="menu_title">
+			<a href="#">Blog</a>
+		</li>
 	
+	   </ul>
+	</div>
+   </nav>
+   <section class="sns-links">
+     <a href="#"> <img src="img/sns/twitter.png" title="Twitter" alt="Twitter"/> </a>
+     <a href="#"> <img src="img/sns/facebook.png" title="Twitter" alt="Twitter"/> </a>
+     <a href="#"> <img src="img/sns/rss.png" title="Twitter" alt="Twitter"/> </a>
+     <a href="#"> <img src="img/sns/email.png" title="Twitter" alt="Twitter"/> </a>
+   </section>
 </footer>
+<p class="license"><small>Copyright (c) le nouvel ingénieur</small></p>
 </div><!-- end ym-wrapper -->
 
 <!-- some scripts -->

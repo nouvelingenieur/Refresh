@@ -48,10 +48,10 @@ else
 {
 	echo('
 	
-	<a href="?action=login">Connexion</a>
-	<a href="?action=lost_ids">Identifiants perdus</a>
-	<a href="?action=create_account">Inscription</a>
-	<a href="?action=display_useterms">Conditions d\'utilisation</a>
+	<a href="?action=login">'._('Connexion').'</a>
+	<a href="?action=lost_ids">'._('Lost your log?').'</a>
+	<a href="?action=create_account">'._('Register').'</a>
+	<a href="?action=display_useterms">'._('Terms of use').'</a>
 
 	');
 }
