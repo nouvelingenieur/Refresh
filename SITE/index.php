@@ -298,7 +298,9 @@ if(isset($_POST) && !(empty($_POST)) && $treat_post)
 		<aside class="ym-g25 ym-gr">
 		  <div class="ym-gbox">
 			<div class="box info">
-			<?php include("./script_php/menu_compte.php") ?>
+			  <ul>
+			  <?php include("./script_php/menu_compte.php") ?>
+			  </ul>
 			</div>
 			<div class="info">
 				<div class="box widget">
@@ -380,6 +382,7 @@ if(isset($_POST) && !(empty($_POST)) && $treat_post)
 
 <script src="js/plugins.js"></script>
 <script src="js/script.js"></script>
+<script src="js/libs/jquery-ui-1.8.17.custom.min.js"></script>
 <script>
 	var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
 	(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];

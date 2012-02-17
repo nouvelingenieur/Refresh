@@ -28,10 +28,10 @@ if (is_logged())
 {
 	echo('
 	
-	<a href="?action=logout">'._('Disconnect').'</a>
-	<a href="?action=change_pass">'._('Change password').'</a>
-	<a href="?action=delete_account">'._('Unsubscribe').'</a>
-	<a href="?action=display_useterms">'._('Terms of use').'</a>
+	<li><a href="?action=logout">'._('Disconnect').'</a></li>
+	<li><a href="?action=change_pass">'._('Change password').'</a></li>
+	<li><a href="?action=delete_account">'._('Unsubscribe').'</a></li>
+	<li><a href="?action=display_useterms">'._('Terms of use').'</a></li>
 
 	');
 	
@@ -46,12 +46,11 @@ if (is_logged())
 }
 else
 {
+	log_in();
 	echo('
-	
-	<a href="?action=login">'._('Connexion').'</a>
-	<a href="?action=lost_ids">'._('Lost your log?').'</a>
-	<a href="?action=create_account">'._('Register').'</a>
-	<a href="?action=display_useterms">'._('Terms of use').'</a>
+	<li><a href="?action=lost_ids">'._('Lost your log?').'</a></li>
+	<li><a href="?action=create_account">'._('Register').'</a></li>
+	<li><a href="?action=display_useterms">'._('Terms of use').'</a></li>
 
 	');
 }
