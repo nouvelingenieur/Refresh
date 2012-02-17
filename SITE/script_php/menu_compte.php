@@ -26,6 +26,13 @@ include_once("pages_secondlevel/tool.php");
 
 if (is_logged())
 {
+
+	$email = "$_SESSION[login_c]";
+	$defaultavatar = "img/default-avatar.png";
+	$size = 80;
+	$grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=" . urlencode( $defaultavatar ) . "&s=" . $size;
+	echo '<img src="'. $grav_url .'" alt="avatar" />';
+
 	echo('
 	
 	<li><a href="?action=logout">'._('Disconnect').'</a></li>
