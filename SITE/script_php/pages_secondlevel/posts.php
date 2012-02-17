@@ -1105,33 +1105,35 @@ function display_post()
 					// Hormis l'auteur ou un administrateur, affichage uniquement si le post a été modéré
 					if ($is_valid || $is_proprio || $privileges>3)
 					{
-						if($need_separator)
+					if($need_separator)
 						{
-							echo('<div class="newsterminator">
-									<hr />
-								</div>');
+							echo('<hr />');
 						}
 						$need_separator=true;
-						// Titre et état de modération
-						echo('<span class="newstitle" id="'.$thread_id_affiche.'">
-								'.htmlentities(stripslashes($row["title"])).' [#'.$thread_id_affiche.']
-							</span>');
+						
+						echo '
+						<article class="feed_item ym-grid v-grid linearize-level-1 id="item-'.$thread_id_affiche.'"">
+						<div class="ym-g25 ym-gl">
+						<div class="ym-gbox-left">
+						';
+						
+						// Etat de modération
 						if ($privileges>3)
 						{
 							if ($already_mod)
 							{
 								if ($is_valid)
 								{
-									echo('<img src="rep_img/modere.png" alt="Mod&eacute;r&eacute;" class="imgtitlenews" />');
+									echo('<img src="img/modere.png" alt="Mod&eacute;r&eacute;" class="imgtitlenews" />');
 								}
 								else
 								{
-									echo('<img src="rep_img/masque.png" alt="Masqu&eacute;" class="imgtitlenews" />');
+									echo('<img src="img/masque.png" alt="Masqu&eacute;" class="imgtitlenews" />');
 								}
 							}
 							else
 							{
-								echo('<img src="rep_img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlenews" />');
+								echo('<img src="img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlenews" />');
 							}
 						}
 						elseif ($is_proprio)
@@ -1140,14 +1142,22 @@ function display_post()
 							{
 								if (!$is_valid)
 								{
-									echo('<img src="rep_img/masque.png" alt="Masqu&eacute;" class="imgtitlenews" />');
+									echo('<img src="img/masque.png" alt="Masqu&eacute;" class="imgtitlenews" />');
 								}
 							}
 							else
 							{
-								echo('<img src="rep_img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlenews" />');
+								echo('<img src="img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlenews" />');
 							}
 						}
+						
+						
+						// Catégories avec images
+						echo('
+						<div class="ym-gbox">
+						<img src="img/placeholder_100x100.gif" alt="icon" class="avatar bordered"/>
+						</div>
+						');
 						
 						// Votes
 						if ($privileges>2) // L'utilisateur peut voter, liens de vote, lien d'annulation le cas échéant
@@ -1155,47 +1165,104 @@ function display_post()
 							echo('<span class="vote">');
 							if ($per_vote>0)
 							{
-								echo('<a href="?action=vote_post&amp;order=0&amp;thread_id='.$thread_id_affiche.'#'.$thread_id_affiche.'"><img src="rep_img/bright_votepro.png" alt="+1" class="imgvote" /></a>');
+								echo('<a href="?action=vote_post&amp;order=0&amp;thread_id='.$thread_id_affiche.'#'.$thread_id_affiche.'"><img src="img/bright_votepro.png" alt="+1" class="imgvote" /></a>');
 							}
 							else
 							{
 								if ($vote_filt) // Le fait de voter chage le contenu de la page affiché, on n'utilise donc pas d'ancre
 								{
-									echo('<a href="?action=vote_post&amp;order=1&amp;thread_id='.$thread_id_affiche.'"><img src="rep_img/pale_votepro.png" alt="+1" class="imgvote" /></a>');
+									echo('<a href="?action=vote_post&amp;order=1&amp;thread_id='.$thread_id_affiche.'"><img src="img/pale_votepro.png" alt="+1" class="imgvote" /></a>');
 								}
 								else
 								{
-									echo('<a href="?action=vote_post&amp;order=1&amp;thread_id='.$thread_id_affiche.'#'.$thread_id_affiche.'"><img src="rep_img/pale_votepro.png" alt="+1" class="imgvote" /></a>');
+									echo('<a href="?action=vote_post&amp;order=1&amp;thread_id='.$thread_id_affiche.'#'.$thread_id_affiche.'"><img src="img/pale_votepro.png" alt="+1" class="imgvote" /></a>');
 								}
 							}
 							
 							if ($per_vote<0)
 							{
-								echo('<a href="?action=vote_post&amp;order=0&amp;thread_id='.$thread_id_affiche.'#'.$thread_id_affiche.'"><img src="rep_img/bright_voteneg.png" alt="-1" class="imgvote" /></a>');
+								echo('<a href="?action=vote_post&amp;order=0&amp;thread_id='.$thread_id_affiche.'#'.$thread_id_affiche.'"><img src="img/bright_voteneg.png" alt="-1" class="imgvote" /></a>');
 							}
 							else
 							{
 								if ($vote_filt) // Le fait de voter chage le contenu de la page affiché, on n'utilise donc pas d'ancre
 								{
-									echo('<a href="?action=vote_post&amp;order=-1&amp;thread_id='.$thread_id_affiche.'"><img src="rep_img/pale_voteneg.png" alt="-1" class="imgvote" /></a>');
+									echo('<a href="?action=vote_post&amp;order=-1&amp;thread_id='.$thread_id_affiche.'"><img src="img/pale_voteneg.png" alt="-1" class="imgvote" /></a>');
 								}
 								else
 								{
-									echo('<a href="?action=vote_post&amp;order=-1&amp;thread_id='.$thread_id_affiche.'#'.$thread_id_affiche.'"><img src="rep_img/pale_voteneg.png" alt="-1" class="imgvote" /></a>');
+									echo('<a href="?action=vote_post&amp;order=-1&amp;thread_id='.$thread_id_affiche.'#'.$thread_id_affiche.'"><img src="img/pale_voteneg.png" alt="-1" class="imgvote" /></a>');
 								}
 							}
 							echo('</span>');
 							
 						}
 						
-						// Contexte
-						echo('<div class="newsundertitle">
-								'.htmlentities(transfo_date($row["date"])).'&nbsp;-&nbsp;'.htmlentities($row["category_name"]));
+						//close-open columns
+						echo ('
+						  </div>
+						    </div>
+						    
+						    
+						    <div class="ym-g75 ym-gr">
+						     <div class="ym-gbox-right ym-clearfix">');
+						     
+						//add gravatar
+						echo ('
+						       <header class="ym-clearfix">
+							 <div class="ym-g20 ym-gl">
+							  <div class="ym-gbox">
+							     <img src="img/placeholder_50x50.gif" alt="icon" class="avatar bordered"/>
+							  </div>
+							 </div>
+						');
+						
+						//start meta 
+						echo ('
+							 <div class="ym-g80 ym-gr">
+							  <div class="ym-gbox">
+							  <p class="meta">
+							   <small>
+							   Posted by :
+						');
+						
+						// name + link to profile
 						if (!empty($row["possibly_name"]))
 						{
-							echo('&nbsp;-&nbsp;'.htmlentities($row["possibly_name"]));
+							echo('<a href="#">'.htmlentities($row["possibly_name"]).'</a>');
 						}
-						echo('</div>
+						
+						// tags
+						echo ('
+							with tags : <a href="#">'.htmlentities($row["category_name"]).'</a>'
+						);
+						
+						//close meta
+						echo('
+						</small>
+						  </p>');
+						
+						// Titre
+						echo('
+						<h3>'.htmlentities(stripslashes($row["title"])).' [#'.$thread_id_affiche.']</h3>');
+						
+						//share sns buttons + close header
+						echo('
+						  <section class="sns"><!-- AddThis Button BEGIN -->
+							<div class="addthis_toolbox addthis_default_style ">
+							<a class="addthis_button_preferred_1"></a>
+							<a class="addthis_button_preferred_2"></a>
+							<a class="addthis_button_preferred_3"></a>
+							</div>
+							<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4f3e39a4223675c7"></script>
+						  </section><!-- AddThis Button END -->
+						 </div><!--gbox -->
+						</div><!--ymg-80 -->
+					       </header>
+					       ');
+						
+						
+						echo('
 						<div class="votebar">');
 						
 						// Etat des votes
@@ -1248,10 +1315,21 @@ function display_post()
 							}
 						}
 						
-						// Corps
-						echo('<div class="newscontent">'.text_display_prepare($row["text"]).'</div>');
+						// Corps du texte
+						echo('<div class="content"><p>'.text_display_prepare($row["text"]).'</p></div>');
+						// utils 
+						echo('<footer class="utils">
+							<p>
+							<small>
+							');
+							
 
-						echo('<div class="newsendlinks">');
+						
+						// Date
+						echo('<div class="newsundertitle">
+							'.htmlentities(transfo_date($row["date"])).'&nbsp;-&nbsp;
+							</div>');
+							
 						if ($is_proprio || $privileges>4) // Administrateurs et propriétaires peuvent éditer et supprimer
 						{
 							echo('
@@ -1295,9 +1373,9 @@ function display_post()
 								}
 							}
 						}
-						
-						// Affichage des commentaires - ferme le div newsendlinks
+						// comments
 						affichage_comments($thread_id,false);
+					echo '</small></footer></article>';
 					}
 				}
 				
