@@ -581,7 +581,7 @@ function affichage_comments($thread_id,$moderation_mode)
 					echo('</span>');		
 					
 					// Etat de modération
-					echo('<img src="rep_img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
+					echo('<img src="img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
 
 					// Corps du commentaire
 					echo('<div class="newscommentcontent">'.text_display_prepare($row["text"]).'</div>');
@@ -660,7 +660,7 @@ function affichage_comments($thread_id,$moderation_mode)
 											<span class="newslinkcomment_inactive">
 												0&nbsp;commentaires
 											</span>
-											<img src="rep_img/roll_arrow_inactive.png" alt="Masquer" class="imglinknews" />
+											<img src="img/roll_arrow_inactive.png" alt="Masquer" class="imglinknews" />
 										</a>
 									</div>
 								</div>');
@@ -672,7 +672,7 @@ function affichage_comments($thread_id,$moderation_mode)
 											<span class="newslinkcomment_roll">
 												1&nbsp;commentaire
 											</span>
-											<img src="rep_img/roll_arrow.png" alt="Masquer" class="imglinknews" />
+											<img src="img/roll_arrow.png" alt="Masquer" class="imglinknews" />
 										</a>
 									</div>
 								</div>');
@@ -684,7 +684,7 @@ function affichage_comments($thread_id,$moderation_mode)
 											<span class="newslinkcomment_roll">
 												'.htmlentities($row["NB_COMMENT"]).'&nbsp;commentaires
 											</span>
-											<img src="rep_img/roll_arrow.png" alt="Masquer" class="imglinknews" />
+											<img src="img/roll_arrow.png" alt="Masquer" class="imglinknews" />
 										</a>
 									</div>
 								</div>');
@@ -697,7 +697,7 @@ function affichage_comments($thread_id,$moderation_mode)
 										<span class="newslinkcomment_roll">
 											?&nbsp;commentaires
 										</span>	
-										<img src="rep_img/roll_arrow.png" alt="Masquer" class="imglinknews" />
+										<img src="img/roll_arrow.png" alt="Masquer" class="imglinknews" />
 									</a>
 								</div>
 							</div>');
@@ -728,16 +728,16 @@ function affichage_comments($thread_id,$moderation_mode)
 								{
 									if ($is_valid)
 									{
-										echo('<img src="rep_img/modere.png" alt="Mod&eacute;r&eacute;" class="imgtitlecomment" />');
+										echo('<img src="img/modere.png" alt="Mod&eacute;r&eacute;" class="imgtitlecomment" />');
 									}
 									else
 									{
-										echo('<img src="rep_img/masque.png" alt="Masqu&eacute;" class="imgtitlecomment" />');
+										echo('<img src="img/masque.png" alt="Masqu&eacute;" class="imgtitlecomment" />');
 									}
 								}
 								else
 								{
-									echo('<img src="rep_img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
+									echo('<img src="img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
 								}
 							}
 							elseif ($is_proprio)
@@ -746,12 +746,12 @@ function affichage_comments($thread_id,$moderation_mode)
 								{
 									if (!$is_valid)
 									{
-										echo('<img src="rep_img/masque.png" alt="Masqu&eacute;" class="imgtitlecomment" />');
+										echo('<img src="img/masque.png" alt="Masqu&eacute;" class="imgtitlecomment" />');
 									}
 								}
 								else
 								{
-									echo('<img src="rep_img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
+									echo('<img src="img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
 								}
 							}
 							
@@ -869,7 +869,7 @@ function affichage_comments($thread_id,$moderation_mode)
 										<span class="newslinkcomment_inactive">
 											0&nbsp;commentaires
 										</span>
-										<img src="rep_img/unroll_arrow_inactive.png" alt="Afficher" class="imglinknews" />
+										<img src="img/unroll_arrow_inactive.png" alt="Afficher" class="imglinknews" />
 									</a>
 								</div>
 							</div>');
@@ -881,7 +881,7 @@ function affichage_comments($thread_id,$moderation_mode)
 										<span class="newslinkcomment_unroll">
 											1&nbsp;commentaire
 										</span>
-										<img src="rep_img/unroll_arrow.png" alt="Afficher" class="imglinknews" />
+										<img src="img/unroll_arrow.png" alt="Afficher" class="imglinknews" />
 									</a>
 								</div>
 							</div>');
@@ -893,7 +893,7 @@ function affichage_comments($thread_id,$moderation_mode)
 										<span class="newslinkcomment_unroll">
 											'.htmlentities($row["NB_COMMENT"]).'&nbsp;commentaires
 										</span>
-										<img src="rep_img/unroll_arrow.png" alt="Afficher" class="imglinknews" />
+										<img src="img/unroll_arrow.png" alt="Afficher" class="imglinknews" />
 									</a>
 								</div>
 							</div>');
