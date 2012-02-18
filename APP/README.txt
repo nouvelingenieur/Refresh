@@ -23,3 +23,7 @@ wireframes
 informal specifications
 server side
 phone side
+
+
+Folders:
+- wireframe: set of wireframe (clickable html and pictures) for the Refresh app
