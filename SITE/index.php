@@ -27,18 +27,17 @@ session_start();
 include_once("config.php");
 
 /********************************************************************************************************************************/
-// Chargement de la table de la langue
+// INITIALIAZING LOCALIZATION (LANGUAGES) - INITIALISATION DE LA LOCALISATION (LANGUES)
 /********************************************************************************************************************************/
 
-$WORDS = array();
-$file = 'lang/refresh_'.LANG.'.po';
-$file_handle = fopen($file, "r");
-while (!feof($file_handle)) {
-   $line = fgets($file_handle);
-   $explode = explode(' "',$line);
-   $WORDS[$explode[0]] = str_replace('"', '', $explode[1]);
-}
-fclose($file_handle);
+putenv("LC_ALL=".LANG);
+setlocale(LC_ALL, LANG);
+bindtextdomain("messages", "locale");
+textdomain("messages");
+
+/********************************************************************************************************************************/
+// ADDING OTHER MODULES - AJOUT DES AUTRES MODULES
+/********************************************************************************************************************************/
 
 
 include_once("script_php/pages_secondlevel/documents.php");
