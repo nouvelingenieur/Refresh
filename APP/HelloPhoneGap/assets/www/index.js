@@ -1,7 +1,6 @@
 Ext.setup({
 	onReady: function() {
 	
-<<<<<<< HEAD
 		new Ext.Application({
 			launch: function() {
 				new Ext.Panel({
@@ -56,15 +55,3 @@ Ext.setup({
 			});
 	}
 });
-=======
-		 new Ext.Application({
-                launch: function() {
-                    new Ext.Panel({
-                        fullscreen: true,
-                        html: 'Hello Worlda!'
-                    });
-                }
-            });
-    }
-});
->>>>>>> 2fb90bbc82ba8d06a46f8e0ba6a949b53cc6b687
