@@ -5,7 +5,7 @@ Ext.setup({
                 launch: function() {
                     new Ext.Panel({
                         fullscreen: true,
-                        html: 'Hello World!'
+                        html: 'Hello Worlda!'
                     });
                 }
             });
