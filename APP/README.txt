@@ -27,3 +27,4 @@ phone side
 
 Folders:
 - wireframe: set of wireframe (clickable html and pictures) for the Refresh app
+- HelloPhoneGap:huge folder with everything to develop the app
