@@ -78,6 +78,11 @@ while( $row = $result->fetch(PDO::FETCH_ASSOC) ) {
 $array[] = $row;
 }
 
+array_walk_recursive($array, function(&$item, $key) {
+        if(is_string($item)) {
+            $item = htmlentities($item);
+        }
+    });
 
 echo "Ext.util.JSONP.callback(".json_encode(array("data" => $array)).")";
 
