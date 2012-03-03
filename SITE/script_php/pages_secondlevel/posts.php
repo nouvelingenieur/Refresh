@@ -22,9 +22,6 @@
 	Contact : nicolas.seichepine.org/?action=contact
 */
 
-include_once("tool.php");
-include_once("errors.php");
-include_once("votes.php");
 include_once("actions.php");
 
 // conversion des variables POST en variables SESSION

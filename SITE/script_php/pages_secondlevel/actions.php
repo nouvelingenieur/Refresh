@@ -22,6 +22,10 @@
 	Contact : nicolas.seichepine.org/?action=contact
 */
 
+include_once("tool.php");
+include_once("errors.php");
+include_once("votes.php");
+
 /**
  * class for action functions
  *   
@@ -61,7 +65,7 @@ class action {
  *
  * @param  string    $title  title of the idea
  * @param  string    $message message of the idea
- * @param  string    $anonymization  'on' or 'off' tells if idea is to be anonymized
+ * @param  string    $anonymization tells if idea is to be anonymized
  * @param  integer   $category id of the category for the idea
  * @param  string    $login  login of the poster
  * @param  integer   $valid says if the idea needs to be moderated (default 0 = needs moderation)
@@ -131,7 +135,7 @@ function post($title,$message,$anonymization,$category,$login,$valid=0) {
 			$name_print=mysql_real_escape_string(construct_name_from_session());
 		}
 
-		if (@mysql_query("INSERT INTO `thread` (`thread_id`,`rand_prop`,`hash_prop`,`title`,`text`,`date`,`category`,`is_valid`,`possibly_name`) VALUES (NULL, '$rand_prop', '$hash_prop','$title_prec_sec','$text_prec_sec',CURRENT_TIMESTAMP,'$cate_prec_sec',0,'$name_print')"))
+		if (@mysql_query("INSERT INTO `thread` (`thread_id`,`rand_prop`,`hash_prop`,`title`,`text`,`date`,`category`,`is_valid`,`possibly_name`) VALUES (NULL, '$rand_prop', '$hash_prop','$title_prec_sec','$text_prec_sec',CURRENT_TIMESTAMP,'$cate_prec_sec',$valid,'$name_print')"))
 		{
 			$action->add_success(_('The idea was added to Refresh and now has to be moderated'));
 			$action->result = True;
