@@ -9,8 +9,6 @@ SITE/api/idea.php
 
 Input
 
-integer n : number of ideas per page 
-integer p : page for pagination purposes 
 string q : search query
 integer c : id of the category to search (if unspecified, then all categories)
 
@@ -31,8 +29,6 @@ header('Content-type: application/json');
 include_once("./mysql_connect.php");
 
 /* INPUT */
-$n = set_value('n',5);
-$p = set_value('p',1);
 $q = set_value('q','');
 $c = set_value('c',0);
 
@@ -67,8 +63,7 @@ $sql = "SELECT
 	date as IDEA_DATE, 
 	possibly_name as IDEA_AUTHOR 
 FROM thread
-".$WHERE."
-LIMIT ".$n;
+".$WHERE;
 
 $result = $dbh->query($sql);
 
