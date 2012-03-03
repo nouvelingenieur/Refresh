@@ -7,6 +7,21 @@ Ext.setup({
 	onReady: function() {
 		var searchedString = '';
 		
+		Ext.util.JSONP.request({
+			url: 'http://refresh.nouvelingenieur.fr/api/categories.php',
+			callbackKey: 'callback',
+			params: {
+			},
+			callback: function(result) {
+				var categoriesList = Array();
+				categoriesList.push({text: 'All categories',  value: 0});
+				for(i=0;i<result.data.length ;i++){
+					categoriesList.push({text: result.data[i].CATEGORY_NAME,  value: result.data[i].CATEOGRY_ID});
+				}
+				searchPanel.getDockedComponent(0).getComponent('categoryList').setOptions(categoriesList);
+			}
+		});
+		
 		// top toolbar
 		var search_items = [{
 			xtype: 'searchfield',
@@ -18,9 +33,9 @@ Ext.setup({
 		{
 			xtype: 'selectfield',
 			name: 'Category',
+			id: 'categoryList',
+			placeHolder: 'Categories',
 			options: [
-				{text: 'Any category',  value: '-1'},
-				{text: 'Category 1', value: '1'}
 			]
 		},
 		{
@@ -32,14 +47,14 @@ Ext.setup({
 					url: 'http://refresh.nouvelingenieur.fr/api/ideas.php',
 					callbackKey: 'callback',
 					params: {
-						q: viewport.getDockedComponent(0).getComponent('q').getValue(),
-						n: '10'
+						q: searchPanel.getDockedComponent(0).getComponent('q').getValue(),
+						c: searchPanel.getDockedComponent(0).getComponent('categoryList').getValue()
 					},
 					callback: function(result) {
-						searchedString = viewport.getDockedComponent(0).getComponent('q').getValue();
+						searchedString = searchPanel.getDockedComponent(0).getComponent('q').getValue();
 						groupingBase.store.removeAll();
 						for(i=0;i<result.data.length ;i++){
-							groupingBase.store.add([{ideaName: result.data[i].IDEA_TITLE}]);
+							groupingBase.store.add([{ideaId:result.data[i].IDEA_ID, ideaCategoryId:result.data[i].IDEA_CATEGORY_ID, ideaName: result.data[i].IDEA_TITLE, ideaText: result.data[i].IDEA_TEXT, ideaAuthor: result.data[i].IDEA_AUTHOR, ideaDate: result.data[i].IDEA_DATE}]);
 						}
 					}
 				});
@@ -47,7 +62,14 @@ Ext.setup({
 		}]
 		
 		Ext.regModel('Idea', {
-			fields: ['ideaName']
+			fields: ['ideaId', 'ideaCategoryId', 'ideaName', 'ideaText', 'ideaAuthor', 'ideaDate']
+		});
+		
+		var ideaStore = new Ext.data.Store({
+			model: 'Idea',
+			data: [],
+			pageSize: 5,
+			clearOnPageLoad: false
 		});
 
 		var groupingBase = {
@@ -59,39 +81,21 @@ Ext.setup({
 			onItemDisclosure: {
 				scope: 'test',
 				handler: function(record, btn, index) {
-					alert('Disclose more info for ' + record.get('ideaName'));
+					//alert('Disclose more info for ' + record.get('ideaName'));
+					Ext.getCmp('ideaPanel').update(record.data);
+					Ext.getCmp('thePanel').setActiveItem(1,{type:'slide',direction:'left'});
 				}
 			},
-			store: new Ext.data.JsonStore({
-				model: 'Idea',
-				data: [],
-				proxy: {
-					type: 'ajax',
-					url: 'http://refresh.nouvelingenieur.fr/api/ideas.php',
-					callbackKey: 'callback',
-					params: {
-						n: '10',
-						q: searchedString
-					},
-					callback: function(result) {
-						groupingBase.store.removeAll();
-						for(i=0;i<result.data.length ;i++){
-							groupingBase.store.add([{ideaName: result.data[i].IDEA_TITLE}]);
-						}
-					}
-				}
-			})
+			store: ideaStore
 		};
 		
-		paging = new Ext.plugins.ListPagingPlugin({});
+		var searchResultList = new Ext.List(
+			Ext.apply(groupingBase, {fullscreen: true})
+		);
 		
-		var searchResultList = new Ext.List(Ext.apply(groupingBase, {
+		var searchPanel = new Ext.Panel({
 			fullscreen: true,
-			plugins:[paging]
-		}));
-		
-		var viewport = new Ext.Panel({
-			fullscreen: true,
+			id:'searchPanel',
 			dockedItems: [{
 				xtype: 'toolbar',
 				dock: 'top',
@@ -101,6 +105,22 @@ Ext.setup({
 				html: '<p></p>',
 				dockedItems: searchResultList
 			}]
+		});
+		
+		var ideaPanel = new Ext.Panel({
+			fullscreen: true,
+			id:'ideaPanel',
+			scroll:'vertical',
+			tpl:'<h1>{ideaName} by {ideaAuthor}, {ideaDate}</h1><div>{ideaText}</div>'
+		});
+		
+		var panel =  new Ext.Panel({
+			fullscreen: true,
+			id:'thePanel',
+			layout: 'card',
+			cardSwitchAnimation:'slide',
+			scroll:'vertical',
+			 items:[searchPanel, ideaPanel]
 		});
 	}
 });
