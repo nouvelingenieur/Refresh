@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Refresh\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-03 18:38-0800\n"
-"PO-Revision-Date: 2012-03-03 18:39-0800\n"
+"POT-Creation-Date: 2012-03-03 23:34-0800\n"
+"PO-Revision-Date: 2012-03-03 23:34-0800\n"
 "Last-Translator: Thibaut\n"
 "Language-Team: Refresh <refresh@nouvelingenieur.fr>\n"
 "MIME-Version: 1.0\n"
@@ -11,6 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
 "X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SearchPath-0: C:\\Users\\TLabarre\\Refresh\\SITE\n"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/menu_compte.php:31
@@ -52,4 +53,11 @@ msgstr "The idea was added to Refresh and now has to be moderated"
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/actions.php:145
 msgid "The idea could not be added due to a database error"
 msgstr "The idea could not be added due to a database error"
+
+#: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/comments.php:905
+#, php-format
+msgid "%d comment"
+msgid_plural "%d comments"
+msgstr[0] "%d comment"
+msgstr[1] "%d comments"
 
