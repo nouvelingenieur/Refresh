@@ -2,32 +2,54 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Refresh\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-05 21:24-0800\n"
-"PO-Revision-Date: 2012-02-05 21:25-0800\n"
-"Last-Translator: Thibaut Labarre <asimov4@gmail.com>\n"
-"Language-Team:  <refresh-equipe@googlegroups.com>\n"
-"Language: \n"
+"POT-Creation-Date: 2012-03-03 18:38-0800\n"
+"PO-Revision-Date: 2012-03-03 18:39-0800\n"
+"Last-Translator: Thibaut\n"
+"Language-Team: Refresh <refresh@nouvelingenieur.fr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
 "X-Poedit-Basepath: .\n"
-"X-Poedit-Language: en_EN\n"
-"X-Poedit-SearchPath-0: /home/asimov4/Refresh\n"
+"X-Poedit-SearchPath-0: C:\\Users\\TLabarre\\Refresh\\SITE\n"
 
-#: /home/asimov4/Refresh/SITE/script_php/menu_compte.php:31
+#: C:\Users\TLabarre\Refresh\SITE/script_php/menu_compte.php:31
 msgid "Disconnect"
 msgstr "Disconnect"
 
-#: /home/asimov4/Refresh/SITE/script_php/menu_compte.php:32
+#: C:\Users\TLabarre\Refresh\SITE/script_php/menu_compte.php:32
 msgid "Change password"
 msgstr "Change password"
 
-#: /home/asimov4/Refresh/SITE/script_php/menu_compte.php:33
+#: C:\Users\TLabarre\Refresh\SITE/script_php/menu_compte.php:33
 msgid "Unsubscribe"
 msgstr "Unsubscribe"
 
-#: /home/asimov4/Refresh/SITE/script_php/menu_compte.php:34
+#: C:\Users\TLabarre\Refresh\SITE/script_php/menu_compte.php:34
 msgid "Terms of use"
 msgstr "Terms of use"
+
+#: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/actions.php:91
+msgid "Incorrect title"
+msgstr "Incorrect title"
+
+#: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/actions.php:99
+msgid "Incorrect message"
+msgstr "Incorrect message"
+
+#: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/actions.php:110
+msgid "Incorrect anonymization value"
+msgstr "Incorrect anonymization value"
+
+#: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/actions.php:118
+msgid "Incorrect category"
+msgstr "Incorrect category"
+
+#: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/actions.php:140
+msgid "The idea was added to Refresh and now has to be moderated"
+msgstr "The idea was added to Refresh and now has to be moderated"
+
+#: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/actions.php:145
+msgid "The idea could not be added due to a database error"
+msgstr "The idea could not be added due to a database error"
 
