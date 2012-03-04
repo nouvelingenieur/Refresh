@@ -20,13 +20,12 @@
 	Contact : nicolas.seichepine.org/?action=contact
 */
 
-
 -- phpMyAdmin SQL Dump
 -- version 3.4.8
 -- http://www.phpmyadmin.net
 --
 -- Host: mysql
--- Generation Time: Mar 04, 2012 at 02:09 AM
+-- Generation Time: Mar 04, 2012 at 03:24 AM
 -- Server version: 5.1.39
 -- PHP Version: 5.3.6-11
 
@@ -168,6 +167,13 @@ CREATE TABLE IF NOT EXISTS `thread_category` (
   PRIMARY KEY (`category_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
+--
+-- Dumping data for table `thread_category`
+--
+
+INSERT INTO `thread_category` (`category_id`, `category_name`) VALUES
+(1, 'Idees Generales');
+
 -- --------------------------------------------------------
 
 --
@@ -183,7 +189,14 @@ CREATE TABLE IF NOT EXISTS `user` (
   `privileges` int(4) unsigned NOT NULL DEFAULT '3',
   `is_valid` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=34 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`user_id`, `hash_mail`, `hash_pass`, `hash_conf`, `inscription_date`, `privileges`, `is_valid`) VALUES
+(34, 'd033e22ae348aeb5660fc2140aec35850c4da997', '26b56c1bdfb048c3e46419fde332bab76deb2cd3', '08da1d8d8d11608f7ac33e49cf1d3b876cf482a4', '2012-03-04 02:17:10', 5, 1);
 
 -- --------------------------------------------------------
 
@@ -262,10 +275,3 @@ ALTER TABLE `vote_comment`
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
-
---
--- Ajout de la categorie par defaut
---
-
-INSERT INTO `thread_category` (`category_id`, `category_name`) VALUES
-(1, 'Idees Generales');
