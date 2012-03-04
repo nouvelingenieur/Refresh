@@ -119,22 +119,22 @@ function moderate_post() // Attention, générique, s'applique et aux posts et a
 			{
 				if ($decision==1)
 	            {
-	                $query=sprintf("UPDATE thread SET is_valid=1, already_mod=1 WHERE thread_id='%s'",mysql_real_escape_string($thread_id));
+	                $query=sprintf("UPDATE thread SET is_valid=1, already_mod=1, chaine_moderation=''  WHERE thread_id='%s'",mysql_real_escape_string($thread_id));
 	            }
 	            elseif ($decision==0)
 	            {
-	                $query=sprintf("UPDATE thread SET is_valid=0, already_mod=1 WHERE thread_id='%s'",mysql_real_escape_string($thread_id));
+	                $query=sprintf("UPDATE thread SET is_valid=0, already_mod=1, chaine_moderation=''  WHERE thread_id='%s'",mysql_real_escape_string($thread_id));
 	            }
 			}
 			else // L'ordre s'applique à un commentaire
 			{
 				if ($decision==1)
 	            {
-	                $query=sprintf("UPDATE comment SET is_valid=1, already_mod=1 WHERE comment_id='%s'",mysql_real_escape_string($comment_id));
+	                $query=sprintf("UPDATE comment SET is_valid=1, already_mod=1, chaine_moderation=''  WHERE comment_id='%s'",mysql_real_escape_string($comment_id));
 	            }
 	            elseif ($decision==0)
 	            {
-	                $query=sprintf("UPDATE comment SET is_valid=0, already_mod=1 WHERE comment_id='%s'",mysql_real_escape_string($comment_id));
+	                $query=sprintf("UPDATE comment SET is_valid=0, already_mod=1, chaine_moderation=''  WHERE comment_id='%s'",mysql_real_escape_string($comment_id));
 	            }
 			}
 			
@@ -147,7 +147,16 @@ function moderate_post() // Attention, générique, s'applique et aux posts et a
                 if (@mysql_query($query)) // Exécution de la commande
                 {   
                     $_SESSION['transient_display']='<div class="success">Commande de mod&eacute;ration effectu&eacute;e</div>';
-                }
+					if ($comment_id>0) // On a modéré un commentaire, il faut mettre à jour les dates pour le thread associé
+					{
+						$query_p1=@mysql_query(sprintf("SELECT thread_id FROM comment WHERE comment_id='%s'",mysql_real_escape_string($comment_id)));
+						if ($query_p1 && $res_p1=mysql_fetch_assoc($query_p1))
+						{
+							$clean_tid=mysql_real_escape_string($res_p1["thread_id"]);
+							@mysql_query(sprintf("UPDATE thread SET datecom=(SELECT IF(ISNULL(MAX( date )),'0000-00-00',MAX( date )) FROM comment WHERE thread_id='%s' AND is_valid=1) WHERE thread_id='%s'",$clean_tid,$clean_tid));
+						}
+					}
+				}
                 else
                 {
                     $_SESSION['transient_display']='<div class="warning">Erreur durant la commande de mod&eacute;ration</div>';
@@ -160,6 +169,49 @@ function moderate_post() // Attention, générique, s'applique et aux posts et a
         $_SESSION['transient_display']='<div class="warning">Vous ne disposez pas des droits pour mod&eacute;rer</div>';
     }
 }
+
+function moderate_mail() // Volontairement : pas besoin de droits spécifiques (mais d'avoir reçu le mail avec la chaîne de confirmation)
+{
+	echo('<h1>Système de modération par mail :</h1>');
+	$success=false;
+	if (isset($_GET['type']) && isset($_GET['id']) && isset($_GET['cconf']))
+	{
+		$request="";
+		$marqu_comm=false;
+		switch($_GET['type'])
+		{
+			case 'comment':
+				$request=sprintf("UPDATE comment SET is_valid=1, already_mod=1, chaine_moderation='' WHERE comment_id='%s' AND chaine_moderation='%s'",mysql_real_escape_string($_GET['id']),sha1($_GET['cconf']));
+				$marqu_comm=true;				
+				break;
+			case 'proposition':
+				$request=sprintf("UPDATE thread SET is_valid=1, already_mod=1, chaine_moderation='' WHERE thread_id='%s' AND chaine_moderation='%s'",mysql_real_escape_string($_GET['id']),sha1($_GET['cconf']));
+				break;
+		}
+		if (!empty($request))
+		{
+			@mysql_query($request);
+			if (mysql_affected_rows()>0)
+			{
+				$success=true;
+				if ($marqu_comm)
+				{
+					$query_p1=@mysql_query(sprintf("SELECT thread_id FROM comment WHERE comment_id='%s'",mysql_real_escape_string($_GET['id'])));
+					if ($query_p1 && $res_p1=mysql_fetch_assoc($query_p1))
+					{
+						$clean_tid=mysql_real_escape_string($res_p1["thread_id"]);
+						@mysql_query(sprintf("UPDATE thread SET datecom=(SELECT IF(ISNULL(MAX( date )),'0000-00-00',MAX( date )) FROM comment WHERE thread_id='%s' AND is_valid=1) WHERE thread_id='%s'",$clean_tid,$clean_tid));
+					}
+				}
+			}	
+		}
+	}
+	if ($success)
+		echo('<div class="success">Commande de mod&eacute;ration effectu&eacute;e</div>');
+	else
+		echo('<div class="warning">Erreur durant la commande de mod&eacute;ration - lien invalide</div>');
+}
+
 
 function change_post_confidentiality_status() // Attention, générique, s'applique et aux posts et aux commentaires
 {
@@ -432,7 +484,7 @@ function new_post()
 		// Le formulaire a été validé
 		if (isset($_POST['form_name']) && $_POST['form_name']=="create_thread")
 		{
-			$action = post($_POST["title"],$_POST["message"],$_POST["anonymization"],$_POST["category"],$_SESSION['login_c']);
+			$action = post(trim($_POST["title"]),trim($_POST["message"]),$_POST["anonymization"],$_POST["category"],$_SESSION['login_c']);
 			$action->echo_warnings();
 			$action->echo_successes();
 			if($action->result) {

@@ -78,6 +78,14 @@ if (isset($_GET["action"]) && is_string($_GET["action"]))
 			vote_post();
 			header('Location:index.php?action=display_post');
 			break;
+		case "vote_comment":
+			$treat_post=false;
+			vote_comment();
+			if (!empty($balise))
+				header('Location:index.php?action=display_post'.(isset($_GET['unique'])?'&unique='.$_GET['unique']:'').'#'.$balise); // Maintien de la hauteur dans la page
+			else
+				header('Location:index.php?action=display_post'.(isset($_GET['unique'])?'&unique='.$_GET['unique']:''));
+			break;
 		case "accept_cgu":
 			$treat_post=false;
 			$_SESSION['confirmation_agreement']="ok";

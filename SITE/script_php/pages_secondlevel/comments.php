@@ -49,7 +49,7 @@ function new_comment()
  
 			if ($check_1)
 			{
-				$text_prec=$_POST["message"];
+				$text_prec=trim($_POST["message"]);
 			}
 			else
 			{
@@ -78,6 +78,7 @@ function new_comment()
 					}
 					else
 					{
+						$text_back=$text_prec;
 						$text_prec=mysql_real_escape_string($text_prec);
 						$rand_prop=mt_rand(0,65535);
 						$hash_prop=sha1($_SESSION['login_c'].$rand_prop); // Anonymat relatif, car nombre d'adresses mails élèves dans l'école limité...
@@ -90,10 +91,22 @@ function new_comment()
 						{
 							$name_print=mysql_real_escape_string(construct_name_from_session());
 						}
-						if (@mysql_query("INSERT INTO `comment` (`comment_id`,`thread_id`,`rand_prop`,`hash_prop`,`text`,`date`,`is_valid`,`possibly_name`) VALUES (NULL,'$thread_id','$rand_prop','$hash_prop','$text_prec',CURRENT_TIMESTAMP,0,'$name_print')"))
+						$chaine_conf=random_password(40);
+						$chaine_conf_hash=sha1($chaine_conf);
+						if (@mysql_query("INSERT INTO `comment` (`comment_id`,`thread_id`,`rand_prop`,`hash_prop`,`text`,`date`,`is_valid`,`possibly_name`,`chaine_moderation`) VALUES (NULL,'$thread_id','$rand_prop','$hash_prop','$text_prec',CURRENT_TIMESTAMP,0,'$name_print','$chaine_conf_hash')"))
 						{
 							$_SESSION['transient_display']='<div class="success">Commentaire correctement plac&eacute; en attente de mod&eacute;ration</div>';
 							$succes_func=true;
+							$comment_id=mysql_insert_id();
+							/*
+							$nexp="Ponts ParisTech Refresh";
+							$email="webmaster_refresh@enpc.org";
+							$subject="Modération - nouveau commentaire";
+							$header = "From: ". $nexp . " <" . $email . ">\r\n";
+							$text_backm=stripslashes($text_back);
+							$mail_body =$mail_body = "Bonjour,\n\nUn nouveau commentaire a été ajouté en réponse à la proposition #$thread_id [http://refresh.enpc.org/index.php?action=display_post&unique=$thread_id]. Voici son contenu :\n\n****************\n$text_backm\n****************\n\nVous pouvez approuver ce commentaire dès maintenant en vous rendant à l'adresse http://refresh.enpc.org/?action=moderation_mail&type=comment&id=$comment_id&cconf=$chaine_conf\n\nCordialement,\n\nle site Refresh";
+							file_put_contents('fichier.tmp.txt',$subject."\n\n\n\n".$mail_body);
+							*/
 						}
 						else
 						{
@@ -115,7 +128,7 @@ function new_comment()
         }
 		if(!$succes_func)
 		{
-			$_SESSION["text_new_comment_rest"]=$text_prec;
+			$_SESSION["text_new_comment_rest"]=$text_back;
 			if (!empty($anon_prec))
 			{
 				$_SESSION["text_anonymous_rest"]=1;
@@ -163,7 +176,7 @@ function deletion()
 				{
 					$row=mysql_fetch_assoc($result);
 					$id=$row["comment_id"];
-					$mess_user=$row["text"];
+					$mess_user=trim($row["text"]);
 					$is_prop=check_property($row["rand_prop"],$row["hash_prop"]);
 					@mysql_free_result($result);	
 				}
@@ -228,6 +241,13 @@ function deletion()
 							{
 								echo('<div class="success">Proposition correctement supprim&eacute;e</div>');
 								$affich_form=false;
+								$res_bonus=@mysql_query('SELECT MAX(thread_id) AS pot_max FROM thread');
+								if ($res_bonus && $valtmp=mysql_fetch_assoc($res_bonus))
+								{
+									$valtmp=$valtmp['pot_max'];
+									if($valtmp<$id)
+										@mysql_query(sprintf("ALTER TABLE thread AUTO_INCREMENT=%s",mysql_real_escape_string($valtmp+1)));
+								}
 							}
 							else
 							{
@@ -333,7 +353,7 @@ function edition()
 				{
 					$row=mysql_fetch_assoc($result);
 					$id=$row["comment_id"];
-					$mess_user=$row["text"];
+					$mess_user=trim($row["text"]);
 					$is_prop=check_property($row["rand_prop"],$row["hash_prop"]);
 					@mysql_free_result($result);
 				}
@@ -358,7 +378,7 @@ function edition()
 				{
 					$row=mysql_fetch_assoc($result);
 					$id=$row["thread_id"];
-					$mess_user=$row["text"];
+					$mess_user=trim($row["text"]);
 					$is_prop=check_property($row["rand_prop"],$row["hash_prop"]);
 					$title_prec=$row["title"];
 					$cate_prec=$row["category"];
@@ -401,10 +421,22 @@ function edition()
 								{
 									$title_prec=$_POST["title"];
 									$cate_prec=$_POST["category"];
-									if (@mysql_query(sprintf("UPDATE thread SET is_valid=0,text='%s',title='%s',category='%s',already_mod=0 WHERE thread_id='%s'",mysql_real_escape_string($mess_user),mysql_real_escape_string($title_prec),mysql_real_escape_string($cate_prec),mysql_real_escape_string($thread_id))))
+									$chaine_conf=random_password(40);
+									$chaine_conf_hash=sha1($chaine_conf);
+									if (@mysql_query(sprintf("UPDATE thread SET is_valid=0,text='%s',title='%s',category='%s',already_mod=0,chaine_moderation='%s' WHERE thread_id='%s'",mysql_real_escape_string($mess_user),mysql_real_escape_string($title_prec),mysql_real_escape_string($cate_prec),$chaine_conf_hash,mysql_real_escape_string($thread_id))))
+
 									{
 										echo('<div class="success">Proposition correctement modifi&eacute;e</div>');
 										$affich_form=false;
+										/*
+										$nexp="Ponts ParisTech Refresh";
+										$email="webmaster_refresh@enpc.org";
+										$subject="Modération - proposition éditée";
+										$header = "From: ". $nexp . " <" . $email . ">\r\n";
+										$mess_userm=stripslashes($mess_user);
+										$mail_body =$mail_body = "Bonjour,\n\nUne proposition a été éditée et doit être modérée [titre : '$title_prec']. Voici son contenu :\n\n****************\n$mess_userm\n****************\n\nVous pouvez l'approuver dès maintenant en vous rendant à l'adresse http://refresh.enpc.org/?action=moderation_mail&type=proposition&id=$thread_id&cconf=$chaine_conf\n\nCordialement,\n\nle site Refresh";
+										file_put_contents('fichier.tmp.txt',$subject."\n\n\n\n".$mail_body);
+										*/
 									}
 									else
 									{
@@ -423,10 +455,34 @@ function edition()
 						}
 						else
 						{
-							if (@mysql_query(sprintf("UPDATE comment SET is_valid=0,text='%s',already_mod=0 WHERE comment_id='%s'",mysql_real_escape_string($mess_user),mysql_real_escape_string($comment_id))))
+							$chaine_conf=random_password(40);
+							$chaine_conf_hash=sha1($chaine_conf);
+							if (@mysql_query(sprintf("UPDATE comment SET is_valid=0,text='%s',already_mod=0,chaine_moderation='%s' WHERE comment_id='%s'",mysql_real_escape_string($mess_user),$chaine_conf_hash,mysql_real_escape_string($comment_id))))
 							{
 								echo('<div class="success">Commentaire correctement modifi&eacute;</div>');
 								$affich_form=false;
+								
+								/*
+								
+								$nexp="Ponts ParisTech Refresh";
+								$email="webmaster_refresh@enpc.org";
+								$subject="Modération - commentaire édité";
+								$header = "From: ". $nexp . " <" . $email . ">\r\n";
+								$mess_userm=stripslashes($mess_user);
+								
+								$res_bonus=@mysql_query(sprintf("SELECT thread_id FROM comment WHERE comment_id='%s'",mysql_real_escape_string($comment_id)));
+								if($res_bonus && $valtmp=mysql_fetch_assoc($res_bonus))
+								{
+									$validtmp=$valtmp["thread_id"];
+									$mail_body =$mail_body = "Bonjour,\n\nUn commentaire en réponse à la proposition #$validtmp [http://refresh.enpc.org/index.php?action=display_post&unique=$validtmp] a été édité et doit être modéré. Voici son contenu :\n\n****************\n$mess_userm\n****************\n\nVous pouvez approuver ce commentaire dès maintenant en vous rendant à l'adresse http://refresh.enpc.org/?action=moderation_mail&type=comment&id=$comment_id&cconf=$chaine_conf\n\nCordialement,\n\nle site Refresh";
+								}
+								else
+									$mail_body =$mail_body = "Bonjour,\n\nUn commentaire a été édité et doit être modéré. Voici son contenu :\n\n****************\n$mess_userm\n****************\n\nVous pouvez approuver ce commentaire dès maintenant en vous rendant à l'adresse http://refresh.enpc.org/?action=moderation_mail&type=comment&id=$comment_id&cconf=$chaine_conf\n\nCordialement,\n\nle site Refresh";
+			
+								//@mb_send_mail("moderateur_refresh@enpc.org",$subject,$mail_body,$header);
+								file_put_contents('fichier.tmp.txt',$subject."\n\n\n\n".$mail_body);
+
+								*/
 							}
 							else
 							{
@@ -550,17 +606,172 @@ function edition()
 	}
 }
 
-function affichage_comments($thread_id,$moderation_mode)
+function vote_comment()
+{
+	$comment_id=-1;
+	$choice="";
+	
+	if (isset($_GET["comment_id"]))
+	{
+		$comment_id=$_GET["comment_id"];
+	}
+	if (isset($_GET["order"]))
+	{
+		$choice=$_GET["order"];
+	}
+
+	if (user_privilege_level()>2) // Il faut être loggé et posséder des droits d'écriture
+    {
+		if (!($choice==-1 || $choice==0 || $choice==1))
+		{
+			$_SESSION['transient_display']='<div class="warning">Demande de vote incorrecte</div>';
+		}
+		elseif ($comment_id>0)
+		{
+			// Sélection d'un éventuel vote dont on serait propriétaire pour ce post
+			$result=@mysql_query(sprintf("SELECT vote_comment_id, vote FROM vote_comment WHERE comment_id='%s' AND CAST(SHA1(CONCAT('%s',CAST(rand_prop AS CHAR))) AS CHAR)=hash_prop",mysql_real_escape_string($comment_id),mysql_real_escape_string($_SESSION['login_c'])));
+			if ($result)
+			{
+				$vote_prec=0; // On part du principe qu'on n'a pas voté au préalable
+				$id_vote=-1; // L'id est mis à jour si un vote est retrouvé
+				if ($row=mysql_fetch_assoc($result))
+				{
+					$id_vote=$row["vote_comment_id"];
+					if($row["vote"]==1) // On a voté pour au préalable
+					{
+						$vote_prec=1;
+					}
+					elseif($row["vote"]==0) // On a voté contre au préalable
+					{
+						$vote_prec=-1;
+					}
+				}
+
+				if($choice==-1)
+				{
+					if($vote_prec==-1) // On a déjà voté contre
+					{
+						$_SESSION['transient_display']='<div class="warning">Vote d&eacute;j&agrave; enregistr&eacute;</div>';
+					}
+					elseif($vote_prec==0) // On souhaite voter pour la première fois contre
+					{
+						$rand_prop=mt_rand(0,65535);
+						$hash_prop=sha1($_SESSION['login_c'].$rand_prop);
+						$thrad_id_sec=mysql_real_escape_string($comment_id);
+						if (@mysql_query("INSERT INTO `vote_comment` (`vote_comment_id`,`comment_id`,`rand_prop`,`hash_prop`,`vote`) VALUES (NULL, '$thrad_id_sec','$rand_prop','$hash_prop','0')"))
+						{
+							$_SESSION['transient_display']='<div class="success">Vote correctement pris en compte</div>';
+						}
+						else
+						{
+							$_SESSION['transient_display']='<div class="warning">Erreur lors de l\'insertion du vote</div>';
+						}
+					}
+					elseif($vote_prec==1) // On souhaite passer d'un vote pour à un vote contre
+					{
+						if (@mysql_query(sprintf("UPDATE vote_comment SET vote=0 WHERE vote_comment_id='%s'",mysql_real_escape_string($id_vote))))
+						{
+							$_SESSION['transient_display']='<div class="success">Vote correctement mis &agrave; jour</div>';
+						}
+						else
+						{
+							$_SESSION['transient_display']='<div class="warning">Erreur lors de la mise &agrave; jour du vote</div>';
+						}
+					}
+				}
+				elseif($choice==0)
+				{
+					if($vote_prec==-1 || $vote_prec==1) // On souhaite annuler un vote
+					{
+						if(@mysql_query(sprintf("DELETE FROM vote_comment WHERE vote_comment_id='%s'",mysql_real_escape_string($id_vote))))
+						{
+							$_SESSION['transient_display']='<div class="success">Vote correctement annul&eacute;</div>';
+						}
+						else
+						{
+							$_SESSION['transient_display']='<div class="warning">Erreur lors de l\'annulation du vote</div>';
+						}
+					}
+					elseif($vote_prec==0) // On souhaite annuler un vote... qui n'existe pas
+					{
+						$_SESSION['transient_display']='<div class="warning">Erreur lors de l\'annulation du vote</div>';
+					}
+				}
+				elseif($choice==1)
+				{
+					if($vote_prec==-1) // On souhaite passer d'un vote contre à un vote pour
+					{
+						if (@mysql_query(sprintf("UPDATE vote_comment SET vote=1 WHERE vote_comment_id='%s'",mysql_real_escape_string($id_vote))))
+						{
+							$_SESSION['transient_display']='<div class="success">Vote correctement mis &agrave; jour</div>';
+						}
+						else
+						{
+							$_SESSION['transient_display']='<div class="warning">Erreur lors de la mise &agrave; jour du vote</div>';
+						}
+					}
+					elseif($vote_prec==0) // On souhaite voter pour la première fois pour
+					{
+						$rand_prop=mt_rand(0,65535);
+						$hash_prop=sha1($_SESSION['login_c'].$rand_prop);
+						$thrad_id_sec=mysql_real_escape_string($comment_id);
+						if (@mysql_query("INSERT INTO `vote_comment` (`vote_comment_id`,`comment_id`,`rand_prop`,`hash_prop`,`vote`) VALUES (NULL, '$thrad_id_sec','$rand_prop','$hash_prop','1')"))
+						{
+							$_SESSION['transient_display']='<div class="success">Vote correctement pris en compte</div>';
+						}
+						else
+						{
+							$_SESSION['transient_display']='<div class="warning">Erreur lors de l\'insertion du vote</div>';
+						}
+					}
+					elseif($vote_prec==1) // On a déjà voté pour
+					{
+						$_SESSION['transient_display']='<div class="warning">Vote d&eacute;j&agrave; enregistr&eacute;</div>';
+					}
+				}
+				@mysql_free_result($result);
+			}
+			else // Mieux vaux ne pas continuer si l'on n'a pas pu vérifier ce qui existait en base
+			{
+				$_SESSION['transient_display']='<div class="warning">Erreur lors de la requ&ecirc;te</div>';
+			}
+		}
+		else
+		{
+			$_SESSION['transient_display']='<div class="warning">Id de la proposition non valide</div>';
+		}
+	}
+	else
+	{
+		$_SESSION['transient_display']='<div class="warning">Vous ne disposez pas des droits suffisants</div>';
+	}
+}
+
+function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false)
 {
 	$privileges=user_privilege_level();
 	$is_admin=($privileges>3);
+	$is_logged=is_logged();
 	$ancre=htmlentities($thread_id);
 	
 	if ($moderation_mode)
 	{
 		if ($is_admin)
 		{
-			$result=@mysql_query("SELECT comment_id,rand_prop,hash_prop,text,date,possibly_name FROM comment WHERE already_mod=0 ORDER BY DATE DESC");		
+			$escaped_name=mysql_real_escape_string($_SESSION['login_c']);
+			$result=@mysql_query(sprintf("(SELECT C.comment_id,C.rand_prop,C.hash_prop,C.text,C.date,C.possibly_name,C.thread_id,
+			SUM(V.vote) AS pro_vote, COUNT(V.vote) AS total_vote, 
+			MAX(CAST(SHA1(CONCAT('%s',CAST(V.rand_prop AS CHAR))) AS CHAR)=V.hash_prop) AS my_vote, 
+			MAX(CAST(SHA1(CONCAT('%s',CAST(V.rand_prop AS CHAR))) AS CHAR)=V.hash_prop AND V.vote) AS my_provote
+			FROM comment C, vote_comment V
+			WHERE C.already_mod=0 AND V.comment_id=C.comment_id
+			GROUP BY C.comment_id,C.rand_prop,C.hash_prop,C.text,C.date,C.possibly_name,C.thread_id)
+			UNION
+			(SELECT C.comment_id,C.rand_prop,C.hash_prop,C.text,C.date,C.possibly_name,C.thread_id,
+			0 AS pro_vote, 0 AS total_vote,0 AS my_vote, 0 AS my_provote
+			FROM comment C
+			WHERE C.already_mod=0 AND C.comment_id<>ALL(SELECT comment_id FROM vote_comment))
+			ORDER BY date ASC",$escaped_name,$escaped_name));
 			if($result)
 			{
 				$result_returned=false;
@@ -578,13 +789,31 @@ function affichage_comments($thread_id,$moderation_mode)
 					{
 						echo('&nbsp;-&nbsp;'.htmlentities($row["possibly_name"]));
 					}
-					echo('</span>');		
+					
+					$sec_cid=htmlentities($row["comment_id"]);
+					if ($row["my_vote"]>0)
+						echo(($row["my_provote"]>0)?'&nbsp;-&nbsp;[
+							<a class="pro" href="?action=vote_comment&amp;order=0&amp;comment_id='.$ancre.'#b'.$ancre.'">+'.htmlentities($row["pro_vote"]).'</a>
+							/
+							<a class="agt" href="?action=vote_comment&amp;order=-1&amp;comment_id='.$ancre.'#b'.$ancre.'">-'.htmlentities($row["total_vote"]-$row["pro_vote"]).'</a>]':'&nbsp;-&nbsp;[
+							<a class="agt" href="?action=vote_comment&amp;order=1&amp;comment_id='.$ancre.'#b'.$ancre.'">+'.htmlentities($row["pro_vote"]).'</a>
+							/
+							<a class="pro" href="?action=vote_comment&amp;order=0&amp;comment_id='.$ancre.'#b'.$ancre.'">-'.htmlentities($row["total_vote"]-$row["pro_vote"]).'</a>]');
+					else
+						echo('&nbsp;-&nbsp;[
+							<a class="ntl" href="?action=vote_comment&amp;order=1&amp;comment_id='.$ancre.'#b'.$ancre.'">+'.htmlentities($row["pro_vote"]).'</a>
+							/
+							<a class="ntl" href="?action=vote_comment&amp;order=-1&amp;comment_id='.$ancre.'#b'.$ancre.'">-'.htmlentities($row["total_vote"]-$row["pro_vote"]).'</a>]');
+
+					$thread_tmp=htmlentities($row["thread_id"]);
+					echo('&nbsp;-&nbsp;[<a href="?action=display_post&amp;unique='.$thread_tmp.'">POST #'.$thread_tmp.'</a>]</span>');
+									
 					
 					// Etat de modération
 					echo('<img src="rep_img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
 
 					// Corps du commentaire
-					echo('<div class="newscommentcontent">'.text_display_prepare($row["text"]).'</div>');
+					echo('<div class="newscommentcontent">'.text_display_prepare(trim($row["text"])).'</div>');
 					
 					// Liens administratifs sur le commentaire
 					echo('<div class="newsendlinks">');
@@ -633,7 +862,21 @@ function affichage_comments($thread_id,$moderation_mode)
 		{
 			if (isset($_SESSION["unroll_comment"]) && $_SESSION["unroll_comment"]==$thread_id)
 			{
-				$result=@mysql_query(sprintf("SELECT comment_id,rand_prop,hash_prop,text,date,is_valid,already_mod,possibly_name FROM comment WHERE thread_id='%s'",mysql_real_escape_string($thread_id)));
+				$escaped_threadid=mysql_real_escape_string($thread_id);
+				$escaped_name=(isset($_SESSION['login_c'])? mysql_real_escape_string($_SESSION['login_c']):'');
+				$result=@mysql_query(sprintf("(SELECT C.comment_id,C.rand_prop,C.hash_prop,C.text,C.date,C.is_valid,C.already_mod,C.possibly_name,
+				SUM(V.vote) AS pro_vote, COUNT(V.vote) AS total_vote, 
+				MAX(CAST(SHA1(CONCAT('%s',CAST(V.rand_prop AS CHAR))) AS CHAR)=V.hash_prop) AS my_vote, 
+				MAX(CAST(SHA1(CONCAT('%s',CAST(V.rand_prop AS CHAR))) AS CHAR)=V.hash_prop AND V.vote) AS my_provote
+				FROM comment C, vote_comment V
+				WHERE C.thread_id='%s' AND V.comment_id=C.comment_id
+				GROUP BY C.comment_id,C.rand_prop,C.hash_prop,C.text,C.date,C.is_valid,C.already_mod,C.possibly_name)
+				UNION
+				(SELECT C.comment_id,C.rand_prop,C.hash_prop,C.text,C.date,C.is_valid,C.already_mod,C.possibly_name,
+				0 AS pro_vote, 0 AS total_vote,0 AS my_vote, 0 AS my_provote
+				FROM comment C
+				WHERE C.thread_id='%s' AND C.comment_id<>ALL(SELECT comment_id FROM vote_comment))
+				ORDER BY date ASC",$escaped_name,$escaped_name,$escaped_threadid,$escaped_threadid));
 				if($result)
 				{
 					if($privileges>3)
@@ -651,12 +894,12 @@ function affichage_comments($thread_id,$moderation_mode)
 							$result_temp=@mysql_query(sprintf("SELECT COUNT(*) AS NB_COMMENT FROM comment WHERE is_valid=1 AND thread_id='%s'",mysql_real_escape_string($thread_id)));
 						}
 					}
-					if($result && $row=mysql_fetch_assoc($result_temp))
+					if($row=mysql_fetch_assoc($result_temp))
 					{
 						if($row["NB_COMMENT"]==0)
 						{
 							echo('<div class="speccom">
-										<a href="?action=unrollcomment&amp;order=0&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
+										<a href="?action=unrollcomment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=0&amp;thread_id='.htmlentities($thread_id).'#a'.$ancre.'">
 											<span class="newslinkcomment_inactive">
 												0&nbsp;commentaires
 											</span>
@@ -668,7 +911,7 @@ function affichage_comments($thread_id,$moderation_mode)
 						elseif($row["NB_COMMENT"]==1)
 						{
 							echo('<div class="speccom">
-										<a href="?action=unrollcomment&amp;order=0&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
+										<a href="?action=unrollcomment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=0&amp;thread_id='.htmlentities($thread_id).'#a'.$ancre.'">
 											<span class="newslinkcomment_roll">
 												1&nbsp;commentaire
 											</span>
@@ -680,7 +923,7 @@ function affichage_comments($thread_id,$moderation_mode)
 						else
 						{
 							echo('<div class="speccom">
-										<a href="?action=unrollcomment&amp;order=0&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
+										<a href="?action=unrollcomment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=0&amp;thread_id='.htmlentities($thread_id).'#a'.$ancre.'">
 											<span class="newslinkcomment_roll">
 												'.htmlentities($row["NB_COMMENT"]).'&nbsp;commentaires
 											</span>
@@ -693,7 +936,7 @@ function affichage_comments($thread_id,$moderation_mode)
 					else
 					{
 						echo('<div class="speccom">
-									<a href="?action=unrollcomment&amp;order=0&amp;thread_id='.'#'.$ancre.htmlentities($thread_id).'">
+									<a href="?action=unrollcomment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=0&amp;thread_id='.'#a'.$ancre.'">
 										<span class="newslinkcomment_roll">
 											?&nbsp;commentaires
 										</span>	
@@ -712,14 +955,47 @@ function affichage_comments($thread_id,$moderation_mode)
 						if ($is_valid || $is_proprio || $privileges>3)
 						{
 							// Informations de contexte
-							echo('<div class="newscomment">
+							$sec_cid=htmlentities($row["comment_id"]);
+							echo('<div class="newscomment"><a name="b'.$sec_cid.'" id="b'.$sec_cid.'"></a>
 									<span class="newsundertitle">
 										'.htmlentities(transfo_date($row["date"])));									
 							if (!empty($row["possibly_name"]))
 							{
 								echo('&nbsp;-&nbsp;'.htmlentities($row["possibly_name"]));
 							}
-							echo('</span>');		
+							if ($is_logged)
+							{
+								if ($row["my_vote"]>0)
+									echo(($row["my_provote"]>0)?'&nbsp;-&nbsp;[
+										<a class="pro" href="?action=vote_comment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=0&amp;comment_id='.$sec_cid.'#b'.$sec_cid.'">+'.htmlentities($row["pro_vote"]).'</a>
+										/
+										<a class="agt" href="?action=vote_comment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=-1&amp;comment_id='.$sec_cid.'#b'.$sec_cid.'">-'.htmlentities($row["total_vote"]-$row["pro_vote"]).'</a>]</span>':'&nbsp;-&nbsp;[
+										<a class="agt" href="?action=vote_comment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=1&amp;comment_id='.$sec_cid.'#b'.$sec_cid.'">+'.htmlentities($row["pro_vote"]).'</a>
+										/
+										<a class="pro" href="?action=vote_comment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=0&amp;comment_id='.$sec_cid.'#b'.$sec_cid.'">-'.htmlentities($row["total_vote"]-$row["pro_vote"]).'</a>]</span>');
+								else
+									echo('&nbsp;-&nbsp;[
+										<a class="ntl" href="?action=vote_comment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=1&amp;comment_id='.$sec_cid.'#b'.$sec_cid.'">+'.htmlentities($row["pro_vote"]).'</a>
+										/
+										<a class="ntl" href="?action=vote_comment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=-1&amp;comment_id='.$sec_cid.'#b'.$sec_cid.'">-'.htmlentities($row["total_vote"]-$row["pro_vote"]).'</a>]</span>');
+								}
+							else
+							{
+								if ($row["my_vote"]>0)
+									echo(($row["my_provote"]>0)?'&nbsp;-&nbsp;[
+										+'.htmlentities($row["pro_vote"]).'
+										/
+										-'.htmlentities($row["total_vote"]-$row["pro_vote"]).']</span>':'&nbsp;-&nbsp;[
+										+'.htmlentities($row["pro_vote"]).'
+										/
+										-'.htmlentities($row["total_vote"]-$row["pro_vote"]).']</span>');
+								else
+									echo('&nbsp;-&nbsp;[
+										+'.htmlentities($row["pro_vote"]).'
+										/
+										-'.htmlentities($row["total_vote"]-$row["pro_vote"]).']</span>');
+							}
+								
 							
 							// Etat de modération
 							if ($privileges>3)
@@ -756,7 +1032,7 @@ function affichage_comments($thread_id,$moderation_mode)
 							}
 							
 							// Corps du commentaire
-							echo('<div class="newscommentcontent">'.text_display_prepare($row["text"]).'</div>');
+							echo('<div class="newscommentcontent">'.text_display_prepare(trim($row["text"])).'</div>');
 							
 							// Liens administratifs sur le commentaire
 							if ($is_proprio || $is_admin)
@@ -770,11 +1046,11 @@ function affichage_comments($thread_id,$moderation_mode)
 									{
 										if (!empty($row["possibly_name"]))
 										{
-											echo('<a href="?action=anonymization&amp;order=0&amp;comment_id='.htmlentities($comment_id).'#'.$ancre.'">Masquer mon nom</a>');
+											echo('<a href="?action=anonymization'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=0&amp;comment_id='.$sec_cid.'#b'.$sec_cid.'">Masquer mon nom</a>');
 										}
 										else
 										{
-											echo('<a href="?action=anonymization&amp;order=1&amp;comment_id='.htmlentities($comment_id).'#'.$ancre.'">Afficher mon nom</a>');
+											echo('<a href="?action=anonymization'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=1&amp;comment_id='.$sec_cid.'#b'.$sec_cid.'">Afficher mon nom</a>');
 										}
 									}
 								}
@@ -782,11 +1058,11 @@ function affichage_comments($thread_id,$moderation_mode)
 								{
 									if($is_valid || !$already_mod)
 									{
-										echo('<a href="?action=moderation&amp;order=0&amp;comment_id='.htmlentities($comment_id).'#'.$ancre.'">Refuser</a>');
+										echo('<a href="?action=moderation'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=0&amp;comment_id='.$sec_cid.'#b'.$sec_cid.'">Refuser</a>');
 									}
 									if(!$is_valid || !$already_mod)
 									{
-										echo('<a href="?action=moderation&amp;order=1&amp;comment_id='.htmlentities($comment_id).'#'.$ancre.'">Accepter</a>');
+										echo('<a href="?action=moderation'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=1&amp;comment_id='.$sec_cid.'#b'.$sec_cid.'">Accepter</a>');
 									}			
 								}
 								echo('</div>');
@@ -807,13 +1083,13 @@ function affichage_comments($thread_id,$moderation_mode)
 					if ($privileges>2)
 					{
 						echo('<div class="newsformcomment">
-								<form method="post" action="?action=comment_post&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'"><p>
+								<form method="post" action="?action=comment_post'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;thread_id='.htmlentities($thread_id).'#a'.$ancre.'"><p>
 									<textarea name="message" rows="15" cols="80">'.htmlentities($text_prec).'</textarea>
 										<span class="checkcommentform">');
 						if (empty($anon_prec))
 						{
 							echo('<input type="checkbox" name="anonymization" />');
-						}   
+						}
 						else
 						{
 							echo('<input type="checkbox" name="anonymization" checked="checked" />');
@@ -865,7 +1141,7 @@ function affichage_comments($thread_id,$moderation_mode)
 					if($row["NB_COMMENT"]==0)
 					{
 						echo('<div class="speccom">
-									<a href="?action=unrollcomment&amp;order=1&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
+									<a href="?action=unrollcomment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=1&amp;thread_id='.htmlentities($thread_id).'#a'.$ancre.'">
 										<span class="newslinkcomment_inactive">
 											0&nbsp;commentaires
 										</span>
@@ -877,7 +1153,7 @@ function affichage_comments($thread_id,$moderation_mode)
 					elseif($row["NB_COMMENT"]==1)
 					{
 						echo('<div class="speccom">
-									<a href="?action=unrollcomment&amp;order=1&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
+									<a href="?action=unrollcomment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=1&amp;thread_id='.htmlentities($thread_id).'#a'.$ancre.'">
 										<span class="newslinkcomment_unroll">
 											1&nbsp;commentaire
 										</span>
@@ -889,7 +1165,7 @@ function affichage_comments($thread_id,$moderation_mode)
 					else
 					{
 						echo('<div class="speccom">
-									<a href="?action=unrollcomment&amp;order=1&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
+									<a href="?action=unrollcomment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=1&amp;thread_id='.htmlentities($thread_id).'#a'.$ancre.'">
 										<span class="newslinkcomment_unroll">
 											'.htmlentities($row["NB_COMMENT"]).'&nbsp;commentaires
 										</span>
