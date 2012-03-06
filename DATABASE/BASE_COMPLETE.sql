@@ -21,13 +21,16 @@
 */
 
 -- phpMyAdmin SQL Dump
+-- version 3.4.8
 -- http://www.phpmyadmin.net
 --
--- Généré le : Dim 07 Août 2011 à 11:51
--- Version du serveur: 5.1.49
--- Version de PHP: 5.3.6
+-- Host: mysql
+-- Generation Time: Mar 04, 2012 at 03:24 AM
+-- Server version: 5.1.39
+-- PHP Version: 5.3.6-11
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -36,15 +39,13 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données: `enpcref`
+-- Database: `nouvelingenieur_refresh`
 --
-CREATE DATABASE `enpcref` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `enpcref`;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `comment`
+-- Table structure for table `comment`
 --
 
 CREATE TABLE IF NOT EXISTS `comment` (
@@ -59,12 +60,12 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `possibly_name` varchar(64) NOT NULL,
   PRIMARY KEY (`comment_id`),
   KEY `thread_id` (`thread_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `document`
+-- Table structure for table `document`
 --
 
 CREATE TABLE IF NOT EXISTS `document` (
@@ -77,24 +78,64 @@ CREATE TABLE IF NOT EXISTS `document` (
   PRIMARY KEY (`document_id`),
   KEY `category` (`category`),
   FULLTEXT KEY `description` (`description`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `document_category`
+-- Table structure for table `document_category`
 --
 
 CREATE TABLE IF NOT EXISTS `document_category` (
   `category_id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `category_name` varchar(128) NOT NULL,
   PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `thread`
+-- Table structure for table `sauvegarde_comment`
+--
+
+CREATE TABLE IF NOT EXISTS `sauvegarde_comment` (
+  `comment_id` int(20) unsigned NOT NULL AUTO_INCREMENT,
+  `thread_id` int(16) unsigned NOT NULL,
+  `text` text NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `pro_vote` int(16) unsigned NOT NULL DEFAULT '0',
+  `agt_vote` int(16) unsigned NOT NULL DEFAULT '0',
+  `possibly_name` varchar(64) NOT NULL,
+  PRIMARY KEY (`comment_id`),
+  KEY `thread_id` (`thread_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=354 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sauvegarde_thread`
+--
+
+CREATE TABLE IF NOT EXISTS `sauvegarde_thread` (
+  `thread_id` int(16) unsigned NOT NULL AUTO_INCREMENT,
+  `campagne_ref` int(8) unsigned NOT NULL,
+  `title` varchar(128) NOT NULL,
+  `text` text NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `state` enum('prop','integ_rapp','presente','en_cours_real','realise') NOT NULL DEFAULT 'prop',
+  `pro_vote` int(16) unsigned NOT NULL DEFAULT '0',
+  `agt_vote` int(16) unsigned NOT NULL DEFAULT '0',
+  `category` int(12) unsigned NOT NULL,
+  `possibly_name` varchar(64) NOT NULL,
+  PRIMARY KEY (`thread_id`),
+  KEY `category_id` (`category`),
+  KEY `campagne_ref` (`campagne_ref`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=57 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `thread`
 --
 
 CREATE TABLE IF NOT EXISTS `thread` (
@@ -104,30 +145,39 @@ CREATE TABLE IF NOT EXISTS `thread` (
   `title` varchar(128) NOT NULL,
   `text` text NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `datecom` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `category` int(12) unsigned NOT NULL,
   `is_valid` tinyint(1) NOT NULL DEFAULT '0',
   `already_mod` tinyint(1) NOT NULL DEFAULT '0',
   `possibly_name` varchar(64) NOT NULL,
+  `chaine_moderation` varchar(40) NOT NULL,
   PRIMARY KEY (`thread_id`),
   KEY `category_id` (`category`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=42 ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `thread_category`
+-- Table structure for table `thread_category`
 --
 
 CREATE TABLE IF NOT EXISTS `thread_category` (
   `category_id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `category_name` varchar(128) NOT NULL,
   PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `thread_category`
+--
+
+INSERT INTO `thread_category` (`category_id`, `category_name`) VALUES
+(1, 'Idees Generales');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `user`
+-- Table structure for table `user`
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
@@ -139,12 +189,19 @@ CREATE TABLE IF NOT EXISTS `user` (
   `privileges` int(4) unsigned NOT NULL DEFAULT '3',
   `is_valid` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`user_id`, `hash_mail`, `hash_pass`, `hash_conf`, `inscription_date`, `privileges`, `is_valid`) VALUES
+(34, 'd033e22ae348aeb5660fc2140aec35850c4da997', '26b56c1bdfb048c3e46419fde332bab76deb2cd3', '08da1d8d8d11608f7ac33e49cf1d3b876cf482a4', '2012-03-04 02:17:10', 5, 1);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `vote`
+-- Table structure for table `vote`
 --
 
 CREATE TABLE IF NOT EXISTS `vote` (
@@ -153,36 +210,68 @@ CREATE TABLE IF NOT EXISTS `vote` (
   `rand_prop` int(16) NOT NULL,
   `hash_prop` varchar(40) NOT NULL,
   `vote` tinyint(1) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`vote_id`),
   KEY `thread_id` (`thread_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=57 ;
+
+-- --------------------------------------------------------
 
 --
--- Contraintes pour les tables exportées
+-- Table structure for table `vote_comment`
+--
+
+CREATE TABLE IF NOT EXISTS `vote_comment` (
+  `vote_comment_id` int(24) unsigned NOT NULL AUTO_INCREMENT,
+  `comment_id` int(16) unsigned NOT NULL,
+  `rand_prop` int(16) NOT NULL,
+  `hash_prop` varchar(40) NOT NULL,
+  `vote` tinyint(1) NOT NULL,
+  PRIMARY KEY (`vote_comment_id`),
+  KEY `thread_id` (`comment_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=177 ;
+
+--
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `comment`
+-- Constraints for table `comment`
 --
 ALTER TABLE `comment`
   ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`thread_id`) REFERENCES `thread` (`thread_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `thread`
+-- Constraints for table `sauvegarde_comment`
+--
+ALTER TABLE `sauvegarde_comment`
+  ADD CONSTRAINT `sauvegarde_comment_ibfk_1` FOREIGN KEY (`thread_id`) REFERENCES `sauvegarde_thread` (`thread_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `sauvegarde_thread`
+--
+ALTER TABLE `sauvegarde_thread`
+  ADD CONSTRAINT `sauvegarde_thread_ibfk_1` FOREIGN KEY (`category`) REFERENCES `thread_category` (`category_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `thread`
 --
 ALTER TABLE `thread`
   ADD CONSTRAINT `thread_ibfk_1` FOREIGN KEY (`category`) REFERENCES `thread_category` (`category_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Contraintes pour la table `vote`
+-- Constraints for table `vote`
 --
 ALTER TABLE `vote`
   ADD CONSTRAINT `vote_ibfk_1` FOREIGN KEY (`thread_id`) REFERENCES `thread` (`thread_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-
 --
--- Ajout de la categorie par defaut
+-- Constraints for table `vote_comment`
 --
+ALTER TABLE `vote_comment`
+  ADD CONSTRAINT `vote_comment_ibfk_1` FOREIGN KEY (`comment_id`) REFERENCES `comment` (`comment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-INSERT INTO `thread_category` (`category_id`, `category_name`) VALUES
-(1, 'Idees Generales');
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

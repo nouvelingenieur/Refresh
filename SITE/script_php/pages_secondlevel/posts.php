@@ -22,9 +22,7 @@
 	Contact : nicolas.seichepine.org/?action=contact
 */
 
-include_once("tool.php");
-include_once("errors.php");
-include_once("votes.php");
+include_once("actions.php");
 
 // conversion des variables POST en variables SESSION
 function modify_thread_display_filtering()
@@ -121,22 +119,22 @@ function moderate_post() // Attention, générique, s'applique et aux posts et a
 			{
 				if ($decision==1)
 	            {
-	                $query=sprintf("UPDATE thread SET is_valid=1, already_mod=1 WHERE thread_id='%s'",mysql_real_escape_string($thread_id));
+	                $query=sprintf("UPDATE thread SET is_valid=1, already_mod=1, chaine_moderation=''  WHERE thread_id='%s'",mysql_real_escape_string($thread_id));
 	            }
 	            elseif ($decision==0)
 	            {
-	                $query=sprintf("UPDATE thread SET is_valid=0, already_mod=1 WHERE thread_id='%s'",mysql_real_escape_string($thread_id));
+	                $query=sprintf("UPDATE thread SET is_valid=0, already_mod=1, chaine_moderation=''  WHERE thread_id='%s'",mysql_real_escape_string($thread_id));
 	            }
 			}
 			else // L'ordre s'applique à un commentaire
 			{
 				if ($decision==1)
 	            {
-	                $query=sprintf("UPDATE comment SET is_valid=1, already_mod=1 WHERE comment_id='%s'",mysql_real_escape_string($comment_id));
+	                $query=sprintf("UPDATE comment SET is_valid=1, already_mod=1, chaine_moderation=''  WHERE comment_id='%s'",mysql_real_escape_string($comment_id));
 	            }
 	            elseif ($decision==0)
 	            {
-	                $query=sprintf("UPDATE comment SET is_valid=0, already_mod=1 WHERE comment_id='%s'",mysql_real_escape_string($comment_id));
+	                $query=sprintf("UPDATE comment SET is_valid=0, already_mod=1, chaine_moderation=''  WHERE comment_id='%s'",mysql_real_escape_string($comment_id));
 	            }
 			}
 			
@@ -149,7 +147,16 @@ function moderate_post() // Attention, générique, s'applique et aux posts et a
                 if (@mysql_query($query)) // Exécution de la commande
                 {   
                     $_SESSION['transient_display']='<div class="success">Commande de mod&eacute;ration effectu&eacute;e</div>';
-                }
+					if ($comment_id>0) // On a modéré un commentaire, il faut mettre à jour les dates pour le thread associé
+					{
+						$query_p1=@mysql_query(sprintf("SELECT thread_id FROM comment WHERE comment_id='%s'",mysql_real_escape_string($comment_id)));
+						if ($query_p1 && $res_p1=mysql_fetch_assoc($query_p1))
+						{
+							$clean_tid=mysql_real_escape_string($res_p1["thread_id"]);
+							@mysql_query(sprintf("UPDATE thread SET datecom=(SELECT IF(ISNULL(MAX( date )),'0000-00-00',MAX( date )) FROM comment WHERE thread_id='%s' AND is_valid=1) WHERE thread_id='%s'",$clean_tid,$clean_tid));
+						}
+					}
+				}
                 else
                 {
                     $_SESSION['transient_display']='<div class="warning">Erreur durant la commande de mod&eacute;ration</div>';
@@ -162,6 +169,49 @@ function moderate_post() // Attention, générique, s'applique et aux posts et a
         $_SESSION['transient_display']='<div class="warning">Vous ne disposez pas des droits pour mod&eacute;rer</div>';
     }
 }
+
+function moderate_mail() // Volontairement : pas besoin de droits spécifiques (mais d'avoir reçu le mail avec la chaîne de confirmation)
+{
+	echo('<h1>Système de modération par mail :</h1>');
+	$success=false;
+	if (isset($_GET['type']) && isset($_GET['id']) && isset($_GET['cconf']))
+	{
+		$request="";
+		$marqu_comm=false;
+		switch($_GET['type'])
+		{
+			case 'comment':
+				$request=sprintf("UPDATE comment SET is_valid=1, already_mod=1, chaine_moderation='' WHERE comment_id='%s' AND chaine_moderation='%s'",mysql_real_escape_string($_GET['id']),sha1($_GET['cconf']));
+				$marqu_comm=true;				
+				break;
+			case 'proposition':
+				$request=sprintf("UPDATE thread SET is_valid=1, already_mod=1, chaine_moderation='' WHERE thread_id='%s' AND chaine_moderation='%s'",mysql_real_escape_string($_GET['id']),sha1($_GET['cconf']));
+				break;
+		}
+		if (!empty($request))
+		{
+			@mysql_query($request);
+			if (mysql_affected_rows()>0)
+			{
+				$success=true;
+				if ($marqu_comm)
+				{
+					$query_p1=@mysql_query(sprintf("SELECT thread_id FROM comment WHERE comment_id='%s'",mysql_real_escape_string($_GET['id'])));
+					if ($query_p1 && $res_p1=mysql_fetch_assoc($query_p1))
+					{
+						$clean_tid=mysql_real_escape_string($res_p1["thread_id"]);
+						@mysql_query(sprintf("UPDATE thread SET datecom=(SELECT IF(ISNULL(MAX( date )),'0000-00-00',MAX( date )) FROM comment WHERE thread_id='%s' AND is_valid=1) WHERE thread_id='%s'",$clean_tid,$clean_tid));
+					}
+				}
+			}	
+		}
+	}
+	if ($success)
+		echo('<div class="success">Commande de mod&eacute;ration effectu&eacute;e</div>');
+	else
+		echo('<div class="warning">Erreur durant la commande de mod&eacute;ration - lien invalide</div>');
+}
+
 
 function change_post_confidentiality_status() // Attention, générique, s'applique et aux posts et aux commentaires
 {
@@ -434,75 +484,12 @@ function new_post()
 		// Le formulaire a été validé
 		if (isset($_POST['form_name']) && $_POST['form_name']=="create_thread")
 		{
-			$check_1=(isset($_POST["title"]) && !empty($_POST["title"]));
-            $check_2=(isset($_POST["message"]) && !empty($_POST["message"]));
-			$check_3=(!isset($_POST["anonymization"]) || $_POST["anonymization"]=="on");
-            $check_4=(isset($_POST["category"]) && is_numeric($_POST["category"]) && $_POST["category"]>0);
- 
-			// Vérification des arguments
-			if ($check_1)
-			{
-				$title_prec=$_POST["title"];
+			$action = post(trim($_POST["title"]),trim($_POST["message"]),$_POST["anonymization"],$_POST["category"],$_SESSION['login_c']);
+			$action->echo_warnings();
+			$action->echo_successes();
+			if($action->result) {
+				$affich_form=false;
 			}
-			else
-			{
-				echo('<div class="warning">Titre incorrect</div>');
-			}                
-			if ($check_2)
-			{
-				$text_prec=$_POST["message"];
-			}
-			else
-			{
-				echo('<div class="warning">Message incorrect</div>');
-			}               
-			if ($check_3)
-			{
-				if (isset($_POST["anonymization"]))
-				{
-					$anon_prec="on";
-				}
-			}
-			else
-			{
-				echo('<div class="warning">Valeur pour l\'anonymat incorrecte</div>');
-			}
-			if ($check_4)
-			{
-				$cate_prec=$_POST["category"];
-			}
-			else
-			{
-				echo('<div class="warning">Cat&eacute;gorie incorrecte</div>');
-			}
-            
-			if ($check_1 && $check_2 && $check_3 && $check_4) // Tous les arguments sont corrects, exécution du traitement du formulaire
-			{
-                $title_prec_sec=mysql_real_escape_string($title_prec);
-                $text_prec_sec=mysql_real_escape_string($text_prec);
-                $cate_prec_sec=mysql_real_escape_string($cate_prec);
-                $rand_prop=mt_rand(0,65535);
-                $hash_prop=sha1($_SESSION['login_c'].$rand_prop);
-
-                if ($anon_prec=="on")
-                {
-                    $name_print="";
-                }
-                else
-                {
-                    $name_print=mysql_real_escape_string(construct_name_from_session());
-                }
-
-                if (@mysql_query("INSERT INTO `thread` (`thread_id`,`rand_prop`,`hash_prop`,`title`,`text`,`date`,`category`,`is_valid`,`possibly_name`) VALUES (NULL, '$rand_prop', '$hash_prop','$title_prec_sec','$text_prec_sec',CURRENT_TIMESTAMP,'$cate_prec_sec',0,'$name_print')"))
-                {
-                    echo('<div class="success">Proposition correctement plac&eacute;e en attente de mod&eacute;ration</div>');
-					$affich_form=false;
-                }
-                else
-                {
-                    echo('<div class="warning">Erreur lors de la requ&ecirc;te</div>');
-                }
-            }
 		}
 			
 		if ($affich_form) // Affichage du formulaire en incluant d'éventuelles valeurs
