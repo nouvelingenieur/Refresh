@@ -759,16 +759,16 @@ function display_speccom($unique_mode,$ancre,$thread_id,$nb_comment,$roll) {
 		$order = 1;
 	}
 
-	echo('<div class="speccom">
-				<a href="?action=unrollcomment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order='.$order.'&amp;thread_id='.htmlentities($thread_id).'#a'.$ancre.'">
-					<span class="newslinkcomment_'.$roll.'">');
+	echo('<a class="speccom" href="?action=unrollcomment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order='.$order.'&amp;thread_id='.htmlentities($thread_id).'#a'.$ancre.'">
+		
+			<span class="newslinkcomment_'.$roll.'">');
+
 	// display plural form with correct localization
 	printf(ngettext("%d comment", "%d comments", $nb_comment), $nb_comment);
-	echo('</span>
-					<img src="rep_img/'.$roll.'_arrow.png" alt="Masquer" class="imglinknews" />
-				</a>
-			</div>
-		</div>');
+
+	echo('
+			</span>
+		</a>');
 }
 
 // display a comment with all its wrapper

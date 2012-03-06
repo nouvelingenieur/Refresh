@@ -1231,7 +1231,7 @@ function display_post()
 						
 						// Titre
 						echo('
-						<h3>'.htmlentities(stripslashes($row["title"])).' [#'.$thread_id_affiche.']</h3>');
+						<h3>'.htmlentities(stripslashes($row["title"])).'</h3>');
 						
 						//share sns buttons + close header
 						echo('
@@ -1249,6 +1249,7 @@ function display_post()
 					       ');
 						
 						
+						/*
 						echo('
 						<div class="votebar">');
 						
@@ -1301,6 +1302,7 @@ function display_post()
 								</div>');
 							}
 						}
+						*/
 						
 						// Corps du texte
 						echo('<div class="content"><p>'.text_display_prepare($row["text"]).'</p></div>');
@@ -1311,26 +1313,43 @@ function display_post()
 							');
 							
 
+						//upvote
+						echo ('<a href="?action=vote_post&amp;order='. '1' . '&amp;thread_id=' . $thread_id_affiche. '">'._('Upvote'). '</a>'
+						);
+						
+						echo (" - ");
+						
+						// downvote
+						echo ('<a href="?action=vote_post&amp;order='. '-1' . '&amp;thread_id=' . $thread_id_affiche. '">'._('Downvote'). '</a>'
+						);
+						
+						echo (" - ");
+						
+						// comments
+						affichage_comments($thread_id,false);
+						
+						echo (" - ");
 						
 						// Date
-						echo('<div class="newsundertitle">
-							'.htmlentities(transfo_date($row["date"])).'&nbsp;-&nbsp;
-							</div>');
+						echo('<time datetime="'.htmlentities(transfo_date($row["date"])).'">' . htmlentities(transfo_date($row["date"])) . '</time>');
+						
+						echo (" | ");
 							
 						if ($is_proprio || $privileges>4) // Administrateurs et propriétaires peuvent éditer et supprimer
 						{
 							echo('
-								<a href="?action=edit_post&amp;thread_id='.$thread_id_affiche.'">Editer</a>
-								<a href="?action=remove_post&amp;thread_id='.$thread_id_affiche.'">Supprimer</a>');
+								<a href="?action=edit_post&amp;thread_id='.$thread_id_affiche.'">'._('Edit').'</a>
+								 - 
+								<a href="?action=remove_post&amp;thread_id='.$thread_id_affiche.'">'._('Delete').'</a>');
 							if ($is_proprio)
 							{
 								if (!empty($row["possibly_name"]))
 								{
-									echo('<a href="?action=anonymization&amp;order=0&amp;thread_id='.$thread_id_affiche.'#'.$thread_id_affiche.'">Masquer mon nom</a>');
+									echo(' - <a href="?action=anonymization&amp;order=0&amp;thread_id='.$thread_id_affiche.'#'.$thread_id_affiche.'">'._('Hide my name').'</a>');
 								}
 								else
 								{
-									echo('<a href="?action=anonymization&amp;order=1&amp;thread_id='.$thread_id_affiche.'#'.$thread_id_affiche.'">Afficher mon nom</a>');
+									echo(' - <a href="?action=anonymization&amp;order=1&amp;thread_id='.$thread_id_affiche.'#'.$thread_id_affiche.'">'._('Hide my name').'</a>');
 								}
 							}
 						}
@@ -1360,8 +1379,7 @@ function display_post()
 								}
 							}
 						}
-						// comments
-						affichage_comments($thread_id,false);
+
 					echo '</small></footer></article>';
 					}
 				}
