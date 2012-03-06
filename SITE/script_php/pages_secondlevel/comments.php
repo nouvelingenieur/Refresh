@@ -957,39 +957,9 @@ function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false
 					$thread_tmp=htmlentities($row["thread_id"]);
 					$text=text_display_prepare(trim($row["text"]));
 
-<<<<<<< HEAD
-					// Etat de modération
-					echo('<img src="img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
-
-					// Corps du commentaire
-					echo('<div class="newscommentcontent">'.text_display_prepare($row["text"]).'</div>');
+					// Informations de contexte
+					display_comment($is_proprio,True,$ancre,$date,$possibly_name,$row['my_vote'],$row['my_provote'],$row['total_vote'],$thread_tmp,$text,$privileges,True,$sec_cid);
 					
-					// Liens administratifs sur le commentaire
-					echo('<div class="newsendlinks">');
-					if ($is_proprio || $privileges>4)
-					{
-						echo('
-							<a href="?action=edit_post&amp;comment_id='.$ancre.'">Editer</a>
-							<a href="?action=remove_post&amp;comment_id='.$ancre.'">Supprimer</a>');
-							if ($is_proprio)
-							{
-								if (!empty($row["possibly_name"]))
-								{
-									echo('<a href="?action=anonymization&amp;order=0&amp;comment_id='.$ancre.'#'.$ancre.'">Masquer mon nom</a>');
-								}
-								else
-								{
-									echo('<a href="?action=anonymization&amp;order=1&amp;comment_id='.$ancre.'#'.$ancre.'">Afficher mon nom</a>');
-								}
-							}
-					}
-					echo('
-							<a href="?action=moderation&amp;order=0&amp;comment_id='.$ancre.'">Refuser</a>
-							<a href="?action=moderation&amp;order=1&amp;comment_id='.$ancre.'">Accepter</a>
-						</div>
-					</div>');
-=======
->>>>>>> master
 				}
 				if(!$result_returned)
 				{
@@ -1047,59 +1017,8 @@ function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false
 					}
 					if($row=mysql_fetch_assoc($result_temp))
 					{
-<<<<<<< HEAD
-						if($row["NB_COMMENT"]==0)
-						{
-							echo('<div class="speccom">
-										<a href="?action=unrollcomment&amp;order=0&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
-											<span class="newslinkcomment_inactive">
-												0&nbsp;commentaires
-											</span>
-											<img src="img/roll_arrow_inactive.png" alt="Masquer" class="imglinknews" />
-										</a>
-									</div>
-								</div>');
-						}
-						elseif($row["NB_COMMENT"]==1)
-						{
-							echo('<div class="speccom">
-										<a href="?action=unrollcomment&amp;order=0&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
-											<span class="newslinkcomment_roll">
-												1&nbsp;commentaire
-											</span>
-											<img src="img/roll_arrow.png" alt="Masquer" class="imglinknews" />
-										</a>
-									</div>
-								</div>');
-						}
-						else
-						{
-							echo('<div class="speccom">
-										<a href="?action=unrollcomment&amp;order=0&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
-											<span class="newslinkcomment_roll">
-												'.htmlentities($row["NB_COMMENT"]).'&nbsp;commentaires
-											</span>
-											<img src="img/roll_arrow.png" alt="Masquer" class="imglinknews" />
-										</a>
-									</div>
-								</div>');
-						}
-					}
-					else
-					{
-						echo('<div class="speccom">
-									<a href="?action=unrollcomment&amp;order=0&amp;thread_id='.'#'.$ancre.htmlentities($thread_id).'">
-										<span class="newslinkcomment_roll">
-											?&nbsp;commentaires
-										</span>	
-										<img src="img/roll_arrow.png" alt="Masquer" class="imglinknews" />
-									</a>
-								</div>
-							</div>');
-=======
 						$nb_comment = htmlentities($row["NB_COMMENT"]);
 						display_speccom($unique_mode,$ancre,$thread_id,$nb_comment,'roll');
->>>>>>> master
 					}
 					@mysql_free_result($result_temp);
 					while($row=mysql_fetch_assoc($result))
@@ -1118,58 +1037,9 @@ function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false
 						
 						if ($is_valid || $is_proprio || $privileges>3)
 						{
-<<<<<<< HEAD
-							// Informations de contexte
-							echo('<div class="newscomment">
-									<span class="newsundertitle">
-										'.htmlentities(transfo_date($row["date"])));									
-							if (!empty($row["possibly_name"]))
-							{
-								echo('&nbsp;-&nbsp;'.htmlentities($row["possibly_name"]));
-							}
-							echo('</span>');		
-							
-							// Etat de modération
-							if ($privileges>3)
-							{
-								if ($already_mod)
-								{
-									if ($is_valid)
-									{
-										echo('<img src="img/modere.png" alt="Mod&eacute;r&eacute;" class="imgtitlecomment" />');
-									}
-									else
-									{
-										echo('<img src="img/masque.png" alt="Masqu&eacute;" class="imgtitlecomment" />');
-									}
-								}
-								else
-								{
-									echo('<img src="img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
-								}
-							}
-							elseif ($is_proprio)
-							{
-								if ($already_mod)
-								{
-									if (!$is_valid)
-									{
-										echo('<img src="img/masque.png" alt="Masqu&eacute;" class="imgtitlecomment" />');
-									}
-								}
-								else
-								{
-									echo('<img src="img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
-								}
-							}
-							
-							// Corps du commentaire
-							echo('<div class="newscommentcontent">'.text_display_prepare($row["text"]).'</div>');
-=======
 
 							// afficher les commentaires
 							display_comment($is_proprio,$is_logged,$ancre,$date,$possibly_name,$row['my_vote'],$row['my_provote'],$row['total_vote'],$thread_tmp,$text,$privileges,$is_admin,$sec_cid);
->>>>>>> master
 							
 						}
 					}
@@ -1222,47 +1092,8 @@ function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false
 				}
 				if($result && $row=mysql_fetch_assoc($result))
 				{
-<<<<<<< HEAD
-					if($row["NB_COMMENT"]==0)
-					{
-						echo('<div class="speccom">
-									<a href="?action=unrollcomment&amp;order=1&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
-										<span class="newslinkcomment_inactive">
-											0&nbsp;commentaires
-										</span>
-										<img src="img/unroll_arrow_inactive.png" alt="Afficher" class="imglinknews" />
-									</a>
-								</div>
-							</div>');
-					}
-					elseif($row["NB_COMMENT"]==1)
-					{
-						echo('<div class="speccom">
-									<a href="?action=unrollcomment&amp;order=1&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
-										<span class="newslinkcomment_unroll">
-											1&nbsp;commentaire
-										</span>
-										<img src="img/unroll_arrow.png" alt="Afficher" class="imglinknews" />
-									</a>
-								</div>
-							</div>');
-					}
-					else
-					{
-						echo('<div class="speccom">
-									<a href="?action=unrollcomment&amp;order=1&amp;thread_id='.htmlentities($thread_id).'#'.$ancre.'">
-										<span class="newslinkcomment_unroll">
-											'.htmlentities($row["NB_COMMENT"]).'&nbsp;commentaires
-										</span>
-										<img src="img/unroll_arrow.png" alt="Afficher" class="imglinknews" />
-									</a>
-								</div>
-							</div>');
-					}
-=======
 						$nb_comment = htmlentities($row["NB_COMMENT"]);
 						display_speccom($unique_mode,$ancre,$thread_id,$nb_comment,'unroll');
->>>>>>> master
 				}
 				else
 				{
