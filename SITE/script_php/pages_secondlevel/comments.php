@@ -772,7 +772,25 @@ function display_speccom($unique_mode,$ancre,$thread_id,$nb_comment,$roll) {
 }
 
 // display a comment with all its wrapper
-function display_comment($is_proprio,$is_logged,$ancre,$date,$possibly_name,$my_vote,$my_provote,$total_vote,$thread_tmp,$text,$privileges,$sec_cid) {
+function display_comment($row,$is_logged,$privileges,$is_admin,$unique_mode) {
+
+	$is_proprio=check_property($row["rand_prop"],$row["hash_prop"]);
+	$is_valid=$row["is_valid"];
+	$already_mod=$row["already_mod"];
+	$comment_id=$row["comment_id"];
+
+	$ancre=htmlentities($row["comment_id"]);
+	$date=$row['date'];
+	$possibly_name=$row['possibly_name'];
+	$sec_cid=htmlentities($row["comment_id"]);
+	$thread_tmp=htmlentities($row["thread_id"]);
+	$text=text_display_prepare(trim($row["text"]));
+	$my_vote=$row['my_vote'];
+	$my_provote=$row['my_provote'];
+	$total_vote=$row['total_vote'];	
+
+	$is_admin=($privileges>3);
+
 	// display context
 	echo('<div class="newscomment" id="'.$ancre.'"><a name="b'.$sec_cid.'" id="b'.$sec_cid.'"></a>
 			<span class="newsundertitle">
@@ -801,9 +819,9 @@ function display_comment($is_proprio,$is_logged,$ancre,$date,$possibly_name,$my_
 				
 		// display votes on comment
 		echo('&nbsp;-&nbsp;[
-			<a class="ntl" href="?action=vote_comment&amp;order='.$pro.'&amp;comment_id='.$ancre.'#b'.$ancre.'">+'.htmlentities($my_provote).'</a>
+			<a class="ntl" href="?action=vote_comment&amp;order='.$pro.'&amp;comment_id='.htmlentities($comment_id).'#b'.$ancre.'">+'.htmlentities($my_provote).'</a>
 			/
-			<a class="ntl" href="?action=vote_comment&amp;order='.$agt.'&amp;comment_id='.$ancre.'#b'.$ancre.'">-'.htmlentities($total_vote-$my_provote).'</a>]</span>');
+			<a class="ntl" href="?action=vote_comment&amp;order='.$agt.'&amp;comment_id='.htmlentities($comment_id).'#b'.$ancre.'">-'.htmlentities($total_vote-$my_provote).'</a>]</span>');
 	}
 	else
 	{
@@ -852,7 +870,6 @@ function display_comment($is_proprio,$is_logged,$ancre,$date,$possibly_name,$my_
 	echo('<div class="newscommentcontent">'.$text.'</div>');
 	
 	// Liens administratifs sur le commentaire
-	// Liens administratifs sur le commentaire
 	if ($is_proprio || $is_admin)
 	{
 		echo('<div class="newsendlinks">');
@@ -862,13 +879,13 @@ function display_comment($is_proprio,$is_logged,$ancre,$date,$possibly_name,$my_
 			<a href="?action=remove_post&amp;comment_id='.htmlentities($comment_id).'">Supprimer</a>');
 			if ($is_proprio)
 			{
-				if (!empty($row["possibly_name"]))
+				if (!empty($possibly_name))
 				{
-					echo('<a href="?action=anonymization'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=0&amp;comment_id='.$sec_cid.'#b'.$sec_cid.'">Masquer mon nom</a>');
+					echo('<a href="?action=anonymization'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=0&amp;comment_id='.htmlentities($comment_id).'#b'.$sec_cid.'">Masquer mon nom</a>');
 				}
 				else
 				{
-					echo('<a href="?action=anonymization'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=1&amp;comment_id='.$sec_cid.'#b'.$sec_cid.'">Afficher mon nom</a>');
+					echo('<a href="?action=anonymization'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=1&amp;comment_id='.htmlentities($comment_id).'#b'.$sec_cid.'">Afficher mon nom</a>');
 				}
 			}
 		}
@@ -876,11 +893,11 @@ function display_comment($is_proprio,$is_logged,$ancre,$date,$possibly_name,$my_
 		{
 			if($is_valid || !$already_mod)
 			{
-				echo('<a href="?action=moderation'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=0&amp;comment_id='.$sec_cid.'#b'.$sec_cid.'">Refuser</a>');
+				echo('<a href="?action=moderation'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=0&amp;comment_id='.htmlentities($comment_id).'#b'.$sec_cid.'">Refuser</a>');
 			}
 			if(!$is_valid || !$already_mod)
 			{
-				echo('<a href="?action=moderation'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=1&amp;comment_id='.$sec_cid.'#b'.$sec_cid.'">Accepter</a>');
+				echo('<a href="?action=moderation'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order=1&amp;comment_id='.htmlentities($comment_id).'#b'.$sec_cid.'">Accepter</a>');
 			}			
 		}
 		echo('</div>');
@@ -958,7 +975,7 @@ function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false
 					$text=text_display_prepare(trim($row["text"]));
 
 					// Informations de contexte
-					display_comment($is_proprio,True,$ancre,$date,$possibly_name,$row['my_vote'],$row['my_provote'],$row['total_vote'],$thread_tmp,$text,$privileges,True,$sec_cid);
+					display_comment($row,True,$privileges,$is_admin,$unique_mode);
 					
 				}
 				if(!$result_returned)
@@ -1006,7 +1023,7 @@ function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false
 					}
 					else
 					{
-						if (is_logged())
+						if ($is_logged)
 						{
 							$result_temp=@mysql_query(sprintf("SELECT COUNT(*) AS NB_COMMENT FROM comment WHERE thread_id='%s' AND (is_valid=1 OR (CAST(SHA1(CONCAT('%s',CAST(rand_prop AS CHAR))) AS CHAR)=hash_prop))",mysql_real_escape_string($thread_id),mysql_real_escape_string($_SESSION['login_c'])));	
 						}
@@ -1025,21 +1042,12 @@ function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false
 					{
 						$is_proprio=check_property($row["rand_prop"],$row["hash_prop"]);
 						$is_valid=$row["is_valid"];
-						$already_mod=$row["already_mod"];
-						$comment_id=$row["comment_id"];
 
-						$ancre=htmlentities($row["comment_id"]);
-						$date=$row['date'];
-						$possibly_name=$row['possibly_name'];
-						$sec_cid=htmlentities($row["comment_id"]);
-						$thread_tmp=htmlentities($row["thread_id"]);
-						$text=text_display_prepare(trim($row["text"]));
-						
 						if ($is_valid || $is_proprio || $privileges>3)
 						{
 
 							// afficher les commentaires
-							display_comment($is_proprio,$is_logged,$ancre,$date,$possibly_name,$row['my_vote'],$row['my_provote'],$row['total_vote'],$thread_tmp,$text,$privileges,$is_admin,$sec_cid);
+							display_comment($row,$is_logged,$privileges,$is_admin,$unique_mode);
 							
 						}
 					}
