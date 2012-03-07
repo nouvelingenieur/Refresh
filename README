@@ -1,4 +1,11 @@
-﻿Le bon fonctionnement nécessite un certain nombre de modifications selon l'hébergement :
+Installation :
+
+- Placez tous les fichiers du dossier SITE sur votre hébergeur.
+- Importez le fichier DATABASE/BASE_COMPLETE.sql sur votre base de données MySQL
+- Modifiez le fichier SITE/config.php avec les options que vous souhaitez
+- Connectez-vous pour la première fois avec le login 'admin' et le mot de passe 'refresh' (puis modifiez ce mot de passe)
+
+﻿Le bon fonctionnement de l'accès aux documents nécessite un certain nombre de modifications selon l'hébergement :
 
 - ~/.htaccess, lignes 6 à 8 : la redirection doit être modifiée ou supprimée
 - ~/pdf_display.php, ligne 100 : le lien doit être adapté
@@ -6,18 +13,6 @@
 - ~/script_php/pages_secondlevel/accounts.php, ligne 209 : le lien doit être adapté
 - ~/config.php, saisir les informations de connexion à la base de données
 - ~/script_php/pages_secondlevel/documents.php, ligne 376 : la ligne de commande doit être éventuellement adaptée (\ vs. / et "")
-
-L'adaptation pour une école autre que l'ENPC implique des modifications supplémentaires :
-
-- ~/index.php, lignes 189-196-199-206
-- ~/pdf_display.php, lignes 35 et 38
-- ~/trigger.php, ligne 32
-- ~/rep_img/logo_petit.png
-- ~/script_php/pages_secondlevel/accounts.php, ligne 207 : indiquer l'url de la plateforme
-- ~/script_php/pages_secondlevel/about.php : textes à adapter
-- ~/script_php/pages_secondlevel/accounts.php, lignes 202 à 205 et 214 à 216 : texte à adapter
-- ~/script_php/pages_secondlevel/errors.php, lignes 37, 38 et 48
-- ~/script_php/pages_secondlevel/tool.php, fonctions is_enpc_mail(), comes_from_enpc() et comes_from_etuproxy() à adapter
 
 Notes sur les droits :
 
