@@ -1,4 +1,0 @@
-<Files ~ "^.*\.(cgi|pl|shtm?l?|aspx?|cfml?)$">
-order allow,deny
-deny from all
-</Files>
