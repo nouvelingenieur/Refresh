@@ -53,14 +53,14 @@ Ext.setup({
 			// search button handler
 			handler: function() {
 				Ext.util.JSONP.request({
-					url: 'http://refresh.nouvelingenieur.fr/api/ideas.php',
+					url: 'http://refresh.nouvelingenieur.fr/api/post.php',
 					callbackKey: 'callback',
 					params: {
 						IDEA_TITLE: postPanel.getDockedComponent(1).getComponent('title').getValue(),
 						IDEA_TEXT: postPanel.getDockedComponent(1).getComponent('Text').getValue(),
 						IDEA_CATEOGRY_ID: postPanel.getDockedComponent(1).getComponent('categoryList').getValue()
 					},
-					callback: function(result) {
+					callback: function() {
 					}
 				});
 			}
