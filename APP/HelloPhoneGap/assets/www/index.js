@@ -22,7 +22,7 @@ Ext.setup({
 			}
 		});
 		
-		// top toolbar
+		// top search toolbar
 		var search_items = [{
 			xtype: 'searchfield',
 			id:'q',
@@ -59,8 +59,30 @@ Ext.setup({
 					}
 				});
 			}
+		},
+		{
+			text: 'Back',
+			ui: 'round',
+			hidden: true,
+			// search button handler
+			handler: function() {
+				this.setVisible(true);
+				Ext.getCmp('thePanel').setActiveItem(0,{type:'slide',direction:'right'});
+			}
 		}]
 		
+		// top idea toolbar
+		var topIdeaToolbar = [{
+			text: 'Back',
+			ui: 'round',
+			// search button handler
+			handler: function() {
+				this.setVisible(true);
+				Ext.getCmp('thePanel').setActiveItem(0,{type:'slide',direction:'right'});
+			}
+		}]
+		
+		// idea data type
 		Ext.regModel('Idea', {
 			fields: ['ideaId', 'ideaCategoryId', 'ideaName', 'ideaText', 'ideaAuthor', 'ideaDate']
 		});
@@ -110,8 +132,13 @@ Ext.setup({
 		var ideaPanel = new Ext.Panel({
 			fullscreen: true,
 			id:'ideaPanel',
+			dockedItems: [{
+				xtype: 'toolbar',
+				dock: 'top',
+				items: topIdeaToolbar
+			}],
 			scroll:'vertical',
-			tpl:'<h1>{ideaName} by {ideaAuthor}, {ideaDate}</h1><div>{ideaText}</div>'
+			tpl:'<div class="containerBox"><h1 id="ideaTitle">{ideaName}</h1> by {ideaAuthor}, {ideaDate}</h1><div>{ideaText}</div></div>'
 		});
 		
 		var panel =  new Ext.Panel({
