@@ -1,30 +1,54 @@
-
 Ext.setup({
 	icon: 'icon.png',
 	tabletStartupScreen: 'tablet_startup.png',
 	phoneStartupScreen: 'phone_startup.png',
 	glossOnIcon: false,
 	onReady: function() {
-		var searchedString = '';
+		Ext.util.JSONP.request({
+			url: 'http://refresh.nouvelingenieur.fr/api/categories.php',
+			callbackKey: 'callback',
+			params: {
+			},
+			callback: function(result) {
+				var categoriesList = Array();
+				categoriesList.push({text: 'All categories',  value: 0});
+				for(i=0;i<result.data.length ;i++){
+					categoriesList.push({text: result.data[i].CATEGORY_NAME,  value: result.data[i].CATEOGRY_ID});
+				}
+				postPanel.getDockedComponent(1).getComponent('categoryList').setOptions(categoriesList);
+			}
+		});
 		
 		// top toolbar
-		var search_items = [{
-			xtype: 'searchfield',
-			id:'q',
-			name : 'q',
+		var idea_items = [{
+			xtype: 'textfield',
+			id:'title',
+			name : 'title',
 			 //label: 'Search',
-			placeHolder: ' Search ideas'
+			placeHolder: ' Idea',
+			options: [
+			]
 		},
 		{
 			xtype: 'selectfield',
 			name: 'Category',
+			id: 'categoryList',
+			placeHolder: 'Category of the idea',
 			options: [
-				{text: 'Any category',  value: '-1'},
-				{text: 'Category 1', value: '1'}
 			]
 		},
 		{
-			text: 'Search',
+			xtype: 'textfield',
+			name: 'Text',
+			id: 'Text',
+			placeHolder: 'Description',
+			options: [
+			]
+		}]
+		var confirm = [
+		{	
+			xtype :'button',
+			text: 'Post',
 			ui: 'round',
 			// search button handler
 			handler: function() {
@@ -32,75 +56,46 @@ Ext.setup({
 					url: 'http://refresh.nouvelingenieur.fr/api/ideas.php',
 					callbackKey: 'callback',
 					params: {
-						q: viewport.getDockedComponent(0).getComponent('q').getValue(),
-						n: '10'
+						IDEA_TITLE: postPanel.getDockedComponent(1).getComponent('title').getValue(),
+						IDEA_TEXT: postPanel.getDockedComponent(1).getComponent('Text').getValue(),
+						IDEA_CATEOGRY_ID: postPanel.getDockedComponent(1).getComponent('categoryList').getValue()
 					},
 					callback: function(result) {
-						searchedString = viewport.getDockedComponent(0).getComponent('q').getValue();
-						groupingBase.store.removeAll();
-						for(i=0;i<result.data.length ;i++){
-							groupingBase.store.add([{ideaName: result.data[i].IDEA_TITLE}]);
-						}
 					}
 				});
 			}
 		}]
-		
-		Ext.regModel('Idea', {
-			fields: ['ideaName']
-		});
-
-		var groupingBase = {
-			itemTpl: '<div class="ideas"><strong>{ideaName}</strong></div>',
-			selModel: {
-				mode: 'SINGLE',
-				allowDeselect: true
-			},
-			onItemDisclosure: {
-				scope: 'test',
-				handler: function(record, btn, index) {
-					alert('Disclose more info for ' + record.get('ideaName'));
-				}
-			},
-			store: new Ext.data.JsonStore({
-				model: 'Idea',
-				data: [],
-				proxy: {
-					type: 'ajax',
-					url: 'http://refresh.nouvelingenieur.fr/api/ideas.php',
-					callbackKey: 'callback',
-					params: {
-						n: '10',
-						q: searchedString
-					},
-					callback: function(result) {
-						groupingBase.store.removeAll();
-						for(i=0;i<result.data.length ;i++){
-							groupingBase.store.add([{ideaName: result.data[i].IDEA_TITLE}]);
-						}
-					}
-				}
-			})
-		};
-		
-		paging = new Ext.plugins.ListPagingPlugin({});
-		
-		var searchResultList = new Ext.List(Ext.apply(groupingBase, {
+			var postPanel = new Ext.Panel({
 			fullscreen: true,
-			plugins:[paging]
-		}));
-		
-		var viewport = new Ext.Panel({
-			fullscreen: true,
+			id:'searchPanel',
 			dockedItems: [{
-				xtype: 'toolbar',
+				type:'vbox',
+				pack:'center',
 				dock: 'top',
-				items: search_items
-			}, {
-			title: 'test2',
-				html: '<p></p>',
-				dockedItems: searchResultList
+				html: '<br><center> Post an idea <center><br>'	
+				
+			},
+			{
+				xtype: 'panel',
+				layout: {
+					type :'vbox',
+					pack :'stretch',
+					align: 'center'
+					},
+				items: idea_items
+			},
+			{
+				xtype: 'panel',
+				layout: {
+					type: 'vbox',
+					pack:'center',
+					align: 'start'
+					},
+				dock:'bottom',
+				
+				items:confirm
 			}]
 		});
 	}
 });
+
