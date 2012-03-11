@@ -26,7 +26,7 @@ Ext.setup({
 			text: 'Search',
 			ui :'round',
 			handler: function() {
-			window.location = 'http://refresh.nouvelingenieur.fr/api/index.html'
+			window.location = 'http://refresh.nouvelingenieur.fr/app/index.html'
 			}
 		},  
 		{ xtype: 'spacer' },
