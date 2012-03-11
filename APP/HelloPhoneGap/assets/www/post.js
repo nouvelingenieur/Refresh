@@ -15,35 +15,12 @@ Ext.setup({
 				for(i=0;i<result.data.length ;i++){
 					categoriesList.push({text: result.data[i].CATEGORY_NAME,  value: result.data[i].CATEOGRY_ID});
 				}
-				postPanel.getDockedComponent(1).getComponent('categoryList').setOptions(categoriesList);
+				(formPost.items.get(1)).setOptions(categoriesList);
 			}
 		});
 		
-		var idea_items = [{
-			xtype: 'textfield',
-			id:'title',
-			name : 'title',
-			 //label: 'Search',
-			placeHolder: ' Idea',
-			options: [
-			]
-		},{ xtype: 'spacer' },
-		{
-			xtype: 'selectfield',
-			name: 'Category',
-			id: 'categoryList',
-			placeHolder: 'Category of the idea',
-			options: [
-			]
-		},
-		{
-			xtype: 'textfield',
-			name: 'Text',
-			id: 'Text',
-			placeHolder: 'Description',
-			options: [
-			]
-		}]
+		
+		
 		var toolbar_objects = [
 		{	xtype :'button',
 			text: 'Search',
@@ -62,9 +39,9 @@ Ext.setup({
 					url: 'http://refresh.nouvelingenieur.fr/api/post.php',
 					callbackKey: 'callback',
 					params: {
-						IDEA_TITLE: postPanel.getDockedComponent(1).getComponent('title').getValue(),
-						IDEA_TEXT: postPanel.getDockedComponent(1).getComponent('Text').getValue(),
-						IDEA_CATEOGRY_ID: postPanel.getDockedComponent(1).getComponent('categoryList').getValue()
+						IDEA_TITLE: (formPost.items.get(0)).getValue(),
+						IDEA_TEXT: (formPost.items.get(2)).getValue(),
+						IDEA_CATEOGRY_ID: (formPost.items.get(1)).getValue()
 					},
 					callback: function() {
 					}
@@ -72,27 +49,54 @@ Ext.setup({
 			}
 			
 		}]
-
-   
-			var postPanel = new Ext.Panel({
-			fullscreen: true,
-			id:'searchPanel',
-			dockedItems: [{
-				xtype: 'toolbar',
-				dock: 'top',
-				title: 'Post an idea',
-				items: [toolbar_objects]
-			}, 
-			{
-				xtype: 'panel',
-				layout: {
-					type :'vbox',
-					align: 'center',
-					pack:'center'
-					},
-				items: idea_items
-			}]
+		
+		var toolbar = new Ext.Toolbar({
+			title :'Post an idea',
+			id:'toolbar',
+			items:  [toolbar_objects]
 			});
+		//Form Panel
+		var formPost = new Ext.form.FormPanel({
+		id: 'formPost',
+		items: [{
+			xtype: 'textfield',
+			id:'title',
+			name : 'title',
+			 //label: 'Search',
+			label: ' Idea', 
+			required: true,
+			options: [
+			]
+		},
+		{
+			xtype: 'selectfield',
+			name: 'Category',
+			id: 'categoryList',
+			label: 'Category of the idea',
+			required: true,
+			options: [
+			]
+		},
+		{
+			xtype: 'textareafield',
+			name: 'Text',
+			id: 'Text',
+			label: 'Description', 
+			required: true,
+			options: [
+			]
+		}],
+		dockedItems : [toolbar]
+		});
+				
+		var panel =  new Ext.Panel({
+			fullscreen: true,
+			id:'thePanel',
+			layout: 'card',
+			cardAnimation: 'slide',
+	    	items: [formPost]
+			
+		});
 	}
-});
-
+})
+   
