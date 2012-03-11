@@ -19,7 +19,6 @@ Ext.setup({
 			}
 		});
 		
-		// top toolbar
 		var idea_items = [{
 			xtype: 'textfield',
 			id:'title',
@@ -28,7 +27,7 @@ Ext.setup({
 			placeHolder: ' Idea',
 			options: [
 			]
-		},
+		},{ xtype: 'spacer' },
 		{
 			xtype: 'selectfield',
 			name: 'Category',
@@ -45,9 +44,16 @@ Ext.setup({
 			options: [
 			]
 		}]
-		var confirm = [
-		{	
-			xtype :'button',
+		var toolbar_objects = [
+		{	xtype :'button',
+			text: 'Search',
+			ui :'round',
+			handler: function() {
+			window.location = 'http://refresh.nouvelingenieur.fr/api/index.html'
+			}
+		},  
+		{ xtype: 'spacer' },
+		{ 	xtype :'button',
 			text: 'Post',
 			ui: 'round',
 			// search button handler
@@ -64,38 +70,29 @@ Ext.setup({
 					}
 				});
 			}
+			
 		}]
+
+   
 			var postPanel = new Ext.Panel({
 			fullscreen: true,
 			id:'searchPanel',
 			dockedItems: [{
-				type:'vbox',
-				pack:'center',
+				xtype: 'toolbar',
 				dock: 'top',
-				html: '<br><center> Post an idea <center><br>'	
-				
-			},
+				title: 'Post an idea',
+				items: [toolbar_objects]
+			}, 
 			{
 				xtype: 'panel',
 				layout: {
 					type :'vbox',
-					pack :'stretch',
-					align: 'center'
+					align: 'center',
+					pack:'center'
 					},
 				items: idea_items
-			},
-			{
-				xtype: 'panel',
-				layout: {
-					type: 'vbox',
-					pack:'center',
-					align: 'start'
-					},
-				dock:'bottom',
-				
-				items:confirm
 			}]
-		});
+			});
 	}
 });
 
