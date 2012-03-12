@@ -51,7 +51,7 @@ function new_comment()
 			{
 				$text_prec=trim($_POST["message"]);
 			}
-			else
+			else$_SESSION['transient_display']
 			{
 				$_SESSION['transient_display']='<div class="warning">Texte du nouveau commentaire incorrect</div>';
 			}                
