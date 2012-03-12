@@ -100,6 +100,10 @@ footer.utils { padding:0.5em}
 .comments textarea { width: 100% }
 .comments form .ym-fbox-button {text-align:right}
 
+.comment { 
+padding:5px;
+margin-left: 50px;
+ }
 
 /*  Sidebar  -----------------------------------------------*/
 
