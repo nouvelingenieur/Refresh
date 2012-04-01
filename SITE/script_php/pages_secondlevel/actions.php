@@ -83,7 +83,7 @@ class action {
  * @param  integer   $valid says if the idea needs to be moderated (default 0 = needs moderation)
  * @return array     
  */
-function post($title,$message,$anonymization,$category,$login,$valid=0) {
+function post($title,$message,$anonymization,$category,$login,$valid=0,$output='') {
 
 	$action = new action;
 	$action->set_result(False);
@@ -158,7 +158,9 @@ function post($title,$message,$anonymization,$category,$login,$valid=0) {
 		}
 	}
 	
-	$action->echo_json();
+	if (output == 'JSON') {
+		$action->echo_json();
+	}
 	return $action;
 }
 

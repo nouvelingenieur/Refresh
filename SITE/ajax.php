@@ -36,7 +36,7 @@ switch ($ccar_to_treat)
 {
 	// appel de la fonction post par Ajax
 	case "post":
-		post($_POST['title'],$_POST['message'],$_POST['anonymization'],$_POST['category'],$_SESSION['login_c']);
+		post($_POST['title'],$_POST['message'],$_POST['anonymization'],$_POST['category'],$_SESSION['login_c'],$valid=0,$output='JSON');
 		break;
 
 	// Message d'erreur
