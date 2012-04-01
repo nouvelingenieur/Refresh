@@ -65,10 +65,12 @@ class action {
     }
 	
 	// display all results in JSON format
-	function echo_json() {
+	function output_result($output) {
 		$array = array( 'RESULT' => $this->result, 'WARNINGS' => $this->warnings, 'SUCCESSES' => $this->successes );
 		
-		echo json_encode($array);
+		if ($output == 'JSON') {
+			echo json_encode($array);
+		}
 	}
 }
 
@@ -158,9 +160,7 @@ function post($title,$message,$anonymization,$category,$login,$valid=0,$output='
 		}
 	}
 	
-	if (output == 'JSON') {
-		$action->echo_json();
-	}
+	$action->output_result($output);
 	return $action;
 }
 
