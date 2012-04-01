@@ -31,10 +31,15 @@ include_once("votes.php");
  *   
  */
 class action {
-    var $result;  // Result of the action
+    var $result = False;  // Result of the action
 	var $warnings = array(); // list of generated warnings
 	var $successes = array(); // list of generated successes
-
+	
+	// set result
+	function set_result($result) {
+		$this->result = $result;
+	}
+	
 	// add a warning
     function add_warning($warning) {
         $this->warnings[] = $warning;
@@ -58,6 +63,13 @@ class action {
 			echo ("<div class='success'>".$success."</div>");
 		}
     }
+	
+	// display all results in JSON format
+	function echo_json() {
+		$array = array( 'RESULT' => $this->result, 'WARNINGS' => $this->warnings, 'SUCCESSES' => $this->successes );
+		
+		echo json_encode($array);
+	}
 }
 
 /**
@@ -74,7 +86,7 @@ class action {
 function post($title,$message,$anonymization,$category,$login,$valid=0) {
 
 	$action = new action;
-	$action->result = False;
+	$action->set_result(False);
 
 	$check_1=(isset($title) && !empty($title));
 	$check_2=(isset($message) && !empty($message));
@@ -138,7 +150,7 @@ function post($title,$message,$anonymization,$category,$login,$valid=0) {
 		if (@mysql_query("INSERT INTO `thread` (`thread_id`,`rand_prop`,`hash_prop`,`title`,`text`,`date`,`category`,`is_valid`,`possibly_name`) VALUES (NULL, '$rand_prop', '$hash_prop','$title_prec_sec','$text_prec_sec',CURRENT_TIMESTAMP,'$cate_prec_sec',$valid,'$name_print')"))
 		{
 			$action->add_success(_('The idea was added to Refresh and now has to be moderated'));
-			$action->result = True;
+			$action->set_result(True);
 		}
 		else
 		{
@@ -146,6 +158,7 @@ function post($title,$message,$anonymization,$category,$login,$valid=0) {
 		}
 	}
 	
+	$action->echo_json();
 	return $action;
 }
 
