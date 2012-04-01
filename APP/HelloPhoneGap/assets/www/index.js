@@ -5,6 +5,117 @@ Ext.setup({
 	phoneStartupScreen: 'phone_startup.png',
 	glossOnIcon: false,
 	onReady: function() {
+		
+		
+		// login panel
+		Ext.regModel('User', {
+			fields: [
+				{name: 'name', type: 'string'},
+				{name: 'password', type: 'password'},
+				{name: 'server', type: 'string'}
+			]
+		});
+		
+		Ext.regModel('servers', {
+			fields: [
+				{name: 'server', type: 'string'},
+				{name: 'title', type: 'string'}
+			]
+		});
+		
+		var serverStore = new Ext.data.JsonStore({
+			data : [
+				{ server : 'master',  title : 'Master'},
+				{ server : 'padawan', title : 'Student'},
+				{ server : 'teacher', title : 'Instructor'},
+				{ server : 'aid', title : 'Assistant'}
+			],
+			model : 'servers',
+			autoLoad : true,
+			autoDestroy : true
+		});
+		
+		var formBase = {
+			scroll: 'vertical',
+			url   : 'http://refresh.nouvelingenieur.fr/api/login.php',
+			standardSubmit : false,
+			items: [
+				{
+					xtype: 'fieldset',
+					title: 'Login',
+					instructions: '',
+					defaults: {
+						required: true,
+						labelAlign: 'left',
+						labelWidth: '40%'
+					},
+					items: [
+						{
+							xtype: 'textfield',
+							name : 'email',
+							label: 'E-mail',
+							useClearIcon: true,
+							autoCapitalize : false
+						}, {
+							xtype: 'passwordfield',
+							name : 'password',
+							label: 'Password',
+							useClearIcon: false
+						}, {
+							xtype: 'selectfield',
+							name : 'server',
+							label: 'Server',
+							valueField : 'server',
+							displayField : 'title',
+							store : serverStore
+						}
+					]
+				}
+			],
+			listeners : {
+				submit : function(form, result){
+					console.log('success', Ext.toArray(arguments));
+					Ext.getCmp('thePanel').setActiveItem(1,{type:'slide',direction:'left'});
+				},
+				exception : function(form, result){
+					console.log('failure', Ext.toArray(arguments));
+					Ext.Msg.alert('Error', 'We were unable to connect to the server. Please, review the information entered.', Ext.emptyFn);
+				}
+			},
+			dockedItems: [
+				{
+					xtype: 'toolbar',
+					dock: 'bottom',
+					items: [
+						{xtype: 'spacer'},
+						{
+							text: 'Reset',
+							handler: function() {
+								form.reset();
+							}
+						},
+						{
+							text: 'Login',
+							ui: 'confirm',
+							handler: function() {
+								if(formBase.user){
+									form.updateRecord(formBase.user, true);
+								}
+								form.submit({
+									waitMsg : {message:'Submitting', cls : 'demos-loading'}
+								});
+							}
+						}
+					]
+				}
+			]
+		};
+		
+		form = new Ext.form.FormPanel(formBase);
+		form.show();
+		
+		
+		// idea panel
 		var searchedString = '';
 		
 		Ext.util.JSONP.request({
@@ -67,7 +178,7 @@ Ext.setup({
 			// search button handler
 			handler: function() {
 				this.setVisible(true);
-				Ext.getCmp('thePanel').setActiveItem(0,{type:'slide',direction:'right'});
+				Ext.getCmp('thePanel').setActiveItem(1,{type:'slide',direction:'right'});
 			}
 		}]
 		
@@ -78,7 +189,7 @@ Ext.setup({
 			// search button handler
 			handler: function() {
 				this.setVisible(true);
-				Ext.getCmp('thePanel').setActiveItem(0,{type:'slide',direction:'right'});
+				Ext.getCmp('thePanel').setActiveItem(1,{type:'slide',direction:'right'});
 			}
 		}]
 		
@@ -105,7 +216,7 @@ Ext.setup({
 				handler: function(record, btn, index) {
 					//alert('Disclose more info for ' + record.get('ideaName'));
 					Ext.getCmp('ideaPanel').update(record.data);
-					Ext.getCmp('thePanel').setActiveItem(1,{type:'slide',direction:'left'});
+					Ext.getCmp('thePanel').setActiveItem(2,{type:'slide',direction:'left'});
 				}
 			},
 			store: ideaStore
@@ -129,6 +240,7 @@ Ext.setup({
 			}]
 		});
 		
+		// idea panel
 		var ideaPanel = new Ext.Panel({
 			fullscreen: true,
 			id:'ideaPanel',
@@ -147,7 +259,7 @@ Ext.setup({
 			layout: 'card',
 			cardSwitchAnimation:'slide',
 			scroll:'vertical',
-			 items:[searchPanel, ideaPanel]
+			items:[form, searchPanel, ideaPanel]
 		});
 	}
 });
