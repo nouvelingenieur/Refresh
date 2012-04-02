@@ -52,18 +52,18 @@ Ext.setup({
 					items: [
 						{
 							xtype: 'textfield',
-							name : 'email',
+							name : 'EMAIL',
 							label: 'E-mail',
-							useClearIcon: true,
+							useClearIcon: false,
 							autoCapitalize : false
 						}, {
 							xtype: 'passwordfield',
-							name : 'password',
+							name : 'PASSWORD',
 							label: 'Password',
 							useClearIcon: false
 						}, {
 							xtype: 'selectfield',
-							name : 'server',
+							name : 'SERVER_URL',
 							label: 'Server',
 							valueField : 'server',
 							displayField : 'title',
@@ -72,16 +72,6 @@ Ext.setup({
 					]
 				}
 			],
-			listeners : {
-				submit : function(form, result){
-					console.log('success', Ext.toArray(arguments));
-					Ext.getCmp('thePanel').setActiveItem(1,{type:'slide',direction:'left'});
-				},
-				exception : function(form, result){
-					console.log('failure', Ext.toArray(arguments));
-					Ext.Msg.alert('Error', 'We were unable to connect to the server. Please, review the information entered.', Ext.emptyFn);
-				}
-			},
 			dockedItems: [
 				{
 					xtype: 'toolbar',
@@ -98,11 +88,20 @@ Ext.setup({
 							text: 'Login',
 							ui: 'confirm',
 							handler: function() {
-								if(formBase.user){
-									form.updateRecord(formBase.user, true);
-								}
-								form.submit({
-									waitMsg : {message:'Submitting', cls : 'demos-loading'}
+								Ext.util.JSONP.request({
+									url: 'http://refresh.nouvelingenieur.fr/api/login.php',
+									callbackKey: 'callback',
+									params: {
+										EMAIL: form.getValues().EMAIL,
+										PASSWORD: form.getValues().PASSWORD
+									},
+									callback: function(result) {
+										if (result.data.SUCCESS=='True') {
+											Ext.getCmp('thePanel').setActiveItem(1,{type:'slide',direction:'left'});
+										} else {
+											Ext.Msg.alert('Error', 'We were unable to connect to the server. Please, review the information entered.', Ext.emptyFn);
+										}
+									}
 								});
 							}
 						}
