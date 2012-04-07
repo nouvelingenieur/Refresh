@@ -39,7 +39,7 @@ function authentification($EMAIL,$PASSWORD) {
 	$hash_pass=$PASSWORD;
 	
 	$result=@mysql_query(sprintf("SELECT user_id,is_valid,privileges FROM user WHERE hash_mail='%s' AND hash_pass='%s'",mysql_real_escape_string($hash_log),mysql_real_escape_string($hash_pass)));
-	if (!$result)
+	if (mysql_num_rows($result)==0)
 	{
 		return array('SUCCESS' => 'False','MESSAGE' => _('Email and password do not match'));	
 	} else {
