@@ -169,14 +169,7 @@ function post($title,$message,$anonymization,$category,$login,$valid=0,$output='
 
 /**
  * returns a list of comments for a given thread id
- *
- * @param  string    $title  title of the idea
- * @param  string    $message message of the idea
- * @param  string    $anonymization tells if idea is to be anonymized
- * @param  integer   $category id of the category for the idea
- * @param  string    $login  login of the poster
- * @param  integer   $valid says if the idea needs to be moderated (default 0 = needs moderation)
- * @return array     
+ *   
  */
 function get_comments($thread_id,$privileges,$login,$output='') {
 
@@ -211,15 +204,16 @@ function get_comments($thread_id,$privileges,$login,$output='') {
 			if ($is_valid || $is_proprio || $privileges>3)
 			{
 				$comment = array();
-				$comment['is_proprio'] = check_property($row["rand_prop"],$row["hash_prop"]);
-				$comment['is_valid'] = $row["is_valid"];
-				$comment['already_mod'] = $row["already_mod"];
-				$comment['date'] = $row['date'];
-				$comment['possibly_name'] = $row['possibly_name'];
-				$comment['text'] = text_display_prepare(trim($row["text"]));
-				$comment['my_vote'] = $row['my_vote'];
-				$comment['my_provote'] = $row['my_provote'];
-				$comment['total_vote'] = $row['total_vote'];	
+				$comment['is_proprio'] = check_property($row["rand_prop"],$row["hash_prop"]); // 1 if the current user has posted the comment, else 0
+				$comment['is_valid'] = $row["is_valid"]; // 1 if comment has been accepted, else 0
+				$comment['already_mod'] = $row["already_mod"]; // 1 if comment has already been moderated, else 0
+				$comment['date'] = $row['date']; // date the comment was posted
+				$comment['possibly_name'] = $row['possibly_name']; // name of the author if available
+				$comment['text'] = text_display_prepare(trim($row["text"])); // text of the comment
+				$comment['my_vote'] = $row['my_vote']; // 1 if current user has voted for it, else 0
+				$comment['my_provote'] = $row['my_provote']; // 1 if current user has voted +1, else 0
+				$comment['pro_vote'] = $row['total_vote']; // total of +1 votes
+				$comment['total_vote'] = $row['total_vote']; // total number of votes
 				
 				$action->data[$row["comment_id"]] = $comment;
 				
