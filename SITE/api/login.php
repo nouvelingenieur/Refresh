@@ -27,16 +27,16 @@ $PASSWORD = set_value('PASSWORD','');
 $SERVER_URL = set_value('SERVER_URL','http://refresh.nouvelingenieur.fr');
 
 function authentification($EMAIL,$PASSWORD) {
-	if ($PASSWORD=='') {
+	if ($PASSWORD==sha1('')) {
 		return array('SUCCESS' => 'False','MESSAGE' => _('Email missing'));
 	}
 	
-	if ($EMAIL=='') {
+	if ($EMAIL==sha1('')) {
 		return array('SUCCESS' => 'False','MESSAGE' => _('Password missing'));
 	}
 	
-	$hash_log=sha1($EMAIL);
-	$hash_pass=sha1($PASSWORD);
+	$hash_log=$EMAIL;
+	$hash_pass=$PASSWORD;
 	
 	$result=@mysql_query(sprintf("SELECT user_id,is_valid,privileges FROM user WHERE hash_mail='%s' AND hash_pass='%s'",mysql_real_escape_string($hash_log),mysql_real_escape_string($hash_pass)));
 	if (!$result)
