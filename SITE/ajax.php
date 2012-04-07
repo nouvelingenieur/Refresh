@@ -21,8 +21,11 @@
 	
 	Contact : nicolas.seichepine.org/?action=contact
 */
+session_start();
+
 include_once("config.php");
 include_once("script_php/pages_secondlevel/actions.php");
+include_once("script_php/pages_secondlevel/comments.php");
 
 
 // Demande
@@ -37,6 +40,10 @@ switch ($ccar_to_treat)
 	// appel de la fonction post par Ajax
 	case "post":
 		post($_POST['title'],$_POST['message'],$_POST['anonymization'],$_POST['category'],$_SESSION['login_c'],$valid=0,$output='JSON');
+		break;
+		
+	case "unrollcomment":
+		affichage_comments(27);
 		break;
 
 	// Message d'erreur

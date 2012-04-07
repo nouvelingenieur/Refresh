@@ -12,34 +12,6 @@
 <html> 
 <head> 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
- 
-    <script> 
-		// var BASE URL = 'http://refresh.org';
-		var ACTIONS_URL = 'http://refresh.nouvelingenieur.fr/index.php';
-
-		$('.speccom').click(function() {
-			
-			var url = ACTIONS_URL + $(this).attr("href");
-			
-			// show that is working
-			$('.loader').html('Loading posts from : ' + url);
-			
-			// load posts
-			$.ajax(
-				{
-					url: url,
-					success: function(rep)
-					{
-						$('.placeholder').html(rep);
-					}
-				});
-
-		 
-				
-			return false;
-			
-		});
-    </script> 
 	
 <style media="screen" type="text/css">
 .newsformcomment {
@@ -63,9 +35,37 @@
 <div class='loader'></div>
 
 <div class="newsformcomment">
-
   <p>Here goes the comments</p>
 </div>
+
+
+    <script type="text/javascript">
+		// var BASE URL = 'http://refresh.org';
+		var ACTIONS_URL = '../ajax.php';
+
+		$('.speccom').click(function() {
+			
+			var url = ACTIONS_URL + $(this).attr("href");
+			
+			// show that is working
+			$('.loader').html('Loading posts from : ' + url);
+			
+			// load posts
+			$.ajax(
+				{
+					url: url,
+					success: function(rep)
+					{
+						$('.newsformcomment').html(rep);
+					}
+				});
+
+		 
+				
+			return false;
+			
+		});
+    </script> 
 
 </body>
 </html>

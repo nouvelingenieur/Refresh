@@ -1110,6 +1110,10 @@ function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false
 				@mysql_free_result($result);
 			}
 		}
+				else
+		{
+			echo('<div class="warning">Vous ne disposez pas des droits n&eacute;cessaires</div>');
+		}
 	}
 }
 
