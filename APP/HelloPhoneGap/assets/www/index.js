@@ -1,3 +1,5 @@
+var form;
+var currentPanel;
 
 Ext.setup({
 	icon: 'icon.png',
@@ -5,7 +7,6 @@ Ext.setup({
 	phoneStartupScreen: 'phone_startup.png',
 	glossOnIcon: false,
 	onReady: function() {
-		
 		
 		// login panel
 		Ext.regModel('User', {
@@ -25,10 +26,7 @@ Ext.setup({
 		
 		var serverStore = new Ext.data.JsonStore({
 			data : [
-				{ server : 'master',  title : 'Master'},
-				{ server : 'padawan', title : 'Student'},
-				{ server : 'teacher', title : 'Instructor'},
-				{ server : 'aid', title : 'Assistant'}
+				{ server : 'http://refresh.nouvelingenieur.fr',  title : 'Default'}
 			],
 			model : 'servers',
 			autoLoad : true,
@@ -37,7 +35,6 @@ Ext.setup({
 		
 		var formBase = {
 			scroll: 'vertical',
-			url   : 'http://refresh.nouvelingenieur.fr/api/login.php',
 			standardSubmit : false,
 			items: [
 				{
@@ -51,7 +48,7 @@ Ext.setup({
 					},
 					items: [
 						{
-							xtype: 'textfield',
+							xtype: 'emailfield',
 							name : 'EMAIL',
 							label: 'E-mail',
 							useClearIcon: false,
@@ -89,15 +86,33 @@ Ext.setup({
 							ui: 'confirm',
 							handler: function() {
 								Ext.util.JSONP.request({
-									url: 'http://refresh.nouvelingenieur.fr/api/login.php',
+									url: form.getValues().SERVER_URL+'/api/login.php',
 									callbackKey: 'callback',
 									params: {
-										EMAIL: form.getValues().EMAIL,
-										PASSWORD: form.getValues().PASSWORD
+										EMAIL: SHA1(form.getValues().EMAIL),
+										PASSWORD: SHA1(form.getValues().PASSWORD)
 									},
 									callback: function(result) {
 										if (result.data.SUCCESS=='True') {
+											Ext.util.JSONP.request({
+												url: form.getValues().SERVER_URL+'/api/categories.php',
+												callbackKey: 'callback',
+												params: {
+													EMAIL: SHA1(form.getValues().EMAIL),
+													PASSWORD: SHA1(form.getValues().PASSWORD)
+												},
+												callback: function(result) {
+													var categoriesList = Array();
+													categoriesList.push({text: 'All categories',  value: 0});
+													for(i=0;i<result.data.length ;i++){
+														categoriesList.push({text: html_entity_decode(result.data[i].CATEGORY_NAME),  value: result.data[i].CATEOGRY_ID});
+													}
+													searchPanel.getDockedComponent(0).getComponent('categoryList').setOptions(categoriesList);
+													(formPost.items.get(1)).setOptions(categoriesList);
+												}
+											});
 											Ext.getCmp('thePanel').setActiveItem(1,{type:'slide',direction:'left'});
+											currentPanel = 1;
 										} else {
 											Ext.Msg.alert('Error', 'We were unable to connect to the server. Please, review the information entered.', Ext.emptyFn);
 										}
@@ -113,24 +128,37 @@ Ext.setup({
 		form = new Ext.form.FormPanel(formBase);
 		form.show();
 		
+		// bottom bar
+		var buttonsSpecBottom = [
+			{ ui: 'normal', text: 'Search' },
+			{ ui: 'normal', text: 'Post' }
+		]
+		
+		var tapHandler = function (btn, evt) {
+			switch(btn.text) {
+				case 'Search':
+					Ext.getCmp('thePanel').setActiveItem(1,{type:'slide',direction:'right'});
+				break;
+				case 'Post':
+					Ext.getCmp('thePanel').setActiveItem(3,{type:'slide',direction:'left'});
+				break;
+			}
+		}
+		
+		var bottomBar = {
+			xtype: 'toolbar',
+			ui: 'dark',
+			dock: 'bottom',
+			layout: {
+				pack: 'justify',
+				align: 'center' // align center is the default
+			},
+			items: buttonsSpecBottom,
+			defaults: { handler: tapHandler }
+		}
 		
 		// idea panel
 		var searchedString = '';
-		
-		Ext.util.JSONP.request({
-			url: 'http://refresh.nouvelingenieur.fr/api/categories.php',
-			callbackKey: 'callback',
-			params: {
-			},
-			callback: function(result) {
-				var categoriesList = Array();
-				categoriesList.push({text: 'All categories',  value: 0});
-				for(i=0;i<result.data.length ;i++){
-					categoriesList.push({text: result.data[i].CATEGORY_NAME,  value: result.data[i].CATEOGRY_ID});
-				}
-				searchPanel.getDockedComponent(0).getComponent('categoryList').setOptions(categoriesList);
-			}
-		});
 		
 		// top search toolbar
 		var search_items = [{
@@ -154,11 +182,13 @@ Ext.setup({
 			// search button handler
 			handler: function() {
 				Ext.util.JSONP.request({
-					url: 'http://refresh.nouvelingenieur.fr/api/ideas.php',
+					url: form.getValues().SERVER_URL+'/api/ideas.php',
 					callbackKey: 'callback',
 					params: {
 						q: searchPanel.getDockedComponent(0).getComponent('q').getValue(),
-						c: searchPanel.getDockedComponent(0).getComponent('categoryList').getValue()
+						c: searchPanel.getDockedComponent(0).getComponent('categoryList').getValue(),
+						EMAIL: SHA1(form.getValues().EMAIL),
+						PASSWORD: SHA1(form.getValues().PASSWORD)
 					},
 					callback: function(result) {
 						searchedString = searchPanel.getDockedComponent(0).getComponent('q').getValue();
@@ -172,25 +202,28 @@ Ext.setup({
 		},
 		{
 			text: 'Back',
-			ui: 'round',
+			ui: 'back',
 			hidden: true,
 			// search button handler
 			handler: function() {
 				this.setVisible(true);
 				Ext.getCmp('thePanel').setActiveItem(1,{type:'slide',direction:'right'});
+				currentPanel = 1;
 			}
 		}]
 		
 		// top idea toolbar
 		var topIdeaToolbar = [{
 			text: 'Back',
-			ui: 'round',
+			ui: 'back',
 			// search button handler
 			handler: function() {
 				this.setVisible(true);
 				Ext.getCmp('thePanel').setActiveItem(1,{type:'slide',direction:'right'});
+				currentPanel = 1;
 			}
 		}]
+		
 		
 		// idea data type
 		Ext.regModel('Idea', {
@@ -213,9 +246,9 @@ Ext.setup({
 			onItemDisclosure: {
 				scope: 'test',
 				handler: function(record, btn, index) {
-					//alert('Disclose more info for ' + record.get('ideaName'));
 					Ext.getCmp('ideaPanel').update(record.data);
 					Ext.getCmp('thePanel').setActiveItem(2,{type:'slide',direction:'left'});
+					currentPanel = 2;
 				}
 			},
 			store: ideaStore
@@ -236,7 +269,7 @@ Ext.setup({
 			title: 'test2',
 				html: '<p></p>',
 				dockedItems: searchResultList
-			}]
+			}, bottomBar]
 		});
 		
 		// idea panel
@@ -247,18 +280,113 @@ Ext.setup({
 				xtype: 'toolbar',
 				dock: 'top',
 				items: topIdeaToolbar
-			}],
+			}, bottomBar],
 			scroll:'vertical',
 			tpl:'<div class="containerBox"><h1 id="ideaTitle">{ideaName}</h1> by {ideaAuthor}, {ideaDate}</h1><div>{ideaText}</div></div>'
 		});
 		
+		// post panel
+		// bottom bar
+		var postButtonsSpecBottom = [
+			{ ui: 'normal', text: 'Search' },
+			{ ui: 'confirm', text: 'Post' }
+		]
+		
+		var postTapHandler = function (btn, evt) {
+			switch(btn.text) {
+				case 'Search':
+					Ext.getCmp('thePanel').setActiveItem(1,{type:'slide',direction:'right'});
+					currentPanel = 1;
+				break;
+				case 'Post':
+					Ext.util.JSONP.request({
+						url: form.getValues().SERVER_URL+'/api/post.php',
+						callbackKey: 'callback',
+						params: {
+							IDEA_TITLE: (formPost.items.get(0)).getValue(),
+							IDEA_TEXT: (formPost.items.get(2)).getValue(),
+							IDEA_CATEOGRY_ID: (formPost.items.get(1)).getValue(),
+							EMAIL: SHA1(form.getValues().EMAIL),
+							PASSWORD: SHA1(form.getValues().PASSWORD)
+						},
+						callback: function() {
+						}
+					});
+				break;
+			}
+		}
+		
+		var postBottomBar = {
+			xtype: 'toolbar',
+			ui: 'dark',
+			dock: 'bottom',
+			layout: {
+				pack: 'justify',
+				align: 'center' // align center is the default
+			},
+			items: postButtonsSpecBottom,
+			defaults: { handler: postTapHandler }
+		}
+		
+		//Form Panel
+		var formPost = new Ext.form.FormPanel({
+		id: 'formPost',
+		scroll: 'vertical',
+		items: [{
+			xtype: 'textfield',
+			id:'title',
+			name : 'title',
+			label: ' Idea', 
+			required: true,
+			options: [
+			]
+		},
+		{
+			xtype: 'selectfield',
+			name: 'Category',
+			id: 'categoryList2',
+			label: 'Category of the idea',
+			required: true,
+			options: [
+			]
+		},
+		{
+			xtype: 'textareafield',
+			name: 'Text',
+			id: 'Text',
+			label: 'Description', 
+			required: true,
+			options: [
+			]
+		}]
+		});
+		
+		var postPanel =  new Ext.Panel({
+			id:'postPanel',
+			fullscreen: true,
+			items: [formPost],
+	    	dockedItems: [{
+				xtype: 'toolbar',
+				dock: 'top',
+				items: {
+					text: 'Back',
+					ui: 'back',
+					// search button handler
+					handler: function() {
+						Ext.getCmp('thePanel').setActiveItem(currentPanel,{type:'slide',direction:'right'});
+					}
+				}
+			}, postBottomBar]
+		});
+		
+		// global panel
 		var panel =  new Ext.Panel({
 			fullscreen: true,
 			id:'thePanel',
 			layout: 'card',
 			cardSwitchAnimation:'slide',
 			scroll:'vertical',
-			items:[form, searchPanel, ideaPanel]
+			items:[form, searchPanel, ideaPanel, postPanel]
 		});
 	}
 });
