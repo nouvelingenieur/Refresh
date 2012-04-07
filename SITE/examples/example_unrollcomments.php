@@ -27,7 +27,7 @@
 
 <body>
 
-<a class='speccom' href="?action=unrollcomment&amp;order=0&amp;thread_id=27#a27">
+<a class='speccom' href="?action=comments&amp;order=0&amp;thread_id=27#a27">
                     <span class="newslinkcomment_roll">2 comments</span>
                 </a>
 
@@ -56,11 +56,15 @@
 					url: url,
 					success: function(rep)
 					{
-						$('.newsformcomment').html(rep);
+						var display = '<ul>';
+						var callback = jQuery.parseJSON(rep);
+						$.each(callback.DATA, function(key,comment) {
+							  display = display + '<li>' + comment.text + ' - ' + comment.possibly_name + ' - ' + comment.date + '</li>';
+						   });
+						display = display + '</ul>';
+						$('.newsformcomment').html(display);
 					}
 				});
-
-		 
 				
 			return false;
 			

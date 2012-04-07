@@ -25,7 +25,9 @@ session_start();
 
 include_once("config.php");
 include_once("script_php/pages_secondlevel/actions.php");
-include_once("script_php/pages_secondlevel/comments.php");
+
+$privileges = user_privilege_level();
+$login = $_SESSION['login_c'];
 
 
 // Demande
@@ -39,11 +41,11 @@ switch ($ccar_to_treat)
 {
 	// appel de la fonction post par Ajax
 	case "post":
-		post($_POST['title'],$_POST['message'],$_POST['anonymization'],$_POST['category'],$_SESSION['login_c'],$valid=0,$output='JSON');
+		post($_POST['title'],$_POST['message'],$_POST['anonymization'],$_POST['category'],$login,$valid=0,$output='JSON');
 		break;
 		
-	case "unrollcomment":
-		affichage_comments(27);
+	case "comments":
+		get_comments(27,$privileges,$login,$output='JSON');
 		break;
 
 	// Message d'erreur
