@@ -772,7 +772,7 @@ function display_speccom($unique_mode,$ancre,$thread_id,$nb_comment,$roll) {
 }
 
 // display a comment with all its wrapper
-function display_comment($row,$is_logged,$privileges,$is_admin,$unique_mode) {
+function display_comment($row,$is_logged,$privileges,$unique_mode) {
 
 	$is_proprio=check_property($row["rand_prop"],$row["hash_prop"]);
 	$is_valid=$row["is_valid"];
@@ -1047,7 +1047,7 @@ function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false
 						{
 
 							// afficher les commentaires
-							display_comment($row,$is_logged,$privileges,$is_admin,$unique_mode);
+							display_comment($row,$is_logged,$privileges,$unique_mode);
 							
 						}
 					}
@@ -1109,6 +1109,10 @@ function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false
 				}
 				@mysql_free_result($result);
 			}
+		}
+				else
+		{
+			echo('<div class="warning">Vous ne disposez pas des droits n&eacute;cessaires</div>');
 		}
 	}
 }
