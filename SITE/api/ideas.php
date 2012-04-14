@@ -31,6 +31,13 @@ header('Content-type: application/json');
 include_once("./mysql_connect.php");
 
 /* INPUT */
+$EMAIL = set_value('EMAIL','');
+$PASSWORD = set_value('PASSWORD','');
+
+$result=@mysql_query(sprintf("SELECT user_id,is_valid,privileges FROM user WHERE hash_mail='%s' AND hash_pass='%s'",mysql_real_escape_string($EMAIL),mysql_real_escape_string($PASSWORD)));
+if (mysql_num_rows($result)!=0)
+	{
+
 $q = set_value('q','');
 $c = set_value('c',0);
 
@@ -90,6 +97,12 @@ array_walk_recursive($array, function(&$item, $key) {
             $item = htmlentities($item);
         }
     });
+	
+} else {
+
+	$array = array('SUCCESS' => 'False','MESSAGE' => _('Login Error: email and password do not match'));
+
+}
 
 echo "Ext.util.JSONP.callback(".json_encode(array("data" => $array)).")";
 
