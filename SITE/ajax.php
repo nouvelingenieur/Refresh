@@ -45,7 +45,7 @@ switch ($ccar_to_treat)
 		break;
 		
 	case "comments":
-		get_comments(27,$privileges,$login,$output='JSON');
+		get_comments($_POST['thread_id'],$privileges,$login,$output='JSON');
 		break;
 
 	// Message d'erreur
