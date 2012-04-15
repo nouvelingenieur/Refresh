@@ -74,16 +74,16 @@ Ext.setup({
 					xtype: 'toolbar',
 					dock: 'bottom',
 					items: [
-						{xtype: 'spacer'},
 						{
 							text: 'Reset',
 							handler: function() {
 								form.reset();
 							}
 						},
+						{xtype: 'spacer'},
 						{
 							text: 'Login',
-							ui: 'confirm',
+							ui: 'action',
 							handler: function() {
 								Ext.util.JSONP.request({
 									url: form.getValues().SERVER_URL+'/api/login.php',
@@ -131,7 +131,7 @@ Ext.setup({
 		// bottom bar
 		var buttonsSpecBottom = [
 			{ ui: 'normal', text: 'Search' },
-			{ ui: 'normal', text: 'Post' }
+			{ ui: 'normal', text: 'Post'}
 		]
 		
 		var tapHandler = function (btn, evt) {
@@ -194,7 +194,7 @@ Ext.setup({
 						searchedString = searchPanel.getDockedComponent(0).getComponent('q').getValue();
 						groupingBase.store.removeAll();
 						for(i=0;i<result.data.length ;i++){
-							groupingBase.store.add([{ideaId:result.data[i].IDEA_ID, ideaCategoryId:result.data[i].IDEA_CATEGORY_ID, ideaName: result.data[i].IDEA_TITLE, ideaText: result.data[i].IDEA_TEXT, ideaAuthor: result.data[i].IDEA_AUTHOR, ideaDate: result.data[i].IDEA_DATE}]);
+							groupingBase.store.add([{ideaId:result.data[i].IDEA_ID, ideaCategoryId:result.data[i].IDEA_CATEGORY_ID, ideaName: result.data[i].IDEA_TITLE, ideaText: result.data[i].IDEA_TEXT, ideaAuthor: result.data[i].IDEA_AUTHOR, ideaDate: result.data[i].IDEA_DATE, ideaLikes: result.data[i].IDEA_POSITIVE_VOTES, ideaDislikes: result.data[i].IDEA_NEGATIVE_VOTES}]);
 						}
 					}
 				});
@@ -273,23 +273,74 @@ Ext.setup({
 		});
 		
 		// idea panel
+		var like = function() {
+			console.log('like');
+			Ext.util.JSONP.request({
+				url: 'http://free.worldweatheronline.com/feed/weather.ashx',
+				callbackKey: 'callback',
+				params: {
+					key: '23f6a0ab24185952101705',
+				},
+				callback: function(result) {
+					// update ratings
+				}
+			});
+		};
+		
+		var dislike = function() {
+			console.log('dislike');
+			Ext.util.JSONP.request({
+				url: 'http://free.worldweatheronline.com/feed/weather.ashx',
+				callbackKey: 'callback',
+				params: {
+					key: '23f6a0ab24185952101705',
+				},
+				callback: function(result) {
+					// update ratings
+				}
+			});
+		};
+		
+		var goToCommentPanel = function() {
+			// slide
+			console.log('goToCommentPanel');
+		};
+		
+		var toolbar_icons = {
+			xtype: 'toolbar',
+			dock: 'bottom',
+			scroll: 'horizontal',
+			items: [
+				{ iconMask: true, iconAlign: 'left', ui: 'round', text: 'Comment', iconCls: 'compose', handler: goToCommentPanel},
+				{xtype: 'spacer'},
+				{ iconMask: true, iconAlign: 'left', ui: 'action-round', text: 'Like', iconCls: 'add', handler: like},
+				{ iconMask: true, iconAlign: 'left', ui: 'action-round', text: 'Dislike', iconCls: 'delete', handler: dislike},
+			]
+		}
+		
 		var ideaPanel = new Ext.Panel({
-			fullscreen: true,
 			id:'ideaPanel',
+			dockedItems: [toolbar_icons],
+			scroll: 'both',
+			tpl:'<div class="containerBox"><h1 id="ideaTitle">{ideaName}</h1> by {ideaAuthor} on {ideaDate}</h1><div>{ideaText}</div><div><ul><li>Likes: {ideaLikes}</li><li>Dislikes: {ideaDislikes}</li></ul></div></div>',
+		});
+		
+		var ideaPanelAndComments = new Ext.Panel({
+			fullscreen: true,
+			id:'ideaPanelAndComments',
 			dockedItems: [{
 				xtype: 'toolbar',
 				dock: 'top',
 				items: topIdeaToolbar
-			}, bottomBar],
-			scroll:'vertical',
-			tpl:'<div class="containerBox"><h1 id="ideaTitle">{ideaName}</h1> by {ideaAuthor}, {ideaDate}</h1><div>{ideaText}</div></div>'
+			},ideaPanel],
+			scroll:'vertical'
 		});
 		
 		// post panel
 		// bottom bar
 		var postButtonsSpecBottom = [
 			{ ui: 'normal', text: 'Search' },
-			{ ui: 'confirm', text: 'Post' }
+			{ ui: 'action', text: 'Post' }
 		]
 		
 		var postTapHandler = function (btn, evt) {
@@ -365,7 +416,7 @@ Ext.setup({
 			id:'postPanel',
 			fullscreen: true,
 			items: [formPost],
-	    	dockedItems: [{
+			dockedItems: [{
 				xtype: 'toolbar',
 				dock: 'top',
 				items: {
@@ -386,7 +437,7 @@ Ext.setup({
 			layout: 'card',
 			cardSwitchAnimation:'slide',
 			scroll:'vertical',
-			items:[form, searchPanel, ideaPanel, postPanel]
+			items:[form, searchPanel, ideaPanelAndComments, postPanel]
 		});
 	}
 });
