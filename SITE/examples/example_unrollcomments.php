@@ -54,6 +54,8 @@
 			$.ajax(
 				{
 					url: url,
+					type: 'POST',
+					data: { thread_id: "27" },
 					success: function(rep)
 					{
 						var display = '<ul>';
