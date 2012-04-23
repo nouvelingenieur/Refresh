@@ -204,6 +204,7 @@ function get_comments($thread_id,$privileges,$login,$output='') {
 			if ($is_valid || $is_proprio || $privileges>3)
 			{
 				$comment = array();
+				$comment['comment_id'] = $row["comment_id"]; // comment id
 				$comment['is_proprio'] = check_property($row["rand_prop"],$row["hash_prop"]); // 1 if the current user has posted the comment, else 0
 				$comment['is_valid'] = $row["is_valid"]; // 1 if comment has been accepted, else 0
 				$comment['already_mod'] = $row["already_mod"]; // 1 if comment has already been moderated, else 0
