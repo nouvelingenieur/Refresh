@@ -1,31 +1,9 @@
-/*
-	Plateforme web PPR - outil de crowdsourcing
-	Copyright(C) 2011 Nicolas SEICHEPINE
-
-	This file is part of PPR.
-	
-	PPR is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-	
-	Contact : nicolas.seichepine.org/?action=contact
-*/
-
 -- phpMyAdmin SQL Dump
 -- version 3.4.8
 -- http://www.phpmyadmin.net
 --
 -- Host: mysql
--- Generation Time: Mar 04, 2012 at 03:24 AM
+-- Generation Time: Mar 14, 2012 at 06:13 PM
 -- Server version: 5.1.39
 -- PHP Version: 5.3.6-11
 
@@ -58,9 +36,10 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `is_valid` tinyint(1) NOT NULL DEFAULT '0',
   `already_mod` tinyint(1) NOT NULL DEFAULT '0',
   `possibly_name` varchar(64) NOT NULL,
+  `chaine_moderation` varchar(40) NOT NULL,
   PRIMARY KEY (`comment_id`),
   KEY `thread_id` (`thread_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -108,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `sauvegarde_comment` (
   `possibly_name` varchar(64) NOT NULL,
   PRIMARY KEY (`comment_id`),
   KEY `thread_id` (`thread_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=354 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -130,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `sauvegarde_thread` (
   PRIMARY KEY (`thread_id`),
   KEY `category_id` (`category`),
   KEY `campagne_ref` (`campagne_ref`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=57 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -153,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `thread` (
   `chaine_moderation` varchar(40) NOT NULL,
   PRIMARY KEY (`thread_id`),
   KEY `category_id` (`category`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=42 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -165,11 +144,7 @@ CREATE TABLE IF NOT EXISTS `thread_category` (
   `category_id` int(12) unsigned NOT NULL AUTO_INCREMENT,
   `category_name` varchar(128) NOT NULL,
   PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
-
---
--- Dumping data for table `thread_category`
---
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 INSERT INTO `thread_category` (`category_id`, `category_name`) VALUES
 (1, 'Idees Generales');
@@ -189,11 +164,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `privileges` int(4) unsigned NOT NULL DEFAULT '3',
   `is_valid` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
-
---
--- Dumping data for table `user`
---
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 INSERT INTO `user` (`user_id`, `hash_mail`, `hash_pass`, `hash_conf`, `inscription_date`, `privileges`, `is_valid`) VALUES
 (34, 'd033e22ae348aeb5660fc2140aec35850c4da997', '26b56c1bdfb048c3e46419fde332bab76deb2cd3', '08da1d8d8d11608f7ac33e49cf1d3b876cf482a4', '2012-03-04 02:17:10', 5, 1);
@@ -213,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `vote` (
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`vote_id`),
   KEY `thread_id` (`thread_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=57 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -229,7 +200,7 @@ CREATE TABLE IF NOT EXISTS `vote_comment` (
   `vote` tinyint(1) NOT NULL,
   PRIMARY KEY (`vote_comment_id`),
   KEY `thread_id` (`comment_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=177 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Constraints for dumped tables
@@ -274,4 +245,3 @@ ALTER TABLE `vote_comment`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-

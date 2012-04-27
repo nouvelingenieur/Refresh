@@ -20,6 +20,8 @@ string IDEA_TITLE : title (non unique)
 string IDEA_TEXT : text of the idea
 date IDEA_DATE : date of the posting of the idea
 string IDEA_AUTHOR : name of the author if available
+integer IDEA_POSITIVE_VOTES : number of positive votes
+integer IDEA_NEGATIVE_VOTES : number of negative votes
 
 */
 
@@ -29,6 +31,13 @@ header('Content-type: application/json');
 include_once("./mysql_connect.php");
 
 /* INPUT */
+$EMAIL = set_value('EMAIL','');
+$PASSWORD = set_value('PASSWORD','');
+
+$result=@mysql_query(sprintf("SELECT user_id,is_valid,privileges FROM user WHERE hash_mail='%s' AND hash_pass='%s'",mysql_real_escape_string($EMAIL),mysql_real_escape_string($PASSWORD)));
+if (mysql_num_rows($result)!=0)
+	{
+
 $q = set_value('q','');
 $c = set_value('c',0);
 
@@ -55,15 +64,25 @@ if (count($WHERE_array) > 0) {
 }
 
 /* OUTPUT */
-$sql = "SELECT 
+$sql = "SELECT t.*,
+v.IDEA_POSITIVE_VOTES,
+v.IDEA_NEGATIVE_VOTES 
+FROM
+(SELECT 
 	thread_id as IDEA_ID, 
 	category as IDEA_CATEOGRY_ID, 
 	title as IDEA_TITLE, 
 	text as IDEA_TEXT, 
 	date as IDEA_DATE, 
 	possibly_name as IDEA_AUTHOR 
-FROM thread
-".$WHERE;
+FROM thread ".$WHERE.") as t 
+INNER JOIN 
+(SELECT 
+thread_id as IDEA_ID, 
+sum(vote) as IDEA_POSITIVE_VOTES,
+COUNT(*) - sum(vote) as IDEA_NEGATIVE_VOTES 
+FROM vote GROUP BY thread_id ) as v 
+ON t.IDEA_ID = v.IDEA_ID";
 
 $result = $dbh->query($sql);
 
@@ -78,6 +97,12 @@ array_walk_recursive($array, function(&$item, $key) {
             $item = htmlentities($item);
         }
     });
+	
+} else {
+
+	$array = array('SUCCESS' => 'False','MESSAGE' => _('Login Error: email and password do not match'));
+
+}
 
 echo "Ext.util.JSONP.callback(".json_encode(array("data" => $array)).")";
 
