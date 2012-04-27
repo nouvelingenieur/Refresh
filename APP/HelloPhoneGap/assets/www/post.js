@@ -1,106 +1,102 @@
-
 Ext.setup({
 	icon: 'icon.png',
 	tabletStartupScreen: 'tablet_startup.png',
 	phoneStartupScreen: 'phone_startup.png',
 	glossOnIcon: false,
 	onReady: function() {
-		var searchedString = '';
+		Ext.util.JSONP.request({
+			url: 'http://refresh.nouvelingenieur.fr/api/categories.php',
+			callbackKey: 'callback',
+			params: {
+			},
+			callback: function(result) {
+				var categoriesList = Array();
+				categoriesList.push({text: 'All categories',  value: 0});
+				for(i=0;i<result.data.length ;i++){
+					categoriesList.push({text: result.data[i].CATEGORY_NAME,  value: result.data[i].CATEOGRY_ID});
+				}
+				(formPost.items.get(1)).setOptions(categoriesList);
+			}
+		});
 		
-		// top toolbar
-		var search_items = [{
-			xtype: 'searchfield',
-			id:'q',
-			name : 'q',
-			 //label: 'Search',
-			placeHolder: ' Search ideas'
-		},
-		{
-			xtype: 'selectfield',
-			name: 'Category',
-			options: [
-				{text: 'Any category',  value: '-1'},
-				{text: 'Category 1', value: '1'}
-			]
-		},
-		{
+		
+		
+		var toolbar_objects = [
+		{	xtype :'button',
 			text: 'Search',
+			ui :'round',
+			handler: function() {
+			window.location = 'http://refresh.nouvelingenieur.fr/app/index.html'
+			}
+		},  
+		{ xtype: 'spacer' },
+		{ 	xtype :'button',
+			text: 'Post',
 			ui: 'round',
 			// search button handler
 			handler: function() {
 				Ext.util.JSONP.request({
-					url: 'http://refresh.nouvelingenieur.fr/api/ideas.php',
+					url: 'http://refresh.nouvelingenieur.fr/api/post.php',
 					callbackKey: 'callback',
 					params: {
-						q: viewport.getDockedComponent(0).getComponent('q').getValue(),
-						n: '10'
+						IDEA_TITLE: (formPost.items.get(0)).getValue(),
+						IDEA_TEXT: (formPost.items.get(2)).getValue(),
+						IDEA_CATEOGRY_ID: (formPost.items.get(1)).getValue()
 					},
-					callback: function(result) {
-						searchedString = viewport.getDockedComponent(0).getComponent('q').getValue();
-						groupingBase.store.removeAll();
-						for(i=0;i<result.data.length ;i++){
-							groupingBase.store.add([{ideaName: result.data[i].IDEA_TITLE}]);
-						}
+					callback: function() {
 					}
 				});
 			}
+			
 		}]
 		
-		Ext.regModel('Idea', {
-			fields: ['ideaName']
+		var toolbar = new Ext.Toolbar({
+			title :'Post an idea',
+			id:'toolbar',
+			items:  [toolbar_objects]
+			});
+		//Form Panel
+		var formPost = new Ext.form.FormPanel({
+		id: 'formPost',
+		items: [{
+			xtype: 'textfield',
+			id:'title',
+			name : 'title',
+			 //label: 'Search',
+			label: ' Idea', 
+			required: true,
+			options: [
+			]
+		},
+		{
+			xtype: 'selectfield',
+			name: 'Category',
+			id: 'categoryList',
+			label: 'Category of the idea',
+			required: true,
+			options: [
+			]
+		},
+		{
+			xtype: 'textareafield',
+			name: 'Text',
+			id: 'Text',
+			label: 'Description', 
+			required: true,
+			options: [
+			]
+		}],
+		dockedItems : [toolbar]
 		});
-
-		var groupingBase = {
-			itemTpl: '<div class="ideas"><strong>{ideaName}</strong></div>',
-			selModel: {
-				mode: 'SINGLE',
-				allowDeselect: true
-			},
-			onItemDisclosure: {
-				scope: 'test',
-				handler: function(record, btn, index) {
-					alert('Disclose more info for ' + record.get('ideaName'));
-				}
-			},
-			store: new Ext.data.JsonStore({
-				model: 'Idea',
-				data: [],
-				proxy: {
-					type: 'ajax',
-					url: 'http://refresh.nouvelingenieur.fr/api/ideas.php',
-					callbackKey: 'callback',
-					params: {
-						n: '10',
-						q: searchedString
-					},
-					callback: function(result) {
-						groupingBase.store.removeAll();
-						for(i=0;i<result.data.length ;i++){
-							groupingBase.store.add([{ideaName: result.data[i].IDEA_TITLE}]);
-						}
-					}
-				}
-			})
-		};
-		
-		paging = new Ext.plugins.ListPagingPlugin({});
-		
-		var searchResultList = new Ext.List(Ext.apply(groupingBase, {
+				
+		var panel =  new Ext.Panel({
 			fullscreen: true,
-			plugins:[paging]
-		}));
-		
-		var viewport = new Ext.Panel({
-			fullscreen: true,
-			dockedItems: [{
-				xtype: 'toolbar',
-				dock: 'top',
-				items: search_items
-			}, {
-			title: 'test2',
-				html: '<p></p>',
-				dockedItems: searchResultList
-			}]
+			id:'thePanel',
+			layout: 'card',
+			cardAnimation: 'slide',
+	    	items: [formPost]
+			
 		});
 	}
-});
+})
+   

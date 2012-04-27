@@ -11,7 +11,7 @@
 	<div class="clear"></div>
 </header>
 
-<form class="ym-form shareidea" name="shareidea" action="?action=new_post" method="post">
+<form id ="shareidea" class="ym-form shareidea" name="shareidea" action="?action=post" method="post">
 
   <div class="ym-gbox ym-fbox-text">
 	<label for=""><?php echo _('Title')?></label>
@@ -34,7 +34,7 @@
     </div>
   </div>
 </form>
-
+<div id="output"></div>
 
 <div id="feed">
 

@@ -387,10 +387,12 @@ if(isset($_POST) && !(empty($_POST)) && $treat_post)
 <!-- some scripts -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+<script src="js/libs/jquery-ui-1.8.17.custom.min.js"></script>
+<script src="js/libs/jquery.form.js"></script> 
 
 <script src="js/plugins.js"></script>
 <script src="js/script.js"></script>
-<script src="js/libs/jquery-ui-1.8.17.custom.min.js"></script>
+
 <script>
 	var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
 	(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];

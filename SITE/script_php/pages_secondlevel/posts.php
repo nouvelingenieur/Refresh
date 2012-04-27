@@ -1381,6 +1381,9 @@ function display_post()
 						}
 
 					echo '</small></footer></article>';
+					
+					// COMMENTS
+					echo '<div class="comments"></div>';
 					}
 				}
 				

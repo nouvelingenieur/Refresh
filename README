@@ -1,8 +1,12 @@
+ATTENTION : pour une plateforme de production, téléchargez la dernière version stable de Refresh disponible ici https://github.com/nouvelingenieur/Refresh/zipball/1.0-stable-version
+La branche Master est la branche de développement.
+
 Installation :
 
 - Placez tous les fichiers du dossier SITE sur votre hébergeur.
 - Importez le fichier DATABASE/BASE_COMPLETE.sql sur votre base de données MySQL
 - Modifiez le fichier SITE/config.php avec les options que vous souhaitez
+- supprimez le dossier SITE/api s'il existe
 - Connectez-vous pour la première fois avec le login 'admin' et le mot de passe 'refresh' (puis modifiez ce mot de passe)
 
 ﻿Le bon fonctionnement de l'accès aux documents nécessite un certain nombre de modifications selon l'hébergement :

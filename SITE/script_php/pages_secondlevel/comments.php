@@ -772,7 +772,11 @@ function display_speccom($unique_mode,$ancre,$thread_id,$nb_comment,$roll) {
 }
 
 // display a comment with all its wrapper
+<<<<<<< HEAD
 function display_comment($row,$is_logged,$privileges,$is_admin,$unique_mode) {
+=======
+function display_comment($row,$is_logged,$privileges,$unique_mode) {
+>>>>>>> 8442a9345bc4b5ab3342ef322d9387f9bef2600b
 
 	$is_proprio=check_property($row["rand_prop"],$row["hash_prop"]);
 	$is_valid=$row["is_valid"];
@@ -1050,7 +1054,11 @@ function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false
 						{
 
 							// afficher les commentaires
+<<<<<<< HEAD
 							display_comment($row,$is_logged,$privileges,$is_admin,$unique_mode);
+=======
+							display_comment($row,$is_logged,$privileges,$unique_mode);
+>>>>>>> 8442a9345bc4b5ab3342ef322d9387f9bef2600b
 							
 						}
 					}
@@ -1112,6 +1120,10 @@ function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false
 				}
 				@mysql_free_result($result);
 			}
+		}
+				else
+		{
+			echo('<div class="warning">Vous ne disposez pas des droits n&eacute;cessaires</div>');
 		}
 	}
 }
