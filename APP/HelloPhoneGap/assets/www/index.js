@@ -277,29 +277,33 @@ Ext.setup({
 		
 		// idea panel
 		var like = function() {
-			console.log('like');
 			Ext.util.JSONP.request({
-				url: 'http://free.worldweatheronline.com/feed/weather.ashx',
+				url: form.getValues().SERVER_URL+'/api/vote_idea.php',
 				callbackKey: 'callback',
 				params: {
-					key: '23f6a0ab24185952101705',
+					VOTE_VALUE: '+1',
+					IDEA_ID: currentIdea,
+					EMAIL: SHA1(form.getValues().EMAIL),
+					PASSWORD: SHA1(form.getValues().PASSWORD)
 				},
 				callback: function(result) {
-					// update ratings
+					// TODO update ratings
 				}
 			});
 		};
 		
 		var dislike = function() {
-			console.log('dislike');
 			Ext.util.JSONP.request({
-				url: 'http://free.worldweatheronline.com/feed/weather.ashx',
+				url: form.getValues().SERVER_URL+'/api/vote_idea.php',
 				callbackKey: 'callback',
 				params: {
-					key: '23f6a0ab24185952101705',
+					VOTE_VALUE: '-1',
+					IDEA_ID: currentIdea,
+					EMAIL: SHA1(form.getValues().EMAIL),
+					PASSWORD: SHA1(form.getValues().PASSWORD)
 				},
 				callback: function(result) {
-					// update ratings
+					// TODO ratings
 				}
 			});
 		};
