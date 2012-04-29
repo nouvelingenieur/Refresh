@@ -8,6 +8,7 @@ Ext.setup({
 	glossOnIcon: false,
 	onReady: function() {
 		
+		
 		// login panel
 		Ext.regModel('User', {
 			fields: [
@@ -157,7 +158,8 @@ Ext.setup({
 			defaults: { handler: tapHandler }
 		}
 		
-		// idea panel
+		
+		// search panel
 		var searchedString = '';
 		
 		// top search toolbar
@@ -224,7 +226,6 @@ Ext.setup({
 			}
 		}]
 		
-		
 		// idea data type
 		Ext.regModel('Idea', {
 			fields: ['ideaId', 'ideaCategoryId', 'ideaName', 'ideaText', 'ideaAuthor', 'ideaDate']
@@ -246,6 +247,7 @@ Ext.setup({
 			onItemDisclosure: {
 				scope: 'test',
 				handler: function(record, btn, index) {
+					currentIdea = record.data.ideaId;
 					Ext.getCmp('ideaPanel').update(record.data);
 					Ext.getCmp('thePanel').setActiveItem(2,{type:'slide',direction:'left'});
 					currentPanel = 2;
@@ -271,6 +273,7 @@ Ext.setup({
 				dockedItems: searchResultList
 			}, bottomBar]
 		});
+		
 		
 		// idea panel
 		var like = function() {
@@ -303,7 +306,7 @@ Ext.setup({
 		
 		var goToCommentPanel = function() {
 			// slide
-			console.log('goToCommentPanel');
+			Ext.getCmp('thePanel').setActiveItem(4,{type:'slide',direction:'left'});
 		};
 		
 		var toolbar_icons = {
@@ -335,6 +338,7 @@ Ext.setup({
 			},ideaPanel],
 			scroll:'vertical'
 		});
+		
 		
 		// post panel
 		// bottom bar
@@ -379,7 +383,7 @@ Ext.setup({
 			defaults: { handler: postTapHandler }
 		}
 		
-		//Form Panel
+		//Post Panel
 		var formPost = new Ext.form.FormPanel({
 		id: 'formPost',
 		scroll: 'vertical',
@@ -430,6 +434,82 @@ Ext.setup({
 			}, postBottomBar]
 		});
 		
+		
+		// comment pannel
+		var commentButtonsSpecBottom = [
+			{ ui: 'normal', text: 'Search' },
+			{ ui: 'action', text: 'Comment' }
+		]
+		
+		var commentTapHandler = function (btn, evt) {
+			switch(btn.text) {
+				case 'Search':
+					Ext.getCmp('thePanel').setActiveItem(1,{type:'slide',direction:'right'});
+					currentPanel = 1;
+				break;
+				case 'Comment':
+					Ext.util.JSONP.request({
+						url: form.getValues().SERVER_URL+'/api/set_comment.php',
+						callbackKey: 'callback',
+						params: {
+							IDEA_ID: currentIdea,
+							COMMENT_TEXT: (formComment.items.get(0)).getValue(),
+							EMAIL: SHA1(form.getValues().EMAIL),
+							PASSWORD: SHA1(form.getValues().PASSWORD)
+						},
+						callback: function() {
+							console.log(currentIdea);
+						}
+					});
+				break;
+			}
+		}
+		
+		var CommentBottomBar = {
+			xtype: 'toolbar',
+			ui: 'dark',
+			dock: 'bottom',
+			layout: {
+				pack: 'justify',
+				align: 'center' // align center is the default
+			},
+			items: commentButtonsSpecBottom,
+			defaults: { handler: commentTapHandler }
+		}
+		
+		var formComment = new Ext.form.FormPanel({
+		id: 'formPost',
+		scroll: 'vertical',
+		items: [
+		{
+			xtype: 'textareafield',
+			name: 'Text',
+			id: 'Text',
+			label: 'Comment', 
+			required: true,
+			options: [
+			]
+		}]
+		});
+		
+		var commentPanel =  new Ext.Panel({
+			id:'commentPanel',
+			fullscreen: true,
+			items: [formComment],
+			dockedItems: [{
+				xtype: 'toolbar',
+				dock: 'top',
+				items: {
+					text: 'Back',
+					ui: 'back',
+					// search button handler
+					handler: function() {
+						Ext.getCmp('thePanel').setActiveItem(2,{type:'slide',direction:'right'});
+					}
+				}
+			}, CommentBottomBar]
+		});
+		
 		// global panel
 		var panel =  new Ext.Panel({
 			fullscreen: true,
@@ -437,7 +517,7 @@ Ext.setup({
 			layout: 'card',
 			cardSwitchAnimation:'slide',
 			scroll:'vertical',
-			items:[form, searchPanel, ideaPanelAndComments, postPanel]
+			items:[form, searchPanel, ideaPanelAndComments, postPanel, commentPanel]
 		});
 	}
 });
