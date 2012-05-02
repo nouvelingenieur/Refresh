@@ -245,54 +245,159 @@ if(isset($_POST) && !(empty($_POST)) && $treat_post)
 
 -->
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
-	
-	<head>
-		<title><?=NOM_ECOLE?> Refresh</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-		<meta http-equiv="Content-Style-Type" content="text/css" />
-		<meta name="keywords" content="<?=KEYWORDS?>" />
-		<link rel="stylesheet" type="text/css" href="feuille_style.css" />
-	</head>
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="keywords" content="<?=KEYWORDS?>" />
 
-	<body>
+
+	<title><?=NOM_ECOLE?> Refresh</title>
+
+	<!-- Mobile viewport optimisation -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!--[if lte IE 7]>
+	<link href="../yaml/core/iehacks.css" rel="stylesheet" type="text/css" />
+	<![endif]-->
+
+	<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link rel="stylesheet" href="css/style.css">
+
+	<script src="js/libs/modernizr-2.5.2.min.js"></script>
+
+<body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 	
-		<div id="title_princ">
-				<a href="?action=go_home"><img src="rep_img/logo_petit.png" alt="Logo" id="logo_p" height="107" /></a><br />
-			<?=NOM_ECOLE?>
-			<span id="title_princ_second_part">
-				REFRESH
-			</span>	
-			<br />
-			<span id="sub_title_princ">
-				L'innovation en marche
-			</span>
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter)</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter)</a></li>
+</ul>
+<div class="ym-wrapper">
+
+	<nav id="menu">
+		<div class="ym-hlist" >
+			<ul>
+			<?php include("./script_php/menu_principal.php"); ?>
+			</ul>
+		
+			<form class="ym-searchform">
+				<input class="ym-searchfield" type="search" placeholder="Search..." />
+				<input class="ym-searchbutton" type="submit" value="Search" />
+			</form>
 		</div>
+	</nav>
 	
-		<table id="menu">
-			<tr class="menu_margin">
-				<td rowspan="1" colspan="5">
-				</td>
-			</tr>
-			<tr>
-				<?php include("./script_php/menu_principal.php"); ?>
-			</tr>
-			<tr class="menu_margin">
-				<td rowspan="1" colspan="5">
-				</td>
-			</tr>
-		</table>
-
-		<div id="corps">
+<div id="main">
+	<div class="ym-grid">
+		<div class="ym-g75 ym-gl content">
+		  <div class="ym-gbox">
 			<?php include("./script_php/corps.php"); ?>
+		  </div>
 		</div>
+		<aside class="ym-g25 ym-gr">
+		  <div class="ym-gbox">
+			<div class="box info">
+			  <ul>
+			  <?php include("./script_php/menu_compte.php") ?>
+			  </ul>
+			</div>
+			<div class="info">
+				<div class="box widget">
+					<h4 class="widget-title"><?php echo _('Latest posts')?></h4>
+					<ul>
+						<li>Item 1</li>
+						<li>Item 2</li>
+						<li>Item 3</li>
+						<li>Item 4</li>
+						<li>Item 5</li>
+					</ul>
+				</div>
+				<div class="box widget">
+					<h4 class="box widget-title"><?php echo _('Medias')?></h4>
+					<ul>
+						<li>Item 1</li>
+						<li>Item 2</li>
+						<li>Item 3</li>
+					</ul>
+				</div>
+				<div class="box widget">
+					<h4 class="widget-title"><?php echo _('Most readed')?></h4>
+					<ul>
+						<li>Item 1</li>
+						<li>Item 2</li>
+						<li>Item 3</li>
+					</ul>
+				</div>
+				<div class="box widget">
+					<h4 class="widget-title"><?php echo _('Some links')?></h4>
+					<ul>
+						<li>Item 1</li>
+						<li>Item 2</li>
+						<li>Item 3</li>
+					</ul>
+				</div>
+			</div>
+		  </div>
+		</aside>
+	</div>
+</div>
+<footer class="bottom ym-clearfix">
+   <nav>
+	<div class="ym-hlist">
+	   <ul>
 		
-		<div id="account_handling">
-			<?php include("./script_php/menu_compte.php") ?>
-		</div>
+		<li class="menu_title_selected_first">
+			<a href="?action=go_home">Accueil</a>
+		</li>
+		<li class="menu_title">
+			<a href="?action=display_nouvelingenieur">Le Nouvel Ingénieur</a>
+		</li>
+		<li class="menu_title">
+			<a href="#">FAQ</a>
+		</li>
+		<li class="menu_title">
+			<a href="#">Term of uses</a>
+		</li>
+		<li class="menu_title">
+			<a href="#">Blog</a>
+		</li>
+	
+	   </ul>
+	</div>
+   </nav>
+   <section class="sns-links">
+     <a href="#"> <img src="img/sns/twitter.png" title="Twitter" alt="Twitter"/> </a>
+     <a href="#"> <img src="img/sns/facebook.png" title="Twitter" alt="Twitter"/> </a>
+     <a href="#"> <img src="img/sns/rss.png" title="Twitter" alt="Twitter"/> </a>
+     <a href="#"> <img src="img/sns/email.png" title="Twitter" alt="Twitter"/> </a>
+   </section>
+</footer>
+<p class="license"><small>Copyright (c) le nouvel ingénieur</small></p>
+</div><!-- end ym-wrapper -->
 
-		
-	</body>
+<!-- some scripts -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
 
+<script src="js/plugins.js"></script>
+<script src="js/script.js"></script>
+<script src="js/libs/jquery-ui-1.8.17.custom.min.js"></script>
+<script>
+	var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+	(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+	g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+	s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+
+
+</body>
 </html>

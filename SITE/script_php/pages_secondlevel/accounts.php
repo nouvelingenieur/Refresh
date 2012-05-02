@@ -27,8 +27,6 @@ include_once("errors.php");
 
 function log_in()
 {
-	echo('<h1>Identification :</h1>');
-
 	if (is_logged())
 	{
 		echo('<div class="warning">Vous &ecirc;tes d&eacute;j&agrave; logg&eacute;</div>');
@@ -134,37 +132,17 @@ function log_in()
 		{
 			echo('
 
-			<form method="post" action="?action=login">
-				<table class="tab_form">
-					<tr>
-						<td>
-							Login '.((LIMIT_MAIL)?'('.PREGMATCH_MAIL_HUMAN_READABLE.')':'').' :
-						</td>
-						<td>
-							<input type="text" name="login" value="'.htmlentities($login_clair).'" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Mot de passe :
-						</td>
-						<td>
-							<input type="password" name="password" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input type="hidden" name="form_name" value="login" />
-						</td>
-						<td>
-						</td>
-					</tr>
-					<tr class="submit_center">
-						<td colspan="2" rowspan="1">
-							<input type="submit" value="Valider" />
-						</td>
-					</tr>
-				</table>
+			<form method="post" action="?action=login" class="ym-form">
+				<div class="ym-fbox-text">
+				  <label for="login">'._('Login').((LIMIT_MAIL)?'('.PREGMATCH_MAIL_HUMAN_READABLE.')':'').' :</label>
+				  <input type="text" name="login" id="login" size="20" value="'.htmlentities($login_clair).'" />
+				</div>
+				<div class="ym-fbox-text">
+				  <label for="your-id">'._('Password').'</label>
+				  <input type="password" name="password" id="password" size="20" />
+				</div>
+				  <input type="hidden" name="form_name" value="login" />
+				  <input type="submit" value="'._('Login').'" />
 			</form>
 
 			');

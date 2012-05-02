@@ -1,0 +1,134 @@
+/**
+ * "Yet Another Multicolumn Layout" - YAML CSS Framework
+ *
+ * central stylesheet - layout example "flexible-columns"
+ *
+ * @copyright       Copyright 2005-2012, Dirk Jesse
+ * @license         CC-BY 2.0 (http://creativecommons.org/licenses/by/2.0/),
+ *                  YAML-CDL (http://www.yaml.de/license.html)
+ * @link            http://www.yaml.de
+ * @package         yaml
+ * @version         4.0
+ * @lastmodified    $Date: 2012-01-22 12:01:24 +0100 (So, 22 Jan 2012) $
+ */
+
+/* Google Font API */
+@import url(http://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700|Droid+Sans:700);
+
+/* import core styles | Basis-Stylesheets einbinden */
+@import url(yaml/core/base.css);
+
+/* import screen layout | Screen-Layout einbinden */
+@import url(yaml/navigation/hlist.css);
+@import url(yaml/forms/gray-theme.css);
+
+@import url(yaml/screen/typography.css);
+@import url(yaml/screen/screen-PAGE-layout.css);
+
+/* import print layout | Druck-Layout einbinden */
+@import url(yaml/print/print.css);
+
+
+/*  General  -----------------------------------------------*/
+div.clear { clear:both }
+header { background-color : transparent}
+
+.content {
+}
+/*  Header  -----------------------------------------------*/
+
+header#branding a {
+	background: url("../uploads/logo.jpg")no-repeat top center;
+	display:block;
+	text-indent:-9000px;
+	width: 200px;
+	height: 110px;
+}
+
+header#branding div.school { 
+	float:left;
+	width:300px
+}
+
+header#branding div.refresh { 
+	float:right;
+	width:400px
+}
+
+header#branding div.refresh p { 
+	font-size: 15pt
+}
+
+
+form.shareidea input, form.shareidea input#category, form.shareidea textarea {
+	width:95%;
+	margin: 10px !important
+}
+
+
+form.shareidea label {
+	display:none
+}
+
+
+/*  NewsFeed  -----------------------------------------------*/
+
+.tab_form_close {
+display:none
+}
+
+a.feed-settings {
+color:#EEE
+}
+h4#feed_title {
+border-bottom : 1px solid #ccc;
+text-align: right
+}
+
+.feed_item {
+   margin: 0.5em 0 0.5em 0
+}
+
+
+.feed_item .ym-gbox-left { padding:1em }
+
+.feed_item header h3 { margin:0 }
+.feed_item header .title_block { margin-left : 0.5em;    width: 500px}
+footer.utils { padding:0.5em}
+
+.comments {padding:1.5em}
+.comments textarea { width: 100% }
+.comments form .ym-fbox-button {text-align:right}
+
+
+/*  Sidebar  -----------------------------------------------*/
+
+.widget-title {
+	background-color:#ccc;
+	padding:5px
+}
+
+
+/*  Footer  -----------------------------------------------*/
+
+footer nav, footer nav div.ym-hlist { background: #EEE; text-align:center}
+.ym-hlist ul li a {text-shadow : none}
+p.license { text-align:center; color:#ccc}
+.bottom .sns-links {float:right}
+.bottom nav {float:left}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

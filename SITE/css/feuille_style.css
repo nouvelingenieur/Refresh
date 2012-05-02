@@ -1,0 +1,517 @@
+/*
+	Plateforme web PPR - outil de crowdsourcing
+	Copyright(C) 2011 Nicolas SEICHEPINE
+
+	This file is part of PPR.
+	
+	PPR is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	
+	Contact : nicolas.seichepine.org/?action=contact
+*/
+
+/* ------------------------ */
+/* Page, apparence générale */
+/* ------------------------ */
+
+html {
+	width:100%;
+	height:100%;
+}
+
+body {
+	width:100%;
+	height:100%;
+	margin:0px;
+	font-family:calibri;
+	text-align:center;
+}
+
+/* ------- */
+/* En-tête */
+/* ------- */
+
+div#title_princ {
+	font-size:30pt;
+	font-weight:bold;
+	color:rgb(180,180,180);
+	margin-bottom:30px;
+	padding:20px 0px 0px 0px;
+}
+
+#title_princ_second_part {
+	font-style:italic;
+	font-weight:bold;
+	color:#367add;
+}
+
+#sub_title_princ {
+	font-size:18pt;
+	font-style:italic;
+	font-weight:normal;
+}
+
+/* ---- */
+/* Menu */
+/* ---- */
+
+table#menu {
+	width:95%;
+	height:30px;
+	margin:auto;
+	text-align:center;
+	background-color:rgb(242,242,242);
+	border-width:1px; 
+	border-style:solid; 
+	border-color:rgb(191,191,191);
+	border-spacing:0px;
+	color:rgb(166,166,166);
+	font-size:12pt;
+	border-radius:10px;
+}
+
+table#menu tr.menu_margin {
+	height:8px;
+}
+
+/* Première case, pas de bordure à gauche */
+
+table#menu td.menu_title_first {
+	width:18%;
+}
+
+table#menu td.menu_title_first a {
+	color:rgb(120,120,120);
+	text-decoration:none;
+}
+
+table#menu td.menu_title_selected_first {
+	color:rgb(85,85,85);
+	font-weight:bold;
+	width:18%;
+}
+
+table#menu td.menu_title_selected_first a {
+	color:rgb(85,85,85);
+	font-weight:bold;
+	text-decoration:none;
+}
+
+/* Cases suivantes */
+
+table#menu td.menu_title {
+	border-left:solid 1px rgb(191,191,191);
+	width:18%;
+}
+
+table#menu td.menu_title a {
+	color:rgb(120,120,120);
+	text-decoration:none;
+}
+
+table#menu td.menu_title_selected {
+	color:rgb(85,85,85);
+	font-weight:bold;
+	border-left:solid 1px rgb(191,191,191);
+	width:18%;
+}
+
+table#menu td.menu_title_selected a {
+	color:rgb(85,85,85);
+	font-weight:bold;
+	text-decoration:none;
+}
+
+/* ----- */
+/* Corps */
+/* ----- */
+
+#corps {
+	text-align:justify;
+	text-indent:0px;
+	font-size:12pt;
+	font-weight:normal;
+	color:rgb(0,0,0);
+	margin-left:18%;
+	margin-right:18%;
+	margin-top:3%;
+}
+
+#corps h1 {
+	text-align:center;
+	font-size:20pt;
+	font-weight:bold;
+	margin-bottom:25px;
+	text-indent:0px;
+}
+
+#corps h2 {
+	text-align:center;
+	font-weight:bold;
+	font-size:12pt;
+	text-indent:0px;
+}
+
+#corps p {
+	text-align:justify;
+	text-indent:50px;
+	font-weight:normal;
+	font-size:12pt;
+}
+
+#corps a {
+	text-decoration:none;
+	font-weight:bold;
+	color:#367add;
+}
+
+.footnote {
+	font-size:10pt;
+}
+
+.enlarge_lowresol{
+	margin-left:-17%;
+	margin-right:-17%;
+	margin-top:0px;
+	margin-bottom:0px;
+	text-align:center;
+}
+
+#corps table.tab_form {
+	margin-left:auto;
+	margin-right:auto;
+	border-collapse:separate;
+	border-spacing:20px 10px;
+	text-align:left;
+}
+
+#corps table.tab_form_close {
+	margin-left:auto;
+	margin-right:auto;
+	border-collapse:separate;
+	border-spacing:5px 5px;
+	text-align:left;
+	white-space: nowrap;
+	font-size:8pt;
+}
+
+#corps table.tab_form_close select{
+	font-size:8pt;
+}
+
+#corps table.tab_form_close input{
+	font-size:8pt;
+}
+
+#corps table.tab_form tr.submit_center {
+	text-align:center;
+}
+
+#corps div.warning {
+	text-align:center;
+	color:rgb(255,0,0);
+	font-weight:bold;
+	font-style:italic;
+}
+
+#corps div.success {
+	text-align:center;
+	color:#367add;
+	font-weight:bold;
+	font-style:italic;
+}
+
+#corps div.bottom_page_choice{
+	margin-top:30px;
+	text-align:center;
+	background-color:rgb(242,242,242);
+}
+
+#corps .newstitle{
+	text-align:left;
+	font-weight:bold;
+	font-size:14pt;
+	text-indent:0px;
+	color:rgb(70,95,150);
+}
+
+#corps .newstitle a{
+	text-align:left;
+	font-weight:bold;
+	font-size:14pt;
+	text-indent:0px;
+	color:rgb(70,95,150);
+	text-decoration:underline;
+}
+
+#corps img.imgtitlenews{
+	vertical-align:-4px;
+	margin-left:10px;
+	border:0;
+}
+
+#corps .vote{
+	float:left;
+	margin-left:-65px;
+}
+
+#corps .vote img.imgvote{
+	margin-left:2px;
+	vertical-align:-6px;
+	border:0;
+}
+
+#corps .newsundertitle{
+	text-align:left;
+	font-weight:bold;
+	font-size:8pt;
+	text-indent:0px;
+	color:rgb(166,166,166);
+	margin-top:5px;
+	margin-left:10px;
+}
+
+#corps .newsundertitle a{
+	color:rgb(166,166,166);
+	text-decoration:underline;
+}
+
+#corps div.newscontent{
+	text-align:justify;
+	font-size:12pt;
+	text-indent:0px;
+	color:rgb(0,0,0);
+	margin-top:10px;
+	margin-left:10px;
+	margin-bottom:10px;
+}
+
+#corps div.newscontent a{
+	color:rgb(0,0,0);
+	font-weight:normal;
+	text-decoration:underline;
+}
+
+#corps .votebar{
+	display:inline-block;
+	float:left;
+	margin-left:-52px;
+	margin-top:12px;
+	width:52px;
+	height:45px;
+	font-size:8pt;
+	background-color:rgb(255,255,255);
+}
+
+#corps .votebar .provote{
+	display:block;
+	width:8px;
+	background-color:rgb(106,165,229);
+	margin: 0px 0px 0px 0px;
+}
+
+#corps .votebar .againstvote{
+	display:block;
+	width:8px;
+	background-color:rgb(255,0,0);
+	margin: 0px 0px 0px 0px;
+}
+
+#corps .votebar .neutralvote{
+	display:block;
+	width:8px;
+	height:100%;
+	background-color:rgb(127,127,127);
+	margin: 0px 0px 0px 0px;
+}
+
+#corps .votebarannotation_pro{
+	display:inline-block;
+	float:left;
+	margin-left:11px;
+	background-color:rgb(255,255,255);
+	white-space:nowrap;
+	height:100%;
+	font-weight:bold;
+	font-size:10pt;
+}
+
+#corps .votebarannotation{
+	display:inline-block;
+	float:left;
+	margin-left:11px;
+	background-color:rgb(255,255,255);
+	white-space:nowrap;
+	height:100%;
+}
+
+#corps .newsendlinks{
+	text-align:left;
+	font-size:10pt;
+	text-indent:0px;
+	color:rgb(70,95,150);
+	margin-top:0px;
+	margin-left:10px;
+	height:10pt;
+}
+
+#corps .newsendlinks a{
+	float:left;
+	color:rgb(70,95,150);
+	text-decoration:underline;
+	text-align:left;
+	font-size:10pt;
+	text-indent:0px;
+	color:rgb(70,95,150);
+	margin-top:0px;
+	margin-left:10px;
+	text-decoration:underline;
+}
+
+#corps div.newsendlinks .speccom{
+	display:inline-block;
+	float:right;
+	text-align:right;
+}
+
+#corps div.newsendlinks .speccom a{
+	float:none;
+}
+
+.newslinkcomment_unroll{
+	font-size:13pt;
+	font-weight:bold;
+	color:rgb(70,95,150);
+	text-decoration:underline;
+}
+
+.newslinkcomment_roll{
+	font-size:13pt;
+	font-weight:bold;
+	color:rgb(255,0,0);
+	text-decoration:underline;
+}
+
+.newslinkcomment_inactive{
+	font-size:13pt;
+	font-weight:bold;
+	color:rgb(0,0,0);
+	text-decoration:underline;
+}
+
+#corps div.newsendlinks .speccom  .imglinknews{
+	float:right;
+	vertical-align:top;
+	margin-left:10px;
+	border:0;
+}
+
+#corps div.newscomment{
+	background-color:rgb(242,242,242);
+	margin-top:20px;
+	margin-left:60px;
+	padding-top:3px;
+	padding-bottom:5px;
+}
+
+#corps img.imgtitlecomment{
+	text-decoration:none;
+	vertical-align:-4px;
+	margin-left:10px;
+}
+
+#corps div.newscomment .newscommentcontent{
+	margin-left:10px;
+	margin-right:10px;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+#corps div.newscomment .newscommentcontent a{
+	color:rgb(0,0,0);
+	font-weight:normal;
+	text-decoration:underline;
+}
+
+#corps div.newsformcomment{
+	margin-top:20px;
+	margin-left:60px;
+	padding-top:3px;
+	padding-bottom:5px;
+	margin-right:5px;
+}
+
+#corps div.newsformcomment p{
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	text-indent:0px;
+}
+
+#corps div.newsformcomment p .checkcommentform{
+	margin-left:-4px;
+}
+
+#corps div.newsformcomment p .validatecommentform{
+	float:right;
+	margin-right:-4px;
+}
+
+#corps div.newsformcomment p textarea{
+	width:100%;
+}
+
+#corps div.newsterminator{
+	margin-top:25px;
+	margin-bottom:15px;
+}
+
+#corps div.newsterminator hr{
+	color:rgb(127,127,127);
+	background-color:rgb(127,127,127);
+	height:1px;
+	border:0;
+}
+
+#flashContent {
+	display:none;
+}
+
+/* ---- */
+/* Logo */
+/* ---- */
+
+p a img#logo_p {
+	position:absolute;
+	border:0; 
+	left:2%;
+	top:20px;
+}
+
+/* ------ */
+/* Compte */
+/* ------ */
+
+div#account_handling {
+	position:absolute;
+	right:2.5%;
+	top:25px;
+	text-align:right;
+	font-size:12pt;
+}
+
+div#account_handling a {
+	text-decoration:none;
+	color:#367add;
+	display:block;
+
+}

@@ -61,8 +61,11 @@ function about_ppr()
 	$result=@mysql_query(sprintf("SELECT COUNT(*) as nb FROM vote"));
 	$res = mysql_fetch_assoc($result);
 	$nb_votes = $res['nb'];
-		
-	$to_print='
+	
+	include_once("home.php");
+
+/*	$to_print= 
+'
 
 	<h1>Bienvenue sur '.NOM_ECOLE.' Refresh</h1>
 
@@ -85,7 +88,7 @@ function about_ppr()
 	</p>';
 
 	echo($to_print);
-
+*/
 }
 
 function display_userterms()
