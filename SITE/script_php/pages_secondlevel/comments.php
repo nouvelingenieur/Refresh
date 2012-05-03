@@ -320,7 +320,7 @@ function edition()
 	$priv=user_privilege_level();
 	if ($priv>2)
 	{
-		echo('<h1>Edition :</h1>');
+		echo('<h1>Edition </h1>');
 	
 		// Récupération des arguments
 		$id=-1;
@@ -760,8 +760,7 @@ function display_speccom($unique_mode,$ancre,$thread_id,$nb_comment,$roll) {
 		$order = 1;
 	}
 
-	echo('<div class="speccom">
-		<a href="?action=unrollcomment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order='.$order.'&amp;thread_id='.htmlentities($thread_id).'#a'.$ancre.'">');
+	echo('<a class="speccom" rel="'.htmlentities($thread_id).'" href="?action=comments'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order='.$order.'&amp;thread_id='.htmlentities($thread_id).'#a'.$ancre.'">');
 		
 	// display plural form with correct localization
 	printf(ngettext("%d comment", "%d comments", $nb_comment), $nb_comment);
@@ -773,9 +772,7 @@ function display_speccom($unique_mode,$ancre,$thread_id,$nb_comment,$roll) {
 		echo('<i class="icon-arrow-up"></i>');
 	}
 	
-	echo('</a>
-		</div>
-		</div>');
+	echo('</a>');
 }
 
 // display a comment with all its wrapper
