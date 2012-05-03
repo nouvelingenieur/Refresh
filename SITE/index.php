@@ -271,86 +271,55 @@ if(isset($_POST) && !(empty($_POST)) && $treat_post)
 	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 	<link rel="stylesheet" href="css/style.css">
+	<link href="css/bootstrap/bootstrap.css" rel="stylesheet">
+        <link href="css/bootstrap/bootstrap-responsive.css" rel="stylesheet">
 
 	<script src="js/libs/modernizr-2.5.2.min.js"></script>
+	
 
 <body>
 <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 	
-<ul class="ym-skiplinks">
+<ul class="skiplinks">
 	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter)</a></li>
 	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter)</a></li>
 </ul>
-<div class="ym-wrapper">
+<div class="container">
 
-	<nav id="menu">
-		<div class="ym-hlist" >
-			<ul>
-			<?php include("./script_php/menu_principal.php"); ?>
-			</ul>
+	<nav id="menu" class="navbar">
+		<div class="navbar-inner">
+			<div class="container" >
+				<ul class="nav">
+				<?php include("./script_php/menu_principal.php"); ?>
+				</ul>
 		
-			<form class="ym-searchform">
-				<input class="ym-searchfield" type="search" placeholder="Search..." />
-				<input class="ym-searchbutton" type="submit" value="Search" />
-			</form>
+				<form class="navbar-search pull-left">
+					<input class="" type="search" placeholder="Search..." />
+					<input class="" type="submit" value="Search" />
+				</form>
+				<ul class="nav pull-right">
+					<li class="divider-vertical"></li>
+					<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Account<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+					<?php include("./script_php/menu_compte.php") ?>
+					</ul>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</nav>
 	
-<div id="main">
-	<div class="ym-grid">
-		<div class="ym-g75 ym-gl content">
-		  <div class="ym-gbox">
+	<div id="main" class="row">
+		<div class="span8 content">
 			<?php include("./script_php/corps.php"); ?>
-		  </div>
 		</div>
-		<aside class="ym-g25 ym-gr">
-		  <div class="ym-gbox">
-			<div class="box info">
-			  <ul>
-			  <?php include("./script_php/menu_compte.php") ?>
-			  </ul>
-			</div>
-			<div class="info">
-				<div class="box widget">
-					<h4 class="widget-title"><?php echo _('Latest posts')?></h4>
-					<ul>
-						<li>Item 1</li>
-						<li>Item 2</li>
-						<li>Item 3</li>
-						<li>Item 4</li>
-						<li>Item 5</li>
-					</ul>
-				</div>
-				<div class="box widget">
-					<h4 class="box widget-title"><?php echo _('Medias')?></h4>
-					<ul>
-						<li>Item 1</li>
-						<li>Item 2</li>
-						<li>Item 3</li>
-					</ul>
-				</div>
-				<div class="box widget">
-					<h4 class="widget-title"><?php echo _('Most readed')?></h4>
-					<ul>
-						<li>Item 1</li>
-						<li>Item 2</li>
-						<li>Item 3</li>
-					</ul>
-				</div>
-				<div class="box widget">
-					<h4 class="widget-title"><?php echo _('Some links')?></h4>
-					<ul>
-						<li>Item 1</li>
-						<li>Item 2</li>
-						<li>Item 3</li>
-					</ul>
-				</div>
-			</div>
-		  </div>
+		<aside class="span4">
+			<?php include("./script_php/sidebar.php"); ?>
 		</aside>
 	</div>
-</div>
-<footer class="bottom ym-clearfix">
+
+<footer class="bottom">
    <nav>
 	<div class="ym-hlist">
 	   <ul>
@@ -389,7 +358,7 @@ if(isset($_POST) && !(empty($_POST)) && $treat_post)
 <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
 <script src="js/libs/jquery-ui-1.8.17.custom.min.js"></script>
 <script src="js/libs/jquery.form.js"></script> 
-
+<script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/plugins.js"></script>
 <script src="js/script.js"></script>
 

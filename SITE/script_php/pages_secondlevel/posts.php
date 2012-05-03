@@ -1099,9 +1099,8 @@ function display_post()
 						$need_separator=true;
 						
 						echo '
-						<article class="feed_item ym-grid v-grid linearize-level-1 id="item-'.$thread_id_affiche.'"">
-						<div class="ym-g25 ym-gl">
-						<div class="ym-gbox-left">
+						<article class="feed_item row" id="item-'.$thread_id_affiche.'"">
+						<div class="span2">
 						';
 						
 						// Etat de modération
@@ -1141,9 +1140,7 @@ function display_post()
 						
 						// Catégories avec images
 						echo('
-						<div class="ym-gbox">
 						<img src="img/placeholder_100x100.gif" alt="icon" class="avatar bordered"/>
-						</div>
 						');
 						
 						// Votes
@@ -1187,27 +1184,20 @@ function display_post()
 						
 						//close-open columns
 						echo ('
-						  </div>
 						    </div>
-						    
-						    
-						    <div class="ym-g75 ym-gr">
-						     <div class="ym-gbox-right ym-clearfix">');
+						    <div class="span6">');
 						     
 						//add gravatar
 						echo ('
-						       <header class="ym-clearfix">
-							 <div class="ym-g20 ym-gl">
-							  <div class="ym-gbox">
+						       <header class="row">
+							  <div class="span1">
 							     <img src="img/placeholder_50x50.gif" alt="icon" class="avatar bordered"/>
 							  </div>
-							 </div>
 						');
 						
 						//start meta 
 						echo ('
-							 <div class="ym-g80 ym-gr">
-							  <div class="ym-gbox">
+							 <div class="span5">
 							  <p class="meta">
 							   <small>
 							   Posted by :
@@ -1243,8 +1233,7 @@ function display_post()
 							</div>
 							<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4f3e39a4223675c7"></script>
 						  </section><!-- AddThis Button END -->
-						 </div><!--gbox -->
-						</div><!--ymg-80 -->
+						</div><!--span5 -->
 					       </header>
 					       ');
 						
@@ -1307,34 +1296,25 @@ function display_post()
 						// Corps du texte
 						echo('<div class="content"><p>'.text_display_prepare($row["text"]).'</p></div>');
 						// utils 
-						echo('<footer class="utils">
-							<p>
-							<small>
+						echo('<footer class="btn-toolbar">
+							<div class="btn-group">
 							');
 							
 
 						//upvote
-						echo ('<a href="?action=vote_post&amp;order='. '1' . '&amp;thread_id=' . $thread_id_affiche. '">'._('Upvote'). '</a>'
+						echo ('<a class="btn btn-mini" href="?action=vote_post&amp;order='. '1' . '&amp;thread_id=' . $thread_id_affiche. '">'._('Upvote'). '<i class="icon-thumbs-up"></i>' . '</a>'
 						);
 						
-						echo (" - ");
 						
 						// downvote
-						echo ('<a href="?action=vote_post&amp;order='. '-1' . '&amp;thread_id=' . $thread_id_affiche. '">'._('Downvote'). '</a>'
+						echo ('<a class="btn btn-mini" href="?action=vote_post&amp;order='. '-1' . '&amp;thread_id=' . $thread_id_affiche. '">'._('Downvote'). '<i class="icon-thumbs-down"></i>' . '</a>'
 						);
-						
-						echo (" - ");
+
+						// Date
+						echo('<time class="btn btn-mini" datetime="'.htmlentities(transfo_date($row["date"])).'">' . htmlentities(transfo_date($row["date"])) . '</time>');
 						
 						// comments
-						affichage_comments($thread_id,false);
-						
-						echo (" - ");
-						
-						// Date
-						echo('<time datetime="'.htmlentities(transfo_date($row["date"])).'">' . htmlentities(transfo_date($row["date"])) . '</time>');
-						
-						echo (" | ");
-							
+						affichage_comments($thread_id,false);							
 						if ($is_proprio || $privileges>4) // Administrateurs et propriétaires peuvent éditer et supprimer
 						{
 							echo('
@@ -1383,7 +1363,7 @@ function display_post()
 					echo '</small></footer></article>';
 					
 					// COMMENTS
-					echo '<div class="comments"></div>';
+					// echo '<div class="comments"></div>';
 					}
 				}
 				

@@ -11,28 +11,25 @@
 	<div class="clear"></div>
 </header>
 
-<form id ="shareidea" class="ym-form shareidea" name="shareidea" action="?action=post" method="post">
+<form id ="shareidea" class="well shareidea" name="shareidea" action="?action=post" method="post">
 
-  <div class="ym-gbox ym-fbox-text">
 	<label for=""><?php echo _('Title')?></label>
-	<input type="text" name="title" value="<?php echo _('A nice title..')?>" onFocus="this.value=''; return false;"/>
-
+	<input class="span7" type="text" name="title" value="<?php echo _('A nice title..')?>" onFocus="this.value=''; return false;"/>
+	
 	<label for="field_two"><?php echo _('Message')?></label>
-	<textarea name="message" rows="5" onFocus="this.value=''; return false;"><?php echo _('Share something...')?></textarea>
-  </div>
+	<textarea class="span7" name="message" rows="5" onFocus="this.value=''; return false;"><?php echo _('Share something...')?></textarea>
 
-  <div class="ym-fbox-button ym-fbox-text">
-    <div class="ym-g60 ym-gl">
+	<span class="help-block">Example block-level help text here.</span>
+	
 	<label for=""><?php echo _('Keywords')?></label>
 	<input type="text" id="category" name="category" value="<?php echo _('Some tags')?>" size="50" onFocus="this.value=''; return false;" />
-    </div>
-    <div class="ym-g40 ym-gl">
-	<a class="ym-button ym-add" href="">add</a>
-	<input type="submit" class="ym-button" value="submit" id="submit" name="submit" />
-	<input type="checkbox" name="anonymization" />
-	<label for="anonymization"><?php echo _('Anonymize')?></label>
-    </div>
-  </div>
+
+	<a class="btn btn-primary" href=""><i class="icon-picture  icon-white"></i> Add</a>
+	<input type="submit" class="btn" value="submit" id="submit" name="submit" />
+	<label class="checkbox">
+		<input type="checkbox" name="anonymization" /><?php echo _('Anonymize')?>
+	</label>
+
 </form>
 <div id="output"></div>
 
@@ -44,9 +41,9 @@
 </h4>
 <?php display_post() ?>
 
-<article class="feed_item ym-grid v-grid linearize-level-1" id="1">
-  <div class="ym-g25 ym-gl">
-    <div class="ym-gbox-left">
+<article class="feed_item row" id="1">
+
+    <div class="span2">
 	   <img src="img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlenews" />
 	   <p><img src="img/placeholder_100x100.gif" alt="icon"/></p>
 	   <a href="?action=vote_post&amp;order=1&amp;thread_id=1#1">
@@ -56,12 +53,8 @@
 		<img src="img/pale_voteneg.png" alt="-1" class="imgvote" />
 	   </a>
      </div>
-    </div>
-    
-    
-    <div class="ym-g75 ym-gr">
-     <div class="ym-gbox-right ym-clearfix">
-     
+
+     <div class="span6">
        <header class="ym-clearfix">
          <div class="ym-g20 ym-gl">
 	  <div class="ym-gbox">
@@ -164,7 +157,6 @@
         
         
        </section><!-- end comments -->
-    </div><!-- end box -->
   </div>
 </article><!-- end feed item -->
 
