@@ -751,6 +751,7 @@ function vote_comment()
 Below are all the comment displaying functions
 */
 
+
 // display number of comments button to roll or unroll the comments
 function display_speccom($unique_mode,$ancre,$thread_id,$nb_comment,$roll) {
 	if ($roll == 'roll') {
@@ -760,14 +761,20 @@ function display_speccom($unique_mode,$ancre,$thread_id,$nb_comment,$roll) {
 	}
 
 	echo('<div class="speccom">
-				<a href="?action=unrollcomment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order='.$order.'&amp;thread_id='.htmlentities($thread_id).'#a'.$ancre.'">
-					<span class="newslinkcomment_'.$roll.'">');
+		<a href="?action=unrollcomment'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;order='.$order.'&amp;thread_id='.htmlentities($thread_id).'#a'.$ancre.'">');
+		
 	// display plural form with correct localization
 	printf(ngettext("%d comment", "%d comments", $nb_comment), $nb_comment);
-	echo('</span>
-					<img src="rep_img/'.$roll.'_arrow.png" alt="Masquer" class="imglinknews" />
-				</a>
-			</div>
+	
+	// display arrow 
+	if ($order) {
+		echo('<i class="icon-arrow-down"></i>');
+	} else {
+		echo('<i class="icon-arrow-up"></i>');
+	}
+	
+	echo('</a>
+		</div>
 		</div>');
 }
 
@@ -792,25 +799,40 @@ function display_comment($row,$is_logged,$privileges,$unique_mode) {
 	$is_admin=($privileges>3);
 
 	// display context
-	echo('<div class="newscomment" id="'.$ancre.'"><a name="b'.$sec_cid.'" id="b'.$sec_cid.'"></a>
-			<span class="newsundertitle">
-				'.htmlentities(transfo_date($date)));
-
+	echo('<div class="newscomment row" id="'.$ancre.'"><a name="b'.$sec_cid.'" id="b'.$sec_cid.'"></a>');
+	
+	
 	// display author name if not anonymized
 	if (!empty($possibly_name))
 	{
-		echo('&nbsp;-&nbsp;'.htmlentities($possibly_name));
+		// display user avatar  
+		echo('
+		<div class="span1">
+		<img src="img/placeholder_50x50.gif" alt="icon" class="avatar bordered"/>
+		</div>');
+		// display name 
+		echo('<a href=#>' . htmlentities($possibly_name) . '</a>');
+	} else {
+	
+		// display default avatar  
+		echo('
+		<div class="span1">
+		<img src="img/placeholder_50x50.gif" alt="icon" class="avatar bordered"/>
+		</div>');
+		// display name 
+		echo( _('Anonymous') );
+	
+	
 	}
 	
-	// display link to post
-	// echo('&nbsp;-&nbsp;[<a href="?action=display_post&amp;unique='.$thread_tmp.'">POST #'.$thread_tmp.'</a>]</span>');
+	
 
 	if ($is_logged)
 	{
 		// take care of the vote buttons
 		$pro = 1; // vote pro button
 		$agt = -1; // vote against button
-
+		
 		if ($my_vote>0)
 			if ($my_provote>0)
 				$pro = 0; // if I already voted pro I can unvote
@@ -831,7 +853,6 @@ function display_comment($row,$is_logged,$privileges,$unique_mode) {
 			-'.htmlentities($total_vote-$my_provote).']</span>');
 	}
 
-
 	// Etat de modération
 	if ($privileges>3)
 	{
@@ -839,16 +860,16 @@ function display_comment($row,$is_logged,$privileges,$unique_mode) {
 		{
 			if ($is_valid)
 			{
-				echo('<img src="rep_img/modere.png" alt="Mod&eacute;r&eacute;" class="imgtitlecomment" />');
+				echo('<img src="img/modere.png" alt="Mod&eacute;r&eacute;" class="imgtitlecomment" />');
 			}
 			else
 			{
-				echo('<img src="rep_img/masque.png" alt="Masqu&eacute;" class="imgtitlecomment" />');
+				echo('<img src="img/masque.png" alt="Masqu&eacute;" class="imgtitlecomment" />');
 			}
 		}
 		else
 		{
-			echo('<img src="rep_img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
+			echo('<img src="img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
 		}
 	}
 	elseif ($is_proprio)
@@ -857,17 +878,58 @@ function display_comment($row,$is_logged,$privileges,$unique_mode) {
 		{
 			if (!$is_valid)
 			{
-				echo('<img src="rep_img/masque.png" alt="Masqu&eacute;" class="imgtitlecomment" />');
+				echo('<img src="img/masque.png" alt="Masqu&eacute;" class="imgtitlecomment" />');
 			}
 		}
 		else
 		{
-			echo('<img src="rep_img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
+			echo('<img src="img/n_modere.png" alt="Non mod&eacute;r&eacute;" class="imgtitlecomment" />');
 		}
 	}
 	
 	// Corps du commentaire
 	echo('<div class="newscommentcontent">'.$text.'</div>');
+	
+	// Comments utils
+	echo('<div class="btn-group">');
+	
+	// upvote /downvote links
+	if ($is_logged)
+	{
+		// take care of the vote buttons
+		$pro = 1; // vote pro button
+		$agt = -1; // vote against button
+
+		if ($my_vote>0)
+			if ($my_provote>0)
+				$pro = 0; // if I already voted pro I can unvote
+			else
+				$agt = 0; // if I already voted against I can unvote
+
+
+		// display votes on comment
+	
+			echo('	<a class="btn btn-mini" href="?action=vote_comment&amp;order='.$pro.'&amp;comment_id='.htmlentities($comment_id).'#b'.$ancre.'">' . _('Upvote') . '<i class="icon-thumbs-up"></i>' . '</a>
+			
+		<a class="btn btn-mini" href="?action=vote_comment&amp;order='.$agt.'&amp;comment_id='.htmlentities($comment_id).'#b'.$ancre.'">' . _('Downvote') . '<i class="icon-thumbs-down"></i>' . '</a>');
+
+		}
+	else
+	{
+		echo('&nbsp;-&nbsp;[
+			+'.htmlentities($my_provote).'
+			/
+			-'.htmlentities($total_vote-$my_provote).']</span>');
+	}
+	
+	
+	// Date with permalink
+	echo('<a class="btn btn-mini" href="?action=display_post&amp;unique='.$thread_tmp.
+	 '<span class="newsundertitle">'.htmlentities(transfo_date($date)) . 
+	 '</a></span>');
+
+	// close utils  
+	echo('</div>');
 	
 	// Liens administratifs sur le commentaire
 	if ($is_proprio || $is_admin)
@@ -909,23 +971,29 @@ function display_comment($row,$is_logged,$privileges,$unique_mode) {
 // display the form that allows users to post comments
 function display_comment_form($unique_mode,$ancre,$thread_id,$text_prec,$anon_prec) {
 	echo('<div class="newsformcomment">
-			<form method="post" action="?action=comment_post'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;thread_id='.htmlentities($thread_id).'#a'.$ancre.'"><p>
-				<textarea name="message" rows="15" cols="80">'.htmlentities($text_prec).'</textarea>
+			<form method="post"class="well" action="?action=comment_post'.(($unique_mode?'&amp;unique='.$ancre:'')).'&amp;thread_id='.htmlentities($thread_id).'#a'.$ancre.'"><p>
+				<textarea name="message" rows="5" class="span5">'.htmlentities($text_prec).'</textarea>
 					<span class="checkcommentform">');
 	if (empty($anon_prec))
 	{
-		echo('<input type="checkbox" name="anonymization" />');
+		echo('<label class="checkbox">
+			<input type="checkbox" name="anonymization" />
+			Anonymization
+			</label>');
 	}
 	else
 	{
-		echo('<input type="checkbox" name="anonymization" checked="checked" />');
+		echo('<label class="checkbox">
+			<input type="checkbox" name="anonymization" checked="checked" />
+			Anonymization
+			</label>');
 	}
 
-	echo('Anonymiser le commentaire
+	echo('
 				</span>
 				<input type="hidden" name="form_name" value="create_comment" />
 				<span class="validatecommentform">
-					<input type="submit" value="Valider" />
+					<input class="btn" type="submit" value="Valider" />
 				</span>
 			</p></form>
 		</div>');
