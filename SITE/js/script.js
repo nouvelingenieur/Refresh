@@ -3,8 +3,6 @@
 var BASE_URL ='/Sites/Refresh/SITE/';
 
 $(document).ready(function() {
-
-
 	$('.feed-settings').click(function() {
 	  $('.tab_form_close').toggle('slow', function() {
 	    // Animation complete.
@@ -18,7 +16,7 @@ $(document).ready(function() {
 $('#shareidea').ajaxForm(function() { 
                 console.log("Thank you for your comment!");
             });
-*/
+
 
  var options = { 
         target:        '#output',   // target element(s) to be updated with server response 
@@ -55,6 +53,8 @@ $('#shareidea').ajaxForm(function() {
 	    alert('status: ' + statusText + '\n\nresponseText: \n' + responseText + 
 		'\n\nThe output div should have already been updated with the responseText.'); 
 	} 
+*/
+
 
 	/* display comments */
 	$('.speccom').click(function() {

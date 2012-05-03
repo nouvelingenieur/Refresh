@@ -627,26 +627,16 @@ function display_post()
 		
 		
 		// Menu de sélection des idées
-		$tail='<div class="enlarge_lowresol">
-			<form method="post" action="?action=post_filter_change">
-				<table class="tab_form_close">
-					<tr>';
+		$tail='<form class="row" method="post" action="?action=post_filter_change">
+			<div class="tab_form_close">
+					';
 					
 		// Champ de recherche
-		$tail.='<td>
-			Recherche :
-		</td>
-		<td>
-			<input type="text" name="admin_recherche" value="'.$_SESSION["thread_admin_recherche"].'">
-		</td>';
+		$tail.='<input class="span2" placeholder="'. _('Search...').'"…" type="text" name="admin_recherche" value="'.$_SESSION["thread_admin_recherche"].'">';
 		
 		// Choix de catégorie
-		$tail.='<td>
-							Cat&eacute;gorie :
-						</td>
-						<td>
-							<select name="category_filter">
-								<option value="0">Toutes</option>';
+		$tail.= '<select class="span2" name="category_filter">
+				<option value="0">'._('Cat&eacute;gories').'</option>';
 					
 		$result=@mysql_query("SELECT category_id,category_name FROM thread_category"); // Menu déroulant de choix de catégorie en fonction de ce qui est disponible en base
 		if ($result)
@@ -664,18 +654,14 @@ function display_post()
 			}
 			@mysql_free_result($result);
 		}
-		$tail.='</select></td>';
+		$tail.='</select>';
 		
 		// Menu de filtrage pour les utilisateurs loggés
 		if(is_logged())
 		{
 			
-			$tail.='<td>
-				Filtre :
-			</td>
-			<td>
-				<select name="admin_filter">
-					<option value="0">Aucun</option>';
+			$tail.='<select class="span2" name="admin_filter">
+					<option value="0">'._('No filter').'</option>';
 			
 			if ($privileges>3) // Proposition des options de modération
 			{
@@ -684,8 +670,8 @@ function display_post()
 					switch($_SESSION["thread_admin_filter"])
 					{
 						case 1:
-							$tail.='<option value="1" selected="selected">Mes propositions</option><option value="2">Propositions avec mes commentaires</option><option value="3">Propositions sans mon vote</option> 
-								<option value="4">Propositions non mod&eacute;r&eacute;es</option><option value="5">Commentaires non mod&eacute;r&eacute;s</option>';
+							$tail.='<option value="1" selected="selected">'._('My posts').'</option><option value="2">'._('Posts with my comments').'</option><option value="3">Propositions sans mon vote</option> 
+								<option value="4">'._('Not moderated posts').'</option><option value="5">'._('Not moderated comments').'</option>';
 							break;
 						case 2:
 							$tail.='<option value="1">Mes propositions</option><option value="2" selected="selected">Propositions avec mes commentaires</option><option value="3">Propositions sans mon vote</option> 
@@ -746,36 +732,30 @@ function display_post()
 		{
 			if (isset($_SESSION["thread_admin_filter"]) && $_SESSION["thread_admin_filter"]==5)  // Cas de la modération des commentaires à part
 			{
-				$tail.='<td>
-							Trier par :
-						</td>
-						<td>
-							<select name="sorting" disabled="disabled">
-								<option value="1" selected="selected">Date</option><option value="2">Nombre de votes favorables</option><option value="3">Proportion de votes favorables</option><option value="4">Nombre total de votes</option>"';
+				$tail.= _('Sort by').'
+					<select name="sorting" class="span2" disabled="disabled">
+								<option value="1" selected="selected">Date</option><option value="2">Upvotes number</option><option value="3">Upvotes ratio</option><option value="4">'. _('Votes total') . '</option>"';
 			}
 			else
 			{
-				$tail.='<td>
-							Trier par :
-						</td>
-						<td>
-							<select name="sorting">';
+				$tail.= _('Sort by').'
+							<select class="span2" name="sorting">';
 				switch($_SESSION["thread_ordering"])
 				{
 					case 1:
-						$tail.="<option value=\"1\" selected=\"selected\">Date</option><option value=\"2\">Nombre de votes favorables</option><option value=\"3\">Proportion de votes favorables</option><option value=\"4\">Nombre total de votes</option>";
+						$tail.="<option value=\"1\" selected=\"selected\">Date</option><option value=\"2\">Upvotes number</option><option value=\"3\">Upvotes ratio</option><option value=\"4\">"  . _('Votes total') .  "</option>";
 						break;
 					case 2:
-						$tail.="<option value=\"1\">Date</option><option value=\"2\" selected=\"selected\">Nombre de votes favorables</option><option value=\"3\">Proportion de votes favorables</option><option value=\"4\">Nombre total de votes</option>";
+						$tail.="<option value=\"1\">Date</option><option value=\"2\" selected=\"selected\">Upvotes number</option><option value=\"3\">Upvotes ratio</option><option value=\"4\">" . _('Votes total') .  "</option>";
 						break;
 					case 3:
-						$tail.="<option value=\"1\">Date</option><option value=\"2\">Nombre de votes favorables</option><option value=\"3\" selected=\"selected\">Proportion de votes favorables</option><option value=\"4\">Nombre total de votes</option>";
+						$tail.="<option value=\"1\">Date</option><option value=\"2\">Upvotes number</option><option value=\"3\" selected=\"selected\">Upvotes ratio</option><option value=\"4\">"  . _('Votes total') .  "</option>";
 						break;
 					case 4:
-						$tail.="<option value=\"1\">Date</option><option value=\"2\">Nombre de votes favorables</option><option value=\"3\">Proportion de votes favorables</option><option value=\"4\" selected=\"selected\">Nombre total de votes</option>";
+						$tail.="<option value=\"1\">Date</option><option value=\"2\">Upvotes number</option><option value=\"3\">Upvotes ratio</option><option value=\"4\" selected=\"selected\">"  . _('Votes total') .  "</option>";
 						break;
 					default:
-						$tail.="<option value=\"1\">Date</option><option value=\"2\">Nombre de votes favorables</option><option value=\"3\">Proportion de votes favorables</option><option value=\"4\">Nombre total de votes</option>";
+						$tail.="<option value=\"1\">Date</option><option value=\"2\">Upvotes number</option><option value=\"3\">Upvotes ratio</option><option value=\"4\">"  . _('Votes total') .  "</option>";
 				}
 			}			
 		}
@@ -783,36 +763,24 @@ function display_post()
 		{
 			if (isset($_SESSION["thread_admin_filter"]) && $_SESSION["thread_admin_filter"]==4)  // Cas de la modération des commentaires à part
 			{
-				$tail.='<td>
-							Trier par :
-						</td>
-						<td>
-							<select name="sorting" disabled="disabled">
-								<option value="1">Date</option><option value="2">Nombre de votes favorables</option><option value="3">Proportion de votes favorables</option><option value="4">Nombre total de votes</option>"';
+				$tail.= _('Sort by').'
+							<select  class="span2" name="sorting" disabled="disabled">
+								<option value="1">Date</option><option value="2">Upvotes number</option><option value="3">Upvotes ratio</option><option value="4">'  . _('Votes total') .  '</option>"';
 			}
 			else
 			{
-				$tail.='<td>
-							Trier par :
-						</td>
-						<td>
-							<select name="sorting">
-								<option value="1">Date</option><option value="2">Nombre de votes favorables</option><option value="3">Proportion de votes favorables</option><option value="4">Nombre total de votes</option>';
+				$tail.= _('Sort by').'
+							<select  class="span2" name="sorting">
+								<option value="1">Date</option><option value="2">Upvotes number</option><option value="3">Upvotes ratio</option><option value="4">'  . _('Votes total') .  '</option>';
 			}
 		}
 
 		echo($tail.'			
-						</select>
-					</td>
-					<td>
-						<input type="hidden" name="form_name" value="thread_display_param" />
-					</td>
-					<td>
-						<input type="submit" value="Valider" />
-					</td>
-				</tr>
-			</table>
-		</form></div>');	
+				</select>
+				<input type="hidden" name="form_name" value="thread_display_param" />
+				<input type="submit" value="Valider" />
+			</div>
+		</form>');	
 
 		$is_admin=($privileges>3);
 		
