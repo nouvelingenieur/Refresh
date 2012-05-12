@@ -213,10 +213,11 @@ function get_comments($thread_id,$privileges,$login,$output='') {
 				$comment['text'] = text_display_prepare(trim($row["text"])); // text of the comment
 				$comment['my_vote'] = $row['my_vote']; // 1 if current user has voted for it, else 0
 				$comment['my_provote'] = $row['my_provote']; // 1 if current user has voted +1, else 0
-				$comment['pro_vote'] = $row['total_vote']; // total of +1 votes
+				$comment['pro_vote'] = $row['pro_vote']; // total of +1 votes
 				$comment['total_vote'] = $row['total_vote']; // total number of votes
 				
 				$action->data[$row["comment_id"]] = $comment;
+				$action->set_result(True);
 				
 			}
 		}
