@@ -34,11 +34,9 @@ $result=@mysql_query(sprintf("SELECT user_id,is_valid,privileges FROM user WHERE
 if (mysql_num_rows($result)!=0)
 	{
 
-	
 	$action = get_comments($IDEA_ID,1,$EMAIL,$output='');
 	
 	$array = $action->data;
-	
 	
 } else {
 
