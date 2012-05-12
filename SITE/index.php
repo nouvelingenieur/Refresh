@@ -253,7 +253,7 @@ if(isset($_POST) && !(empty($_POST)) && $treat_post)
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="description" content="">
+	<meta name="description" content="<?=_("Refresh is a collaborative platform for the crowdsourcing of ideas in order to improve education.")?>">
 	<meta name="author" content="">
 	<meta name="keywords" content="<?=KEYWORDS?>" />
 	<link rel="shortcut icon" href="img/refresh.ico" type="image/x-icon" />
