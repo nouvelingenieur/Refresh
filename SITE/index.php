@@ -256,6 +256,7 @@ if(isset($_POST) && !(empty($_POST)) && $treat_post)
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<meta name="keywords" content="<?=KEYWORDS?>" />
+	<link rel="shortcut icon" href="img/refresh.ico" type="image/x-icon" />
 
 
 	<title><?=NOM_ECOLE?> Refresh</title>
