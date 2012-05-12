@@ -216,7 +216,7 @@ function get_comments($thread_id,$privileges,$login,$output='') {
 				$comment['pro_vote'] = $row['pro_vote']; // total of +1 votes
 				$comment['total_vote'] = $row['total_vote']; // total number of votes
 				
-				$action->data[$row["comment_id"]] = $comment;
+				$action->data[] = $comment;
 				$action->set_result(True);
 				
 			}
