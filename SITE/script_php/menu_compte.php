@@ -26,12 +26,19 @@ include_once("pages_secondlevel/tool.php");
 
 if (is_logged())
 {
+
+						
+	$email = "$_SESSION[login_c]";
+	$defaultavatar = "img/default-avatar.png";
+	$size = 80;
+	$grav_url = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?d=" . urlencode( $defaultavatar ) . "&s=" . $size;
+	echo '<img src="'. $grav_url .'" alt="avatar" />';
+
 	echo('
 	
-	<a href="?action=logout">'._('Disconnect').'</a>
-	<a href="?action=change_pass">'._('Change password').'</a>
-	<a href="?action=delete_account">'._('Unsubscribe').'</a>
-	<a href="?action=display_useterms">'._('Terms of use').'</a>
+	<li><a href="?action=logout">'._('Disconnect').'</a></li>
+	<li><a href="?action=change_pass">'._('Change password').'</a></li>
+	<li><a href="?action=delete_account">'._('Unsubscribe').'</a></li>
 
 	');
 	
@@ -46,12 +53,11 @@ if (is_logged())
 }
 else
 {
+	log_in();
 	echo('
-	
-	<a href="?action=login">Connexion</a>
-	<a href="?action=lost_ids">Identifiants perdus</a>
-	<a href="?action=create_account">Inscription</a>
-	<a href="?action=display_useterms">Conditions d\'utilisation</a>
+	<li><a href="?action=lost_ids">'._('Lost your log?').'</a></li>
+	<li><a href="?action=create_account">'._('Register').'</a></li>
+	<li><a href="?action=display_useterms">'._('Terms of use').'</a></li>
 
 	');
 }

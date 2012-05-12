@@ -57,116 +57,116 @@ switch ($highlighted_title)
 {
 	case 1:
 		echo('
-			<td class="menu_title_selected_first">
+			<li class="menu_title_selected_first">
 				<a href="?action=go_home">Accueil</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=display_nouvelingenieur">Le Nouvel Ing&eacute;nieur</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=display_docu">Documents</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=display_post">Propositions</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=new_post">Participer</a>
-			</td>
+			</li>
 		');
 		break;
 	case 2:
 		echo('
-			<td class="menu_title_first">
+			<li class="menu_title_first">
 				<a href="?action=go_home">Accueil</a>
-			</td>
-			<td class="menu_title_selected">
+			</li>
+			<li class="menu_title_selected">
 				<a href="?action=display_nouvelingenieur">Le Nouvel Ing&eacute;nieur</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=display_docu">Documents</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=display_post">Propositions</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=new_post">Participer</a>
-			</td>
+			</li>
 		');
 		break;
 	case 3:
 		echo('
-			<td class="menu_title_first">
+			<li class="menu_title_first">
 				<a href="?action=go_home">Accueil</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=display_nouvelingenieur">Le Nouvel Ing&eacute;nieur</a>
-			</td>
-			<td class="menu_title_selected">
+			</li>
+			<li class="menu_title_selected">
 				<a href="?action=display_docu">Documents</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=display_post">Propositions</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=new_post">Participer</a>
-			</td>
+			</li>
 		');
 		break;
 	case 4:
 		echo('
-			<td class="menu_title_first">
+			<li class="menu_title_first">
 				<a href="?action=go_home">Accueil</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=display_nouvelingenieur">Le Nouvel Ing&eacute;nieur</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=display_docu">Documents</a>
-			</td>
-			<td class="menu_title_selected">
+			</li>
+			<li class="menu_title_selected">
 				<a href="?action=display_post">Propositions</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=new_post">Participer</a>
-			</td>
+			</li>
 		');
 		break;
 	case 5:
 		echo('
-			<td class="menu_title_first">
+			<li class="menu_title_first">
 				<a href="?action=go_home">Accueil</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=display_nouvelingenieur">Le Nouvel Ing&eacute;nieur</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=display_docu">Documents</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=display_post">Propositions</a>
-			</td>
-			<td class="menu_title_selected">
+			</li>
+			<li class="menu_title_selected">
 				<a href="?action=new_post">Participer</a>
-			</td>
+			</li>
 		');
 		break;
 	case 6:
 		echo('
-			<td class="menu_title_first">
+			<li class="menu_title_first">
 				<a href="?action=go_home">Accueil</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=display_nouvelingenieur">Le Nouvel Ing&eacute;nieur</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=display_docu">Documents</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=display_post">Propositions</a>
-			</td>
-			<td class="menu_title">
+			</li>
+			<li class="menu_title">
 				<a href="?action=new_post">Participer</a>
-			</td>
+			</li>
 		');
 		break;
 }
