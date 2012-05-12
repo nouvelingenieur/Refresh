@@ -31,6 +31,7 @@ session_start();
 	<head>
 		<title>Refresh</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<link rel="shortcut icon" href="img/refresh.ico" type="image/x-icon" />
 	</head>
 	
 	<body>
