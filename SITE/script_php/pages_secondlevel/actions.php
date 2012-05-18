@@ -87,7 +87,7 @@ class action {
  * @param  integer   $valid says if the idea needs to be moderated (default 0 = needs moderation)
  * @return array     
  */
-function post($title,$message,$anonymization,$category,$login,$valid=0,$output='') {
+function post($title,$message,$anonymization,$category,$login,$valid=0,$output='',$latitude=0,$longitude=0) {
 
 	$action = new action;
 	$action->set_result(False);
@@ -151,7 +151,14 @@ function post($title,$message,$anonymization,$category,$login,$valid=0,$output='
 			$name_print=mysql_real_escape_string(construct_name_from_session());
 		}
 
-		if (@mysql_query("INSERT INTO `thread` (`thread_id`,`rand_prop`,`hash_prop`,`title`,`text`,`date`,`category`,`is_valid`,`possibly_name`) VALUES (NULL, '$rand_prop', '$hash_prop','$title_prec_sec','$text_prec_sec',CURRENT_TIMESTAMP,'$cate_prec_sec',$valid,'$name_print')"))
+		if ($latitude != 0 && $longitude != 0) {
+			$geolocalization = ',`latitude`,`longitude`';
+			$geolocalization_values = ",$latitude,$longitude";
+		} else {
+			$geolocalization = '';
+			$geolocalization_values = '';
+		}
+		if (@mysql_query("INSERT INTO `thread` (`thread_id`,`rand_prop`,`hash_prop`,`title`,`text`,`date`,`category`,`is_valid`,`possibly_name`".$geolocalization.") VALUES (NULL, '$rand_prop', '$hash_prop','$title_prec_sec','$text_prec_sec',CURRENT_TIMESTAMP,'$cate_prec_sec',$valid,'$name_print'".$geolocalization_values.")"))
 		{
 			$action->add_success(_('The idea was added to Refresh and now has to be moderated'));
 			$action->set_result(True);
