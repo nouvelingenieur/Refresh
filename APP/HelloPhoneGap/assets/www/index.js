@@ -250,7 +250,8 @@ Ext.setup({
 					currentIdea = record.data.ideaId;
 					ideaName = record.data.ideaName;
 					Ext.getCmp('ideaPanel').update(record.data);
-					
+					ideaPanel.needsLayout = true;
+					console.log(ideaPanel);
 					Ext.util.JSONP.request({
 						url: form.getValues().SERVER_URL+'/api/get_comments.php',
 						callbackKey: 'callback',
@@ -410,8 +411,7 @@ Ext.setup({
 			id:'ideaPanel',
 			dockedItems: [toolbar_icons],
 			scroll: 'both',
-			tpl:'<div class="containerBox"><h1 id="ideaTitle">{ideaName}</h1> by {ideaAuthor} on {ideaDate}</h1><div>{ideaText}</div><div><ul><li>Likes: {ideaLikes}</li><li>Dislikes: {ideaDislikes}</li></ul></div></div>',
-			html:'<div class="containerBox"><p><p><p><p><p><p><p><p><p><h1 id="ideaTitle">{ideaName}</h1> by {ideaAuthor} on {ideaDate}</h1><div>{ideaText}</div><div><ul><li>Likes: {ideaLikes}</li><li>Dislikes: {ideaDislikes}</li></ul></div></div>'
+			tpl:'<div class="containerBox"><h1 id="ideaTitle">{ideaName}</h1> by {ideaAuthor} on {ideaDate}</h1><div>{ideaText}</div><div><ul><li>Likes: {ideaLikes}</li><li>Dislikes: {ideaDislikes}</li></ul></div></div>'
 		});
 		
 		var ideaPanelAndComments = new Ext.Panel({
