@@ -250,7 +250,8 @@ Ext.setup({
 					currentIdea = record.data.ideaId;
 					ideaName = record.data.ideaName;
 					Ext.getCmp('ideaPanel').update(record.data);
-					
+					ideaPanel.needsLayout = true;
+					ideaPanel.rendered = false;
 					Ext.util.JSONP.request({
 						url: form.getValues().SERVER_URL+'/api/get_comments.php',
 						callbackKey: 'callback',
@@ -305,8 +306,8 @@ Ext.setup({
 					PASSWORD: SHA1(form.getValues().PASSWORD)
 				},
 				callback: function(result) {
-					// TODO update ratings
-					console.log('liking!')
+					var spanLikes = Ext.get('numberOfLikes');
+					spanLikes.dom.innerHTML = spanLikes.dom.innerHTML + 1;
 				}
 			});
 		};
@@ -322,7 +323,8 @@ Ext.setup({
 					PASSWORD: SHA1(form.getValues().PASSWORD)
 				},
 				callback: function(result) {
-					// TODO ratings
+					var spanDislikes = Ext.get('numberOfDislikes');
+					spanDislikes.dom.innerHTML = spanDislikes.dom.innerHTML + 1;
 				}
 			});
 		};
@@ -380,9 +382,10 @@ Ext.setup({
 					commentDate = record.data.date;
 					commentProVotes = record.data.pro_vote;
 					commentNegVotes = record.data.total_vote - commentProVotes;
-					/*Ext.getCmp('ideaPanel').update(record.data);
-					Ext.getCmp('thePanel').setActiveItem(2,{type:'slide',direction:'left'});
-					currentPanel = 2;*/
+					record.data.neg_vote = record.data.total_vote - record.data.pro_vote;
+					Ext.getCmp('singleComment').update(record.data);
+					Ext.getCmp('thePanel').setActiveItem(5,{type:'slide',direction:'left'});
+					currentPanel = 2;
 				}
 			},
 			store: commentsStore
@@ -410,8 +413,7 @@ Ext.setup({
 			id:'ideaPanel',
 			dockedItems: [toolbar_icons],
 			scroll: 'both',
-			tpl:'<div class="containerBox"><h1 id="ideaTitle">{ideaName}</h1> by {ideaAuthor} on {ideaDate}</h1><div>{ideaText}</div><div><ul><li>Likes: {ideaLikes}</li><li>Dislikes: {ideaDislikes}</li></ul></div></div>',
-			html:'<div class="containerBox"><p><p><p><p><p><p><p><p><p><h1 id="ideaTitle">{ideaName}</h1> by {ideaAuthor} on {ideaDate}</h1><div>{ideaText}</div><div><ul><li>Likes: {ideaLikes}</li><li>Dislikes: {ideaDislikes}</li></ul></div></div>'
+			tpl:'<div class="containerBox"><h1 id="ideaTitle">{ideaName}</h1> by {ideaAuthor} on {ideaDate}</h1><div>{ideaText}</div><div><ul><li>Likes: <span id="numberOfLikes">{ideaLikes}</span></li><li>Dislikes: <span id="numberOfDislikes">{ideaDislikes}</span></li></ul></div></div>'
 		});
 		
 		var ideaPanelAndComments = new Ext.Panel({
@@ -597,6 +599,73 @@ Ext.setup({
 			}, CommentBottomBar]
 		});
 		
+		
+		// singleComment
+		var likeComment = function() {
+			Ext.util.JSONP.request({
+				url: form.getValues().SERVER_URL+'/api/vote_comment.php',
+				callbackKey: 'callback',
+				params: {
+					VOTE_VALUE: '+1',
+					COMMENT_ID: commentId,
+					EMAIL: SHA1(form.getValues().EMAIL),
+					PASSWORD: SHA1(form.getValues().PASSWORD)
+				},
+				callback: function(result) {
+					var spanLikes = Ext.get('numberOfProVotes');
+					spanLikes.dom.innerHTML = spanLikes.dom.innerHTML + 1;
+				}
+			});
+		};
+		
+		var dislikeComment = function() {
+			Ext.util.JSONP.request({
+				url: form.getValues().SERVER_URL+'/api/vote_comment.php',
+				callbackKey: 'callback',
+				params: {
+					VOTE_VALUE: '-1',
+					COMMENT_ID: commentId,
+					EMAIL: SHA1(form.getValues().EMAIL),
+					PASSWORD: SHA1(form.getValues().PASSWORD)
+				},
+				callback: function(result) {
+					var spanDislikes = Ext.get('numberOfNegVotes');
+					spanDislikes.dom.innerHTML = spanDislikes.dom.innerHTML + 1;
+				}
+			});
+		};
+		
+		var singleCommentBottomBar = {
+			xtype: 'toolbar',
+			dock: 'bottom',
+			scroll: 'horizontal',
+			items: [
+				{xtype: 'spacer'},
+				{ iconMask: true, iconAlign: 'right', ui: 'action-round', text: 'Agree', iconCls: 'add', handler: likeComment},
+				{ iconMask: true, iconAlign: 'right', ui: 'action-round', text: 'Disagree', iconCls: 'delete', handler: dislikeComment},
+			]
+		}
+		
+		var singleComment =  new Ext.Panel({
+			id:'singleComment',
+			fullscreen: true,
+			//dockedItems: [toolbar_icons],
+			scroll: 'both',
+			tpl:'<div class="containerBox"><div>{text}</div><div><ul><li>Likes: <span id="numberOfProVotes">{pro_vote}</span></li><li>Dislikes: <span id="numberOfNegVotes">{neg_vote}</span></li></ul></div></div>',
+			dockedItems: [{
+				xtype: 'toolbar',
+				dock: 'top',
+				items: {
+					text: 'Back',
+					ui: 'back',
+					// search button handler
+					handler: function() {
+						Ext.getCmp('thePanel').setActiveItem(2,{type:'slide',direction:'right'});
+					}
+				}
+			}, singleCommentBottomBar]
+		});
+		
 		// global panel
 		var panel =  new Ext.Panel({
 			fullscreen: true,
@@ -604,7 +673,7 @@ Ext.setup({
 			layout: 'card',
 			cardSwitchAnimation:'slide',
 			scroll:'vertical',
-			items:[form, searchPanel, ideaPanelAndComments, postPanel, commentPanel]
+			items:[form, searchPanel, ideaPanelAndComments, postPanel, commentPanel, singleComment]
 		});
 	}
 });
