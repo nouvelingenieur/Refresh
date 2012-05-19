@@ -267,7 +267,7 @@ Ext.setup({
 							}
 						}
 					});
-					
+					console.log(commentsAuxPanel);
 					Ext.getCmp('thePanel').setActiveItem(2,{type:'slide',direction:'left'});
 					currentPanel = 2;
 				}
@@ -285,7 +285,8 @@ Ext.setup({
 			dockedItems: [{
 				xtype: 'toolbar',
 				dock: 'top',
-				items: search_items
+				items: search_items,
+				scroll: 'horizontal'
 			}, {
 				title: 'test2',
 				html: '<p></p>',
@@ -300,14 +301,17 @@ Ext.setup({
 				url: form.getValues().SERVER_URL+'/api/vote_idea.php',
 				callbackKey: 'callback',
 				params: {
-					VOTE_VALUE: '+1',
+					VOTE_VALUE: '1',
 					IDEA_ID: currentIdea,
 					EMAIL: SHA1(form.getValues().EMAIL),
+					POSSIBLY_NAME: form.getValues().EMAIL,
 					PASSWORD: SHA1(form.getValues().PASSWORD)
 				},
 				callback: function(result) {
 					var spanLikes = Ext.get('numberOfLikes');
-					spanLikes.dom.innerHTML = spanLikes.dom.innerHTML + 1;
+					spanLikes.dom.innerHTML = result.data['IDEA_POSITIVE_VOTES'];
+					var spanDislikes = Ext.get('numberOfDislikes');
+					spanDislikes.dom.innerHTML = result.data['IDEA_NEGATIVE_VOTES'];
 				}
 			});
 		};
@@ -317,14 +321,17 @@ Ext.setup({
 				url: form.getValues().SERVER_URL+'/api/vote_idea.php',
 				callbackKey: 'callback',
 				params: {
-					VOTE_VALUE: '-1',
+					VOTE_VALUE: '0',
 					IDEA_ID: currentIdea,
 					EMAIL: SHA1(form.getValues().EMAIL),
+					POSSIBLY_NAME: form.getValues().EMAIL,
 					PASSWORD: SHA1(form.getValues().PASSWORD)
 				},
 				callback: function(result) {
+					var spanLikes = Ext.get('numberOfLikes');
+					spanLikes.dom.innerHTML = result.data['IDEA_POSITIVE_VOTES'];
 					var spanDislikes = Ext.get('numberOfDislikes');
-					spanDislikes.dom.innerHTML = spanDislikes.dom.innerHTML + 1;
+					spanDislikes.dom.innerHTML = result.data['IDEA_NEGATIVE_VOTES'];
 				}
 			});
 		};
@@ -369,7 +376,7 @@ Ext.setup({
 		});
 
 		var commentsGroupingBase = {
-			itemTpl: '<div class="ideas"><strong>{text}</strong></div>',
+			itemTpl: '<div style="display: inline"><strong>{text}</strong></div>',
 			selModel: {
 				mode: 'SINGLE',
 				allowDeselect: true
@@ -388,23 +395,20 @@ Ext.setup({
 					currentPanel = 2;
 				}
 			},
-			store: commentsStore
+			store: commentsStore,
+			fullscreen: true
 		};
 		
 		var commentsResultList = new Ext.List(
-			Ext.apply(commentsGroupingBase, {fullscreen: false})
+			Ext.apply(commentsGroupingBase, {fullscreen: true})
 		);
 		
 		var commentsAuxPanel = new Ext.Panel({
-			cls: 'distanceBorder',
-			layout: {
-				type: 'vbox'
-			},
-			dockedItems: [
+			items: [
 				{
 				title: 'test2',
 				html: '<p></p>',
-				dockedItems: commentsResultList
+				items: commentsResultList
 				}
 			]
 		});
@@ -412,19 +416,21 @@ Ext.setup({
 		var ideaPanel = new Ext.Panel({
 			id:'ideaPanel',
 			dockedItems: [toolbar_icons],
-			scroll: 'both',
-			tpl:'<div class="containerBox"><h1 id="ideaTitle">{ideaName}</h1> by {ideaAuthor} on {ideaDate}</h1><div>{ideaText}</div><div><ul><li>Likes: <span id="numberOfLikes">{ideaLikes}</span></li><li>Dislikes: <span id="numberOfDislikes">{ideaDislikes}</span></li></ul></div></div>'
+			scroll: false,
+			tpl:'<div class="containerBox"><h1 id="ideaTitle">{ideaName}</h1> by {ideaAuthor} on {ideaDate}</h1><div>{ideaText}</div><div><ul><li>Likes: <span id="numberOfLikes">{ideaLikes}</span></li><li>Dislikes: <span id="numberOfDislikes">{ideaDislikes}</span></li></ul></div></div><br />'
 		});
 		
 		var ideaPanelAndComments = new Ext.Panel({
 			fullscreen: true,
+			scroll: 'vertical',
+			autoScroll: true,
 			id:'ideaPanelAndComments',
 			dockedItems: [{
 				xtype: 'toolbar',
 				dock: 'top',
 				items: topIdeaToolbar
-			},ideaPanel, commentsAuxPanel],
-			scroll:'vertical'
+			},ideaPanel],
+			items: [commentsAuxPanel]
 		});
 		
 		
@@ -606,14 +612,17 @@ Ext.setup({
 				url: form.getValues().SERVER_URL+'/api/vote_comment.php',
 				callbackKey: 'callback',
 				params: {
-					VOTE_VALUE: '+1',
+					VOTE_VALUE: '1',
 					COMMENT_ID: commentId,
 					EMAIL: SHA1(form.getValues().EMAIL),
+					POSSIBLY_NAME: form.getValues().EMAIL,
 					PASSWORD: SHA1(form.getValues().PASSWORD)
 				},
 				callback: function(result) {
 					var spanLikes = Ext.get('numberOfProVotes');
-					spanLikes.dom.innerHTML = spanLikes.dom.innerHTML + 1;
+					spanLikes.dom.innerHTML = result.data.COMMENT_POSITIVE_VOTES;
+					var spanDislikes = Ext.get('numberOfNegVotes');
+					spanDislikes.dom.innerHTML = result.data.COMMENT_NEGATIVE_VOTES;
 				}
 			});
 		};
@@ -623,14 +632,17 @@ Ext.setup({
 				url: form.getValues().SERVER_URL+'/api/vote_comment.php',
 				callbackKey: 'callback',
 				params: {
-					VOTE_VALUE: '-1',
+					VOTE_VALUE: '0',
 					COMMENT_ID: commentId,
 					EMAIL: SHA1(form.getValues().EMAIL),
+					POSSIBLY_NAME: form.getValues().EMAIL,
 					PASSWORD: SHA1(form.getValues().PASSWORD)
 				},
 				callback: function(result) {
+					var spanLikes = Ext.get('numberOfProVotes');
+					spanLikes.dom.innerHTML = result.data['COMMENT_POSITIVE_VOTES'];
 					var spanDislikes = Ext.get('numberOfNegVotes');
-					spanDislikes.dom.innerHTML = spanDislikes.dom.innerHTML + 1;
+					spanDislikes.dom.innerHTML = result.data['COMMENT_NEGATIVE_VOTES'];
 				}
 			});
 		};
