@@ -44,15 +44,14 @@ if (mysql_num_rows($result)!=0)
 			} else {
 				$rand_prop=mt_rand(0,65535);
 				$hash_prop=sha1($POSSIBLY_NAME.$rand_prop);
-				$thread_id_sec=mysql_real_escape_string($IDEA_ID);
-				@mysql_query("INSERT INTO `vote` (`vote_id`,`thread_id`,`rand_prop`,`hash_prop`,`vote`) VALUES (NULL, '$thread_id_sec','$rand_prop','$hash_prop','$VOTE_VALUE')");
+				@mysql_query("INSERT INTO `vote` (`vote_id`,`thread_id`,`rand_prop`,`hash_prop`,`vote`) VALUES (NULL, '$IDEA_ID','$rand_prop','$hash_prop','$VOTE_VALUE')");
 			}
 	
 		$sql = "SELECT 
 		thread_id as IDEA_ID, 
 		sum(vote) as IDEA_POSITIVE_VOTES,
 		COUNT(*) - sum(vote) as IDEA_NEGATIVE_VOTES 
-		FROM vote WHERE thread_id = $thread_id_sec GROUP BY thread_id";
+		FROM vote WHERE thread_id = $IDEA_ID GROUP BY thread_id";
 
 		$result = $dbh->query($sql);
 
