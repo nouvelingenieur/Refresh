@@ -600,7 +600,7 @@ Ext.setup({
 		}
 		
 		var formComment = new Ext.form.FormPanel({
-		id: 'formPost',
+		id: 'formComment',
 		scroll: 'vertical',
 		items: [
 		{
