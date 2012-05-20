@@ -40,7 +40,7 @@ if (mysql_num_rows($result)!=0)
 	
 			$result=@mysql_query(sprintf("SELECT vote_id, vote FROM vote WHERE thread_id='%s' AND CAST(SHA1(CONCAT('%s',CAST(rand_prop AS CHAR))) AS CHAR)=hash_prop",mysql_real_escape_string($IDEA_ID),mysql_real_escape_string($POSSIBLY_NAME)));
 			if ($row=mysql_fetch_assoc($result)) { // already voted
-				@mysql_query(sprintf("UPDATE vote SET vote=%s WHERE vote_id='%s'",$VOTE_VALUE,mysql_real_escape_string($result['vote_id'])));
+				@mysql_query(sprintf("UPDATE vote SET vote=%s WHERE vote_id='%s'",$VOTE_VALUE,mysql_real_escape_string($row['vote_id'])));
 			} else {
 				$rand_prop=mt_rand(0,65535);
 				$hash_prop=sha1($POSSIBLY_NAME.$rand_prop);

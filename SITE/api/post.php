@@ -37,8 +37,6 @@ if ($IDEA_TITLE=='undef') {
 	$array = array('IDEA_POSTED' => 'False');
 } else {
 	$action = post($IDEA_TITLE,$IDEA_TEXT,null,$IDEA_CATEOGRY_ID,'test',$valid=1,$output='',$IDEA_LAT,$IDEA_LONG);
-	echo $IDEA_LAT;
-	$action->echo_warnings();
 	if($action->result) {
 		$array = array('IDEA_POSTED' => 'True');
 	} else {

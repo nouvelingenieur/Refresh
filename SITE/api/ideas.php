@@ -76,7 +76,7 @@ FROM
 	date as IDEA_DATE, 
 	possibly_name as IDEA_AUTHOR 
 FROM thread ".$WHERE.") as t 
-INNER JOIN 
+LEFT JOIN 
 (SELECT 
 thread_id as IDEA_ID, 
 sum(vote) as IDEA_POSITIVE_VOTES,
