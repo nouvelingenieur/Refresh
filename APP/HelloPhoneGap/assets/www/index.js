@@ -7,8 +7,6 @@ Ext.setup({
 	phoneStartupScreen: 'phone_startup.png',
 	glossOnIcon: false,
 	onReady: function() {
-		
-		
 		// login panel
 		Ext.regModel('User', {
 			fields: [
@@ -448,6 +446,27 @@ Ext.setup({
 					currentPanel = 1;
 				break;
 				case 'Post':
+					var geo = new Ext.util.GeoLocation({
+						autoUpdate: false,
+						listeners: {
+							locationupdate: function (geo) {
+								console.log('New latitude: ' + geo.latitude);
+							},
+							locationerror: function (   geo,
+														bTimeout, 
+														bPermissionDenied, 
+														bLocationUnavailable, 
+														message) {
+								if(bTimeout){
+									console.log('Timeout occurred.');
+								}
+								else{
+									console.log('Error occurred.');
+								}
+							}
+						}
+					});
+					geo.updateLocation();
 					Ext.util.JSONP.request({
 						url: form.getValues().SERVER_URL+'/api/post.php',
 						callbackKey: 'callback',
@@ -456,7 +475,9 @@ Ext.setup({
 							IDEA_TEXT: (formPost.items.get(2)).getValue(),
 							IDEA_CATEOGRY_ID: (formPost.items.get(1)).getValue(),
 							EMAIL: SHA1(form.getValues().EMAIL),
-							PASSWORD: SHA1(form.getValues().PASSWORD)
+							PASSWORD: SHA1(form.getValues().PASSWORD),
+							IDEA_LAT: geo.latitude,
+							IDEA_LONG: geo.longitude
 						},
 						callback: function() {
 						}
