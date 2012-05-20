@@ -480,6 +480,10 @@ Ext.setup({
 							IDEA_LONG: geo.longitude
 						},
 						callback: function() {
+							Ext.getCmp('thePanel').setActiveItem(currentPanel,{type:'slide',direction:'right'});
+							(formPost.items.get(0)).setValue('');
+							(formPost.items.get(1)).setValue('');
+							(formPost.items.get(2)).setValue('');
 						}
 					});
 				break;
@@ -563,6 +567,7 @@ Ext.setup({
 					currentPanel = 1;
 				break;
 				case 'Comment':
+					console.log('commenting!');
 					Ext.util.JSONP.request({
 						url: form.getValues().SERVER_URL+'/api/set_comment.php',
 						callbackKey: 'callback',
@@ -574,6 +579,7 @@ Ext.setup({
 							POSSIBLY_NAME: form.getValues().EMAIL.split("@",3)[0]
 						},
 						callback: function() {
+							console.log('ok!');
 							Ext.getCmp('thePanel').setActiveItem(currentPanel,{type:'slide',direction:'right'});
 						}
 					});
