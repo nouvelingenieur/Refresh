@@ -7,8 +7,6 @@ Ext.setup({
 	phoneStartupScreen: 'phone_startup.png',
 	glossOnIcon: false,
 	onReady: function() {
-		
-		
 		// login panel
 		Ext.regModel('User', {
 			fields: [
@@ -248,7 +246,26 @@ Ext.setup({
 				scope: 'test',
 				handler: function(record, btn, index) {
 					currentIdea = record.data.ideaId;
+					ideaName = record.data.ideaName;
 					Ext.getCmp('ideaPanel').update(record.data);
+					ideaPanel.needsLayout = true;
+					ideaPanel.rendered = false;
+					Ext.util.JSONP.request({
+						url: form.getValues().SERVER_URL+'/api/get_comments.php',
+						callbackKey: 'callback',
+						params: {
+							EMAIL: SHA1(form.getValues().EMAIL),
+							PASSWORD: SHA1(form.getValues().PASSWORD),
+							IDEA_ID: currentIdea
+						},
+						callback: function(result) {
+							commentsGroupingBase.store.removeAll();
+							for(i=0;i<result.data.length ;i++){
+								commentsGroupingBase.store.add([{comment_id:result.data[i].comment_id, is_proprio:result.data[i].is_proprio, is_valid: result.data[i].is_valid, already_mod: result.data[i].already_mod, date: result.data[i].date, possibly_name: result.data[i].possibly_name, text: result.data[i].text, my_vote: result.data[i].my_vote, my_provote: result.data[i].my_provote, pro_vote: result.data[i].pro_vote, total_vote: result.data[i].total_vote}]);
+							}
+						}
+					});
+					console.log(commentsAuxPanel);
 					Ext.getCmp('thePanel').setActiveItem(2,{type:'slide',direction:'left'});
 					currentPanel = 2;
 				}
@@ -266,9 +283,10 @@ Ext.setup({
 			dockedItems: [{
 				xtype: 'toolbar',
 				dock: 'top',
-				items: search_items
+				items: search_items,
+				scroll: 'horizontal'
 			}, {
-			title: 'test2',
+				title: 'test2',
 				html: '<p></p>',
 				dockedItems: searchResultList
 			}, bottomBar]
@@ -281,13 +299,17 @@ Ext.setup({
 				url: form.getValues().SERVER_URL+'/api/vote_idea.php',
 				callbackKey: 'callback',
 				params: {
-					VOTE_VALUE: '+1',
+					VOTE_VALUE: '1',
 					IDEA_ID: currentIdea,
 					EMAIL: SHA1(form.getValues().EMAIL),
+					POSSIBLY_NAME: form.getValues().EMAIL,
 					PASSWORD: SHA1(form.getValues().PASSWORD)
 				},
 				callback: function(result) {
-					// TODO update ratings
+					var spanLikes = Ext.get('numberOfLikes');
+					spanLikes.dom.innerHTML = result.data['IDEA_POSITIVE_VOTES'];
+					var spanDislikes = Ext.get('numberOfDislikes');
+					spanDislikes.dom.innerHTML = result.data['IDEA_NEGATIVE_VOTES'];
 				}
 			});
 		};
@@ -297,13 +319,17 @@ Ext.setup({
 				url: form.getValues().SERVER_URL+'/api/vote_idea.php',
 				callbackKey: 'callback',
 				params: {
-					VOTE_VALUE: '-1',
+					VOTE_VALUE: '0',
 					IDEA_ID: currentIdea,
 					EMAIL: SHA1(form.getValues().EMAIL),
+					POSSIBLY_NAME: form.getValues().EMAIL,
 					PASSWORD: SHA1(form.getValues().PASSWORD)
 				},
 				callback: function(result) {
-					// TODO ratings
+					var spanLikes = Ext.get('numberOfLikes');
+					spanLikes.dom.innerHTML = result.data['IDEA_POSITIVE_VOTES'];
+					var spanDislikes = Ext.get('numberOfDislikes');
+					spanDislikes.dom.innerHTML = result.data['IDEA_NEGATIVE_VOTES'];
 				}
 			});
 		};
@@ -313,6 +339,14 @@ Ext.setup({
 			Ext.getCmp('thePanel').setActiveItem(4,{type:'slide',direction:'left'});
 		};
 		
+		var share = function() {
+			window.open('http://www.facebook.com/share.php?u='+form.getValues().SERVER_URL+'/index.php%3Faction%3Ddisplaypost%23'+currentIdea);
+		};
+		
+		var tweet = function() {
+			window.open('http://twitter.com/home?status=%23Refresh '+ideaName+' '+form.getValues().SERVER_URL+'/index.php%3Faction%3Ddisplaypost%23'+currentIdea);
+		};
+		
 		var toolbar_icons = {
 			xtype: 'toolbar',
 			dock: 'bottom',
@@ -320,27 +354,81 @@ Ext.setup({
 			items: [
 				{ iconMask: true, iconAlign: 'left', ui: 'round', text: 'Comment', iconCls: 'compose', handler: goToCommentPanel},
 				{xtype: 'spacer'},
-				{ iconMask: true, iconAlign: 'left', ui: 'action-round', text: 'Like', iconCls: 'add', handler: like},
-				{ iconMask: true, iconAlign: 'left', ui: 'action-round', text: 'Dislike', iconCls: 'delete', handler: dislike},
+				{ iconMask: true, iconAlign: 'left', ui: 'round', text: 'Share', iconCls: 'iconFacebook', handler: share},
+				{ iconMask: true, iconAlign: 'left', ui: 'round', text: 'Tweet', iconCls: 'iconTwitter', handler: tweet},
+				{xtype: 'spacer'},
+				{ iconMask: true, iconAlign: 'left', ui: 'action-round', text: 'Agree', iconCls: 'add', handler: like},
+				{ iconMask: true, iconAlign: 'left', ui: 'action-round', text: 'Disagree', iconCls: 'delete', handler: dislike},
 			]
 		}
+		
+		Ext.regModel('Comment', {
+			fields: ['comment_id', 'is_proprio', 'is_valid', 'already_mod', 'date', 'possibly_name', 'text', 'my_vote', 'my_provote', 'pro_vote', 'total_vote']
+		});
+		
+		var commentsStore = new Ext.data.Store({
+			model: 'Comment',
+			data: [],
+			pageSize: 5,
+			clearOnPageLoad: false
+		});
+
+		var commentsGroupingBase = {
+			itemTpl: '<div style="display: inline"><strong>{text}</strong></div>',
+			selModel: {
+				mode: 'SINGLE',
+				allowDeselect: true
+			},
+			onItemDisclosure: {
+				scope: 'test',
+				handler: function(record, btn, index) {
+					commentId = record.data.comment_id;
+					commentText = record.data.text;
+					commentDate = record.data.date;
+					commentProVotes = record.data.pro_vote;
+					commentNegVotes = record.data.total_vote - commentProVotes;
+					record.data.neg_vote = record.data.total_vote - record.data.pro_vote;
+					Ext.getCmp('singleComment').update(record.data);
+					Ext.getCmp('thePanel').setActiveItem(5,{type:'slide',direction:'left'});
+					currentPanel = 2;
+				}
+			},
+			store: commentsStore,
+			fullscreen: true
+		};
+		
+		var commentsResultList = new Ext.List(
+			Ext.apply(commentsGroupingBase, {fullscreen: true})
+		);
+		
+		var commentsAuxPanel = new Ext.Panel({
+			items: [
+				{
+				title: 'test2',
+				html: '<p></p>',
+				items: commentsResultList
+				}
+			]
+		});
 		
 		var ideaPanel = new Ext.Panel({
 			id:'ideaPanel',
 			dockedItems: [toolbar_icons],
-			scroll: 'both',
-			tpl:'<div class="containerBox"><h1 id="ideaTitle">{ideaName}</h1> by {ideaAuthor} on {ideaDate}</h1><div>{ideaText}</div><div><ul><li>Likes: {ideaLikes}</li><li>Dislikes: {ideaDislikes}</li></ul></div></div>',
+			scroll: false,
+			tpl:'<div class="containerBox"><h1 id="ideaTitle">{ideaName}</h1> by {ideaAuthor} on {ideaDate}</h1><div>{ideaText}</div><div><ul><li>Likes: <span id="numberOfLikes">{ideaLikes}</span></li><li>Dislikes: <span id="numberOfDislikes">{ideaDislikes}</span></li></ul></div></div><br />'
 		});
 		
 		var ideaPanelAndComments = new Ext.Panel({
 			fullscreen: true,
+			scroll: 'vertical',
+			autoScroll: true,
 			id:'ideaPanelAndComments',
 			dockedItems: [{
 				xtype: 'toolbar',
 				dock: 'top',
 				items: topIdeaToolbar
 			},ideaPanel],
-			scroll:'vertical'
+			items: [commentsAuxPanel]
 		});
 		
 		
@@ -358,6 +446,27 @@ Ext.setup({
 					currentPanel = 1;
 				break;
 				case 'Post':
+					var geo = new Ext.util.GeoLocation({
+						autoUpdate: false,
+						listeners: {
+							locationupdate: function (geo) {
+								console.log('New latitude: ' + geo.latitude);
+							},
+							locationerror: function (   geo,
+														bTimeout, 
+														bPermissionDenied, 
+														bLocationUnavailable, 
+														message) {
+								if(bTimeout){
+									console.log('Timeout occurred.');
+								}
+								else{
+									console.log('Error occurred.');
+								}
+							}
+						}
+					});
+					geo.updateLocation();
 					Ext.util.JSONP.request({
 						url: form.getValues().SERVER_URL+'/api/post.php',
 						callbackKey: 'callback',
@@ -366,9 +475,15 @@ Ext.setup({
 							IDEA_TEXT: (formPost.items.get(2)).getValue(),
 							IDEA_CATEOGRY_ID: (formPost.items.get(1)).getValue(),
 							EMAIL: SHA1(form.getValues().EMAIL),
-							PASSWORD: SHA1(form.getValues().PASSWORD)
+							PASSWORD: SHA1(form.getValues().PASSWORD),
+							IDEA_LAT: geo.latitude,
+							IDEA_LONG: geo.longitude
 						},
 						callback: function() {
+							Ext.getCmp('thePanel').setActiveItem(currentPanel,{type:'slide',direction:'right'});
+							(formPost.items.get(0)).setValue('');
+							(formPost.items.get(1)).setValue('');
+							(formPost.items.get(2)).setValue('');
 						}
 					});
 				break;
@@ -452,6 +567,7 @@ Ext.setup({
 					currentPanel = 1;
 				break;
 				case 'Comment':
+					console.log('commenting!');
 					Ext.util.JSONP.request({
 						url: form.getValues().SERVER_URL+'/api/set_comment.php',
 						callbackKey: 'callback',
@@ -459,10 +575,12 @@ Ext.setup({
 							IDEA_ID: currentIdea,
 							COMMENT_TEXT: (formComment.items.get(0)).getValue(),
 							EMAIL: SHA1(form.getValues().EMAIL),
-							PASSWORD: SHA1(form.getValues().PASSWORD)
+							PASSWORD: SHA1(form.getValues().PASSWORD),
+							POSSIBLY_NAME: form.getValues().EMAIL.split("@",3)[0]
 						},
 						callback: function() {
-							console.log(currentIdea);
+							console.log('ok!');
+							Ext.getCmp('thePanel').setActiveItem(currentPanel,{type:'slide',direction:'right'});
 						}
 					});
 				break;
@@ -482,7 +600,7 @@ Ext.setup({
 		}
 		
 		var formComment = new Ext.form.FormPanel({
-		id: 'formPost',
+		id: 'formComment',
 		scroll: 'vertical',
 		items: [
 		{
@@ -514,6 +632,79 @@ Ext.setup({
 			}, CommentBottomBar]
 		});
 		
+		
+		// singleComment
+		var likeComment = function() {
+			Ext.util.JSONP.request({
+				url: form.getValues().SERVER_URL+'/api/vote_comment.php',
+				callbackKey: 'callback',
+				params: {
+					VOTE_VALUE: '1',
+					COMMENT_ID: commentId,
+					EMAIL: SHA1(form.getValues().EMAIL),
+					POSSIBLY_NAME: form.getValues().EMAIL,
+					PASSWORD: SHA1(form.getValues().PASSWORD)
+				},
+				callback: function(result) {
+					var spanLikes = Ext.get('numberOfProVotes');
+					spanLikes.dom.innerHTML = result.data.COMMENT_POSITIVE_VOTES;
+					var spanDislikes = Ext.get('numberOfNegVotes');
+					spanDislikes.dom.innerHTML = result.data.COMMENT_NEGATIVE_VOTES;
+				}
+			});
+		};
+		
+		var dislikeComment = function() {
+			Ext.util.JSONP.request({
+				url: form.getValues().SERVER_URL+'/api/vote_comment.php',
+				callbackKey: 'callback',
+				params: {
+					VOTE_VALUE: '0',
+					COMMENT_ID: commentId,
+					EMAIL: SHA1(form.getValues().EMAIL),
+					POSSIBLY_NAME: form.getValues().EMAIL,
+					PASSWORD: SHA1(form.getValues().PASSWORD)
+				},
+				callback: function(result) {
+					var spanLikes = Ext.get('numberOfProVotes');
+					spanLikes.dom.innerHTML = result.data['COMMENT_POSITIVE_VOTES'];
+					var spanDislikes = Ext.get('numberOfNegVotes');
+					spanDislikes.dom.innerHTML = result.data['COMMENT_NEGATIVE_VOTES'];
+				}
+			});
+		};
+		
+		var singleCommentBottomBar = {
+			xtype: 'toolbar',
+			dock: 'bottom',
+			scroll: 'horizontal',
+			items: [
+				{xtype: 'spacer'},
+				{ iconMask: true, iconAlign: 'right', ui: 'action-round', text: 'Agree', iconCls: 'add', handler: likeComment},
+				{ iconMask: true, iconAlign: 'right', ui: 'action-round', text: 'Disagree', iconCls: 'delete', handler: dislikeComment},
+			]
+		}
+		
+		var singleComment =  new Ext.Panel({
+			id:'singleComment',
+			fullscreen: true,
+			//dockedItems: [toolbar_icons],
+			scroll: 'both',
+			tpl:'<div class="containerBox"><div>{text}</div><div><ul><li>Likes: <span id="numberOfProVotes">{pro_vote}</span></li><li>Dislikes: <span id="numberOfNegVotes">{neg_vote}</span></li></ul></div></div>',
+			dockedItems: [{
+				xtype: 'toolbar',
+				dock: 'top',
+				items: {
+					text: 'Back',
+					ui: 'back',
+					// search button handler
+					handler: function() {
+						Ext.getCmp('thePanel').setActiveItem(2,{type:'slide',direction:'right'});
+					}
+				}
+			}, singleCommentBottomBar]
+		});
+		
 		// global panel
 		var panel =  new Ext.Panel({
 			fullscreen: true,
@@ -521,7 +712,7 @@ Ext.setup({
 			layout: 'card',
 			cardSwitchAnimation:'slide',
 			scroll:'vertical',
-			items:[form, searchPanel, ideaPanelAndComments, postPanel, commentPanel]
+			items:[form, searchPanel, ideaPanelAndComments, postPanel, commentPanel, singleComment]
 		});
 	}
 });

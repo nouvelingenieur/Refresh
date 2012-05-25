@@ -29,7 +29,6 @@ include_once("script_php/pages_secondlevel/actions.php");
 $privileges = user_privilege_level();
 $login = $_SESSION['login_c'];
 
-
 // Demande
 if (isset($_GET["action"]) && is_string($_GET["action"]))
 {
@@ -46,6 +45,10 @@ switch ($ccar_to_treat)
 		
 	case "comments":
 		get_comments($_POST['thread_id'],$privileges,$login,$output='JSON');
+		break;
+		
+	case "delete_comment":
+		delete_comment($_POST['comment_id'],$privileges,$login,$output='JSON');
 		break;
 
 	// Message d'erreur

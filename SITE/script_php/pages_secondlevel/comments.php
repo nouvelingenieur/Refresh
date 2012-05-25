@@ -791,6 +791,7 @@ function display_comment($row,$is_logged,$privileges,$unique_mode) {
 	$text=text_display_prepare(trim($row["text"]));
 	$my_vote=$row['my_vote'];
 	$my_provote=$row['my_provote'];
+	$pro_vote=$row['pro_vote'];
 	$total_vote=$row['total_vote'];	
 
 	$is_admin=($privileges>3);
@@ -838,16 +839,16 @@ function display_comment($row,$is_logged,$privileges,$unique_mode) {
 				
 		// display votes on comment
 		echo('&nbsp;-&nbsp;[
-			<a class="ntl" href="?action=vote_comment&amp;order='.$pro.'&amp;comment_id='.htmlentities($comment_id).'#b'.$ancre.'">+'.htmlentities($my_provote).'</a>
+			<a class="ntl" href="?action=vote_comment&amp;order='.$pro.'&amp;comment_id='.htmlentities($comment_id).'#b'.$ancre.'">+'.htmlentities($pro_vote).'</a>
 			/
-			<a class="ntl" href="?action=vote_comment&amp;order='.$agt.'&amp;comment_id='.htmlentities($comment_id).'#b'.$ancre.'">-'.htmlentities($total_vote-$my_provote).'</a>]</span>');
+			<a class="ntl" href="?action=vote_comment&amp;order='.$agt.'&amp;comment_id='.htmlentities($comment_id).'#b'.$ancre.'">-'.htmlentities($total_vote-$pro_vote).'</a>]</span>');
 	}
 	else
 	{
 		echo('&nbsp;-&nbsp;[
-			+'.htmlentities($my_provote).'
+			+'.htmlentities($pro_vote).'
 			/
-			-'.htmlentities($total_vote-$my_provote).']</span>');
+			-'.htmlentities($total_vote-$pro_vote).']</span>');
 	}
 
 	// Etat de modération
@@ -1012,23 +1013,12 @@ function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false
 		if ($is_admin)
 		{
 			$escaped_name=mysql_real_escape_string($_SESSION['login_c']);
-			$result=@mysql_query(sprintf("(SELECT C.comment_id,C.rand_prop,C.hash_prop,C.text,C.date,C.possibly_name,C.thread_id,
-			SUM(V.vote) AS pro_vote, COUNT(V.vote) AS total_vote, 
-			MAX(CAST(SHA1(CONCAT('%s',CAST(V.rand_prop AS CHAR))) AS CHAR)=V.hash_prop) AS my_vote, 
-			MAX(CAST(SHA1(CONCAT('%s',CAST(V.rand_prop AS CHAR))) AS CHAR)=V.hash_prop AND V.vote) AS my_provote
-			FROM comment C, vote_comment V
-			WHERE C.already_mod=0 AND V.comment_id=C.comment_id
-			GROUP BY C.comment_id,C.rand_prop,C.hash_prop,C.text,C.date,C.possibly_name,C.thread_id)
-			UNION
-			(SELECT C.comment_id,C.rand_prop,C.hash_prop,C.text,C.date,C.possibly_name,C.thread_id,
-			0 AS pro_vote, 0 AS total_vote,0 AS my_vote, 0 AS my_provote
-			FROM comment C
-			WHERE C.already_mod=0 AND C.comment_id<>ALL(SELECT comment_id FROM vote_comment))
-			ORDER BY date ASC",$escaped_name,$escaped_name));
-			if($result)
+			$comments=get_comments($thread_id,$privileges,$escaped_name,$output='');
+
+			if($comments->result)
 			{
 				$result_returned=false;
-				while($row=mysql_fetch_assoc($result))
+				foreach($comments->data as $thread_id => $row)
 				{
 					$result_returned=true;
 					$is_proprio=check_property($row["rand_prop"],$row["hash_prop"]);
@@ -1052,7 +1042,6 @@ function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false
 			{
 				echo('<div class="warning">Erreur lors de la recherche des commentaires non mod&eacute;r&eacute;s</div>');
 			}
-			@mysql_free_result($result);
 		}
 		else
 		{
@@ -1067,20 +1056,8 @@ function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false
 			{
 				$escaped_threadid=mysql_real_escape_string($thread_id);
 				$escaped_name=(isset($_SESSION['login_c'])? mysql_real_escape_string($_SESSION['login_c']):'');
-				$result=@mysql_query(sprintf("(SELECT C.comment_id,C.rand_prop,C.hash_prop,C.text,C.date,C.is_valid,C.already_mod,C.possibly_name,
-				SUM(V.vote) AS pro_vote, COUNT(V.vote) AS total_vote, 
-				MAX(CAST(SHA1(CONCAT('%s',CAST(V.rand_prop AS CHAR))) AS CHAR)=V.hash_prop) AS my_vote, 
-				MAX(CAST(SHA1(CONCAT('%s',CAST(V.rand_prop AS CHAR))) AS CHAR)=V.hash_prop AND V.vote) AS my_provote
-				FROM comment C, vote_comment V
-				WHERE C.thread_id='%s' AND V.comment_id=C.comment_id
-				GROUP BY C.comment_id,C.rand_prop,C.hash_prop,C.text,C.date,C.is_valid,C.already_mod,C.possibly_name)
-				UNION
-				(SELECT C.comment_id,C.rand_prop,C.hash_prop,C.text,C.date,C.is_valid,C.already_mod,C.possibly_name,
-				0 AS pro_vote, 0 AS total_vote,0 AS my_vote, 0 AS my_provote
-				FROM comment C
-				WHERE C.thread_id='%s' AND C.comment_id<>ALL(SELECT comment_id FROM vote_comment))
-				ORDER BY date ASC",$escaped_name,$escaped_name,$escaped_threadid,$escaped_threadid));
-				if($result)
+				$comments=get_comments($escaped_threadid,$privileges,$escaped_name,$output='');
+				if($comments->result)
 				{
 					if($privileges>3)
 					{
@@ -1103,7 +1080,7 @@ function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false
 						display_speccom($unique_mode,$ancre,$thread_id,$nb_comment,'roll');
 					}
 					@mysql_free_result($result_temp);
-					while($row=mysql_fetch_assoc($result))
+					foreach($comments->data as $thread_id => $row)
 					{
 						$is_proprio=check_property($row["rand_prop"],$row["hash_prop"]);
 						$is_valid=$row["is_valid"];
@@ -1139,7 +1116,6 @@ function affichage_comments($thread_id,$moderation_mode=false,$unique_mode=false
 					{
 						unset($_SESSION["text_anonymous_rest"]);
 					}
-					@mysql_free_result($result);
 				}
 				else
 				{

@@ -89,7 +89,7 @@ class action {
  * @param  integer   $valid says if the idea needs to be moderated (default 0 = needs moderation)
  * @return array     
  */
-function post($title,$message,$anonymization,$category,$login,$valid=0,$output='') {
+function post($title,$message,$anonymization,$category,$login,$valid=0,$output='',$latitude=0,$longitude=0) {
 
 	$action = new action;
 	$action->set_result(False);
@@ -153,7 +153,14 @@ function post($title,$message,$anonymization,$category,$login,$valid=0,$output='
 			$name_print=mysql_real_escape_string(construct_name_from_session());
 		}
 
-		if (@mysql_query("INSERT INTO `thread` (`thread_id`,`rand_prop`,`hash_prop`,`title`,`text`,`date`,`category`,`is_valid`,`possibly_name`) VALUES (NULL, '$rand_prop', '$hash_prop','$title_prec_sec','$text_prec_sec',CURRENT_TIMESTAMP,'$cate_prec_sec',$valid,'$name_print')"))
+		if ($latitude != 0 && $longitude != 0) {
+			$geolocalization = ',`latitude`,`longitude`';
+			$geolocalization_values = ",$latitude,$longitude";
+		} else {
+			$geolocalization = '';
+			$geolocalization_values = '';
+		}
+		if (@mysql_query("INSERT INTO `thread` (`thread_id`,`rand_prop`,`hash_prop`,`title`,`text`,`date`,`category`,`is_valid`,`already_mod`,`possibly_name`".$geolocalization.") VALUES (NULL, '$rand_prop', '$hash_prop','$title_prec_sec','$text_prec_sec',CURRENT_TIMESTAMP,'$cate_prec_sec',$valid,$valid,'$name_print'".$geolocalization_values.")"))
 		{
 			$action->add_success(_('The idea was added to Refresh and now has to be moderated'));
 			$action->set_result(True);
@@ -215,10 +222,11 @@ function get_comments($thread_id,$privileges,$login,$output='') {
 				$comment['text'] = text_display_prepare(trim($row["text"])); // text of the comment
 				$comment['my_vote'] = $row['my_vote']; // 1 if current user has voted for it, else 0
 				$comment['my_provote'] = $row['my_provote']; // 1 if current user has voted +1, else 0
-				$comment['pro_vote'] = $row['total_vote']; // total of +1 votes
+				$comment['pro_vote'] = $row['pro_vote']; // total of +1 votes
 				$comment['total_vote'] = $row['total_vote']; // total number of votes
 				
-				$action->data[$row["comment_id"]] = $comment;
+				$action->data[] = $comment;
+				$action->set_result(True);
 				
 			}
 		}
@@ -226,6 +234,108 @@ function get_comments($thread_id,$privileges,$login,$output='') {
 	
 	$action->output_result($output);
 	return $action;
+}
+
+/**
+ * deletes a comment
+ *   
+ */
+function delete_comment($comment_id,$privileges,$login,$output='')
+{
+	$priv=$privileges;
+	if ($priv>2) // Loggé et pas en lecture seule (ne sera pas nécessairement suffisant)
+	{
+		echo('<h1>Suppression :</h1>');
+	
+			if (is_numeric($comment_id) && $comment_id>0)
+			{
+				$result=@mysql_query(sprintf("SELECT comment_id,text,rand_prop,hash_prop FROM comment WHERE comment_id='%s'",mysql_real_escape_string($comment_id)));
+				if (!$result || mysql_num_rows($result)<1)
+				{
+					$warnings='<div class="warning">Commentaire inexistant</div>';
+				}
+				else
+				{
+					$row=mysql_fetch_assoc($result);
+					$id=$row["comment_id"];
+					$mess_user=trim($row["text"]);
+					$is_prop=check_property($row["rand_prop"],$row["hash_prop"]);
+					@mysql_free_result($result);	
+				}
+			}
+			else
+			{
+				$warnings='<div class="warning">Commentaire inexistant</div>';
+			}	
+	
+		if (empty($warnings) && $id>0) // Titre ou corps éventuellement vide, ce n'est pas une condition
+		{
+			if (isset($_SESSION['post']))
+			{
+				$_POST=$_SESSION['post'];
+				unset($_SESSION['post']);
+			}
+
+			// Traitement d'un formulaire éventuellement déjà validé
+			$affich_form=true;
+			if (isset($_POST['form_name']) && $_POST['form_name']=="deletion")
+			{
+				if(!isset($_POST["validation"]))
+				{
+					echo('<div class="warning">Vous n\'avez pas confirm&eacute; la suppression</div>');
+				}
+				elseif($_POST["validation"]=="on")
+				{
+					if ($priv>4 || $is_prop==1)
+					{
+						if (@mysql_query(sprintf("DELETE FROM comment WHERE comment_id='%s'",mysql_real_escape_string($id))))
+						{
+							echo('<div class="success">Commentaire correctement supprim&eacute;</div>');
+							$affich_form=false;
+						}
+						else
+						{
+							echo('<div class="warning">Erreur lors de la suppression du commentaire</div>');
+						}
+					}
+					else
+					{
+						echo('<div class="warning">Vous ne disposez pas des droits n&eacute;cessaires</div>');
+					}
+				}
+			}
+			
+			// Affichage du formulaire le cas échéant
+			if ($affich_form)
+			{
+				if ($priv>4 || $is_prop==1)
+				{
+					echo('<form method="post" action="?action=remove_post&comment_id='.htmlentities($id).'">');
+					echo('Souhaitez-vous r&eacute;ellement supprimer le commentaire suivant ?<br />"');
+					echo(nl2br(htmlentities(stripslashes($mess_user))).'"<br /><br />');
+					echo('<input type="checkbox" name="validation" id="v_check" /><label for="v_check">Oui, supprimer !</label>');
+					echo('<input type="hidden" name="form_name" value="deletion" />&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Valider" /></form>');
+				}
+				else
+				{
+					echo('<div class="warning">Vous ne disposez pas des droits n&eacute;cessaires</div>');
+				}
+			}	
+		}
+		elseif (!empty($warnings))
+		{
+			echo($warnings);
+		}
+		
+        if (isset($_POST))
+        {
+            unset($_POST);
+        }
+	}
+	else
+	{
+		need_logged_member_privilege();
+	}
 }
 
 ?>

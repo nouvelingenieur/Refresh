@@ -12,6 +12,8 @@ Input
 string IDEA_TITLE : title (non unique)
 string IDEA_TEXT : text of the idea
 integer IDEA_CATEOGRY_ID : id of the idea's category (if 0 then default)
+double IDEA_LAT : latitude (for geolocalization)
+double IDEA_LONG : longitude (for geolocalization)
 
 Output
 
@@ -27,12 +29,14 @@ include_once("./mysql_connect.php");
 $IDEA_TITLE = set_value('IDEA_TITLE','undef');
 $IDEA_TEXT = set_value('IDEA_TEXT','');
 $IDEA_CATEOGRY_ID = set_value('IDEA_CATEOGRY_ID',0);
+$IDEA_LAT = set_value('IDEA_LAT',0);
+$IDEA_LONG = set_value('IDEA_LONG',0);
+
 
 if ($IDEA_TITLE=='undef') {
 	$array = array('IDEA_POSTED' => 'False');
 } else {
-	$action = post($IDEA_TITLE,$IDEA_TEXT,null,$IDEA_CATEOGRY_ID,'test',$valid=1);
-	$action->echo_warnings();
+	$action = post($IDEA_TITLE,$IDEA_TEXT,null,$IDEA_CATEOGRY_ID,'test',$valid=1,$output='',$IDEA_LAT,$IDEA_LONG);
 	if($action->result) {
 		$array = array('IDEA_POSTED' => 'True');
 	} else {
