@@ -28,7 +28,7 @@ header { background-color : transparent}
 }
 
 header#branding a {
-	background: url("../uploads/logo.jpg")no-repeat top center;
+	background: url("../img/logo_petit.png")no-repeat top center;
 	display:block;
 	text-indent:-9000px;
 	width: 200px;
@@ -48,8 +48,6 @@ header#branding div.refresh {
 header#branding div.refresh p { 
 	font-size: 15pt
 }
-
-
 
 
 
@@ -78,11 +76,15 @@ text-align: right
 .feed_item header .title_block { margin-left : 0.5em;    width: 500px}
 footer.utils { padding:0.5em}
 
+
+/*  NewsFeed  -----------------------------------------------*/
+
 .comments {padding:1.5em}
 .comments textarea { width: 100% }
 .comments form .ym-fbox-button {text-align:right}
 
 .comment { 
+display:none;
 padding:5px;
 margin-left: 50px;
  }

@@ -50,9 +50,12 @@ $('#modalFile').modal({
 	console.log(url);
 	// show that is working
 	var box = $('.commentbox', $(this).parent().parent());
+	var comhtml = $('.commentbox .comment', $(this).parent().parent());
 	
-	box.html('Loading posts from : ' + url);
-	console.log(box)
+	//box.html('Loading posts from : ' + url);
+	
+	console.log(comhtml)
+	
 	// extract thread id
 	var thread_id =  $(this).attr("rel");
 	
@@ -67,12 +70,16 @@ $('#modalFile').modal({
 				console.log(box)
 				box.prev('.loader').remove();
 				
-					var display = '<ul>';
 				var callback = jQuery.parseJSON(rep);
+				
+				var display;
 				$.each(callback.DATA, function(key,comment) {
-					  display = display + '<li>' + comment.text + ' - ' + comment.possibly_name + ' - ' + comment.date + '</li>';
+				console.log(comment);
+				
+				display = display + 
+					  '<li>' + comment.text + ' - ' + comment.possibly_name + ' - ' + comment.date + '</li>';
 				   });
-				display = display + '</ul>';
+				
 				box.html(display);
 			}
 		});

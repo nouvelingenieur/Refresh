@@ -1338,8 +1338,37 @@ function display_post()
 					echo '</small></footer>';
 					
 					// COMMENTS
-					echo('<div class="commentbox"></div>
-					</article>');
+					echo('<div class="commentbox">
+					
+					<article class="comment clearfix">
+						<header class="span1">
+							<img src="img/placeholder_50x50.gif" alt="icon" class="avatar bordered"/>
+						</header>
+						<div class="com-content span4">
+						Lorem Ipsum
+						</div>
+						<footer>');
+						
+						//upvote
+						echo ('<a class="" href="?action=vote_post&amp;order='. '1' . '&amp;thread_id=' . $thread_id_affiche. '">'._('Upvote'). '<i class="icon-thumbs-up"></i>' . '</a>'
+						);
+						
+						echo(" - ");
+						
+						// downvote
+						echo ('<a class="" href="?action=vote_post&amp;order='. '-1' . '&amp;thread_id=' . $thread_id_affiche. '">'._('Downvote'). '<i class="icon-thumbs-down"></i>' . '</a>'
+						);
+						
+						echo(" - ");
+						
+						// timestamp
+						echo ('<time datetime="2010-12-16T11:15Z">16/12/2010 11:15</time>
+						</footer>
+
+					</article>
+					
+					</div><!-- .commentbox-->
+					</article><!-- .feeditem -->');
 					}
 				}
 				
