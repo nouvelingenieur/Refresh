@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Refresh\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-16 22:09-0800\n"
-"PO-Revision-Date: 2012-05-16 22:13-0800\n"
+"PO-Revision-Date: 2012-05-28 18:06-0800\n"
 "Last-Translator: Thibaut\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,23 +18,23 @@ msgstr ""
 
 #: C:\Users\TLabarre\Refresh\SITE/index.php:256
 msgid "Refresh is a collaborative platform for the crowdsourcing of ideas in order to improve education."
-msgstr "Refresh is a collaborative platform for the crowdsourcing of ideas in order to improve education."
+msgstr "Refresh es una plataforma colaborativa donde se recojen ideas para mejorar la educacion."
 
 #: C:\Users\TLabarre\Refresh\SITE/index.php:316
 msgid "Latest posts"
-msgstr "Latest posts"
+msgstr "Los ultimos articulos"
 
 #: C:\Users\TLabarre\Refresh\SITE/index.php:326
 msgid "Medias"
-msgstr "Medias"
+msgstr "Media"
 
 #: C:\Users\TLabarre\Refresh\SITE/index.php:334
 msgid "Most readed"
-msgstr "Most readed"
+msgstr "Las mas leidas"
 
 #: C:\Users\TLabarre\Refresh\SITE/index.php:342
 msgid "Some links"
-msgstr "Some links"
+msgstr "Algunos enlaces"
 
 #: C:\Users\TLabarre\Refresh\SITE/api/get_comments.php:43
 #: C:\Users\TLabarre\Refresh\SITE/api/ideas.php:103
@@ -44,15 +44,15 @@ msgstr "Login Error: email and password do not match"
 
 #: C:\Users\TLabarre\Refresh\SITE/api/login.php:31
 msgid "Email missing"
-msgstr "Email missing"
+msgstr "Falta el correo"
 
 #: C:\Users\TLabarre\Refresh\SITE/api/login.php:35
 msgid "Password missing"
-msgstr "Password missing"
+msgstr "Falta la contraseña"
 
 #: C:\Users\TLabarre\Refresh\SITE/api/login.php:44
 msgid "Email and password do not match"
-msgstr "Email and password do not match"
+msgstr "El correo y la contraseña no corresponden"
 
 #: C:\Users\TLabarre\Refresh\SITE/api/login.php:46
 msgid "You are now logged in"
@@ -60,31 +60,31 @@ msgstr "You are now logged in"
 
 #: C:\Users\TLabarre\Refresh\SITE/api/set_comment.php:50
 msgid "Your comment was posted successfully"
-msgstr "Your comment was posted successfully"
+msgstr "Su comentario ha sido publicado"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/menu_compte.php:39
 msgid "Disconnect"
-msgstr "Disconnect"
+msgstr "Desconectar"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/menu_compte.php:40
 msgid "Change password"
-msgstr "Change password"
+msgstr "Cambia contraseña"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/menu_compte.php:41
 msgid "Unsubscribe"
-msgstr "Unsubscribe"
+msgstr "Desubscribirse"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/menu_compte.php:58
 msgid "Lost your log?"
-msgstr "Lost your log?"
+msgstr "Olvidaste tu contraseña?"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/menu_compte.php:59
 msgid "Register"
-msgstr "Register"
+msgstr "Registrar"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/menu_compte.php:60
 msgid "Terms of use"
-msgstr "Terms of use"
+msgstr "Términos de uso"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/accounts.php:137
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/accounts.php:145
@@ -93,114 +93,114 @@ msgstr "Login"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/accounts.php:141
 msgid "Password"
-msgstr "Password"
+msgstr "Contraseña"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/actions.php:107
 msgid "Incorrect title"
-msgstr "Incorrect title"
+msgstr "Titulo incorrecto"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/actions.php:115
 msgid "Incorrect message"
-msgstr "Incorrect message"
+msgstr "Mensaje incorrecto"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/actions.php:126
 msgid "Incorrect anonymization value"
-msgstr "Incorrect anonymization value"
+msgstr "Valor de anonymisacion incorrecta"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/actions.php:134
 msgid "Incorrect category"
-msgstr "Incorrect category"
+msgstr "Categoría incorrecta"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/actions.php:163
 msgid "The idea was added to Refresh and now has to be moderated"
-msgstr "The idea was added to Refresh and now has to be moderated"
+msgstr "Su idea ha sido anadida en Refresh y necesita ser moderada"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/actions.php:168
 msgid "The idea could not be added due to a database error"
-msgstr "The idea could not be added due to a database error"
+msgstr "Su idea no pudo ser anadida por cause de un error"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/comments.php:766
 #, php-format
 msgid "%d comment"
 msgid_plural "%d comments"
-msgstr[0] "%d commentaire"
-msgstr[1] "%d commentaires"
+msgstr[0] "%d comentario"
+msgstr[1] "%d comentarios"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:17
 msgid "Title"
-msgstr "Title"
+msgstr "Titulo"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:18
 msgid "A nice title.."
-msgstr "A nice title.."
+msgstr "Un titulo bonito.."
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:20
 msgid "Message"
-msgstr "Message"
+msgstr "Mensaje"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:21
 msgid "Share something..."
-msgstr "Share something..."
+msgstr "Comparte algo..."
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:26
 msgid "Keywords"
-msgstr "Keywords"
+msgstr "Palabras llave"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:27
 msgid "Some tags"
-msgstr "Some tags"
+msgstr "Algunos tags"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:33
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:160
 msgid "Anonymize"
-msgstr "Anonymize"
+msgstr "Anónimizar"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:42
 msgid "Feed"
-msgstr "Feed"
+msgstr "Rss"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:43
 msgid "Settings"
-msgstr "Settings"
+msgstr "Parámetros"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:75
 msgid "Posted by "
-msgstr "Posted by "
+msgstr "Publicado por "
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:76
 msgid " with tags : "
-msgstr " with tags : "
+msgstr " con tags : "
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:99
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:132
 msgid "Upvote"
-msgstr "Upvote"
+msgstr "Subir de voto"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:101
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:134
 msgid "Downvote"
-msgstr "Downvote"
+msgstr "Bajar de voto"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:107
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:140
 msgid "Delete"
-msgstr "Delete"
+msgstr "Borrar"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:109
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:142
 msgid "Edit"
-msgstr "Edit"
+msgstr "Editar"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:111
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:144
 msgid "Hide my name"
-msgstr "Hide my name"
+msgstr "Esconde mi nombre"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:136
 msgid "Comments"
-msgstr "Comments"
+msgstr "Comentarios"
 
 #: C:\Users\TLabarre\Refresh\SITE/script_php/pages_secondlevel/home.php:159
 msgid "Comment"
-msgstr "Comment"
+msgstr "Comentario"
 
