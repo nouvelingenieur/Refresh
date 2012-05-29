@@ -627,26 +627,16 @@ function display_post()
 		
 		
 		// Menu de sélection des idées
-		$tail='<div class="enlarge_lowresol">
-			<form method="post" action="?action=post_filter_change">
-				<table class="tab_form_close">
-					<tr>';
+		$tail='<form class="row" method="post" action="?action=post_filter_change">
+			<div class="tab_form_close">
+					';
 					
 		// Champ de recherche
-		$tail.='<td>
-			Recherche :
-		</td>
-		<td>
-			<input type="text" name="admin_recherche" value="'.$_SESSION["thread_admin_recherche"].'">
-		</td>';
+		$tail.='<input class="span2" placeholder="'. _('Search...').'"…" type="text" name="admin_recherche" value="'.$_SESSION["thread_admin_recherche"].'">';
 		
 		// Choix de catégorie
-		$tail.='<td>
-							Cat&eacute;gorie :
-						</td>
-						<td>
-							<select name="category_filter">
-								<option value="0">Toutes</option>';
+		$tail.= '<select class="span2" name="category_filter">
+				<option value="0">'._('Cat&eacute;gories').'</option>';
 					
 		$result=@mysql_query("SELECT category_id,category_name FROM thread_category"); // Menu déroulant de choix de catégorie en fonction de ce qui est disponible en base
 		if ($result)
@@ -664,18 +654,14 @@ function display_post()
 			}
 			@mysql_free_result($result);
 		}
-		$tail.='</select></td>';
+		$tail.='</select>';
 		
 		// Menu de filtrage pour les utilisateurs loggés
 		if(is_logged())
 		{
 			
-			$tail.='<td>
-				Filtre :
-			</td>
-			<td>
-				<select name="admin_filter">
-					<option value="0">Aucun</option>';
+			$tail.='<select class="span2" name="admin_filter">
+					<option value="0">'._('No filter').'</option>';
 			
 			if ($privileges>3) // Proposition des options de modération
 			{
@@ -684,8 +670,8 @@ function display_post()
 					switch($_SESSION["thread_admin_filter"])
 					{
 						case 1:
-							$tail.='<option value="1" selected="selected">Mes propositions</option><option value="2">Propositions avec mes commentaires</option><option value="3">Propositions sans mon vote</option> 
-								<option value="4">Propositions non mod&eacute;r&eacute;es</option><option value="5">Commentaires non mod&eacute;r&eacute;s</option>';
+							$tail.='<option value="1" selected="selected">'._('My posts').'</option><option value="2">'._('Posts with my comments').'</option><option value="3">Propositions sans mon vote</option> 
+								<option value="4">'._('Not moderated posts').'</option><option value="5">'._('Not moderated comments').'</option>';
 							break;
 						case 2:
 							$tail.='<option value="1">Mes propositions</option><option value="2" selected="selected">Propositions avec mes commentaires</option><option value="3">Propositions sans mon vote</option> 
@@ -746,36 +732,30 @@ function display_post()
 		{
 			if (isset($_SESSION["thread_admin_filter"]) && $_SESSION["thread_admin_filter"]==5)  // Cas de la modération des commentaires à part
 			{
-				$tail.='<td>
-							Trier par :
-						</td>
-						<td>
-							<select name="sorting" disabled="disabled">
-								<option value="1" selected="selected">Date</option><option value="2">Nombre de votes favorables</option><option value="3">Proportion de votes favorables</option><option value="4">Nombre total de votes</option>"';
+				$tail.= _('Sort by').'
+					<select name="sorting" class="span2" disabled="disabled">
+								<option value="1" selected="selected">Date</option><option value="2">Upvotes number</option><option value="3">Upvotes ratio</option><option value="4">'. _('Votes total') . '</option>"';
 			}
 			else
 			{
-				$tail.='<td>
-							Trier par :
-						</td>
-						<td>
-							<select name="sorting">';
+				$tail.= _('Sort by').'
+							<select class="span2" name="sorting">';
 				switch($_SESSION["thread_ordering"])
 				{
 					case 1:
-						$tail.="<option value=\"1\" selected=\"selected\">Date</option><option value=\"2\">Nombre de votes favorables</option><option value=\"3\">Proportion de votes favorables</option><option value=\"4\">Nombre total de votes</option>";
+						$tail.="<option value=\"1\" selected=\"selected\">Date</option><option value=\"2\">Upvotes number</option><option value=\"3\">Upvotes ratio</option><option value=\"4\">"  . _('Votes total') .  "</option>";
 						break;
 					case 2:
-						$tail.="<option value=\"1\">Date</option><option value=\"2\" selected=\"selected\">Nombre de votes favorables</option><option value=\"3\">Proportion de votes favorables</option><option value=\"4\">Nombre total de votes</option>";
+						$tail.="<option value=\"1\">Date</option><option value=\"2\" selected=\"selected\">Upvotes number</option><option value=\"3\">Upvotes ratio</option><option value=\"4\">" . _('Votes total') .  "</option>";
 						break;
 					case 3:
-						$tail.="<option value=\"1\">Date</option><option value=\"2\">Nombre de votes favorables</option><option value=\"3\" selected=\"selected\">Proportion de votes favorables</option><option value=\"4\">Nombre total de votes</option>";
+						$tail.="<option value=\"1\">Date</option><option value=\"2\">Upvotes number</option><option value=\"3\" selected=\"selected\">Upvotes ratio</option><option value=\"4\">"  . _('Votes total') .  "</option>";
 						break;
 					case 4:
-						$tail.="<option value=\"1\">Date</option><option value=\"2\">Nombre de votes favorables</option><option value=\"3\">Proportion de votes favorables</option><option value=\"4\" selected=\"selected\">Nombre total de votes</option>";
+						$tail.="<option value=\"1\">Date</option><option value=\"2\">Upvotes number</option><option value=\"3\">Upvotes ratio</option><option value=\"4\" selected=\"selected\">"  . _('Votes total') .  "</option>";
 						break;
 					default:
-						$tail.="<option value=\"1\">Date</option><option value=\"2\">Nombre de votes favorables</option><option value=\"3\">Proportion de votes favorables</option><option value=\"4\">Nombre total de votes</option>";
+						$tail.="<option value=\"1\">Date</option><option value=\"2\">Upvotes number</option><option value=\"3\">Upvotes ratio</option><option value=\"4\">"  . _('Votes total') .  "</option>";
 				}
 			}			
 		}
@@ -783,36 +763,24 @@ function display_post()
 		{
 			if (isset($_SESSION["thread_admin_filter"]) && $_SESSION["thread_admin_filter"]==4)  // Cas de la modération des commentaires à part
 			{
-				$tail.='<td>
-							Trier par :
-						</td>
-						<td>
-							<select name="sorting" disabled="disabled">
-								<option value="1">Date</option><option value="2">Nombre de votes favorables</option><option value="3">Proportion de votes favorables</option><option value="4">Nombre total de votes</option>"';
+				$tail.= _('Sort by').'
+							<select  class="span2" name="sorting" disabled="disabled">
+								<option value="1">Date</option><option value="2">Upvotes number</option><option value="3">Upvotes ratio</option><option value="4">'  . _('Votes total') .  '</option>"';
 			}
 			else
 			{
-				$tail.='<td>
-							Trier par :
-						</td>
-						<td>
-							<select name="sorting">
-								<option value="1">Date</option><option value="2">Nombre de votes favorables</option><option value="3">Proportion de votes favorables</option><option value="4">Nombre total de votes</option>';
+				$tail.= _('Sort by').'
+							<select  class="span2" name="sorting">
+								<option value="1">Date</option><option value="2">Upvotes number</option><option value="3">Upvotes ratio</option><option value="4">'  . _('Votes total') .  '</option>';
 			}
 		}
 
 		echo($tail.'			
-						</select>
-					</td>
-					<td>
-						<input type="hidden" name="form_name" value="thread_display_param" />
-					</td>
-					<td>
-						<input type="submit" value="Valider" />
-					</td>
-				</tr>
-			</table>
-		</form></div>');	
+				</select>
+				<input type="hidden" name="form_name" value="thread_display_param" />
+				<input type="submit" value="Valider" />
+			</div>
+		</form>');	
 
 		$is_admin=($privileges>3);
 		
@@ -1099,9 +1067,8 @@ function display_post()
 						$need_separator=true;
 						
 						echo '
-						<article class="feed_item ym-grid v-grid linearize-level-1 id="item-'.$thread_id_affiche.'"">
-						<div class="ym-g25 ym-gl">
-						<div class="ym-gbox-left">
+						<article class="feed_item row" id="item-'.$thread_id_affiche.'"">
+						<div class="span2">
 						';
 						
 						// Etat de modération
@@ -1141,9 +1108,7 @@ function display_post()
 						
 						// Catégories avec images
 						echo('
-						<div class="ym-gbox">
 						<img src="img/placeholder_100x100.gif" alt="icon" class="avatar bordered"/>
-						</div>
 						');
 						
 						// Votes
@@ -1187,27 +1152,20 @@ function display_post()
 						
 						//close-open columns
 						echo ('
-						  </div>
 						    </div>
-						    
-						    
-						    <div class="ym-g75 ym-gr">
-						     <div class="ym-gbox-right ym-clearfix">');
+						    <div class="span6">');
 						     
 						//add gravatar
 						echo ('
-						       <header class="ym-clearfix">
-							 <div class="ym-g20 ym-gl">
-							  <div class="ym-gbox">
+						       <header class="row">
+							  <div class="span1">
 							     <img src="img/placeholder_50x50.gif" alt="icon" class="avatar bordered"/>
 							  </div>
-							 </div>
 						');
 						
 						//start meta 
 						echo ('
-							 <div class="ym-g80 ym-gr">
-							  <div class="ym-gbox">
+							 <div class="span5">
 							  <p class="meta">
 							   <small>
 							   Posted by :
@@ -1231,7 +1189,7 @@ function display_post()
 						
 						// Titre
 						echo('
-						<h3>'.htmlentities(stripslashes($row["title"])).' [#'.$thread_id_affiche.']</h3>');
+						<h3>'.htmlentities(stripslashes($row["title"])).'</h3>');
 						
 						//share sns buttons + close header
 						echo('
@@ -1243,12 +1201,12 @@ function display_post()
 							</div>
 							<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4f3e39a4223675c7"></script>
 						  </section><!-- AddThis Button END -->
-						 </div><!--gbox -->
-						</div><!--ymg-80 -->
+						</div><!--span5 -->
 					       </header>
 					       ');
 						
 						
+						/*
 						echo('
 						<div class="votebar">');
 						
@@ -1301,36 +1259,52 @@ function display_post()
 								</div>');
 							}
 						}
+						*/
 						
 						// Corps du texte
 						echo('<div class="content"><p>'.text_display_prepare($row["text"]).'</p></div>');
 						// utils 
-						echo('<footer class="utils">
-							<p>
-							<small>
-							');
+						echo('<footer class="">');
 							
 
+						//upvote
+						echo ('<a class="" href="?action=vote_post&amp;order='. '1' . '&amp;thread_id=' . $thread_id_affiche. '">'._('Upvote'). '<i class="icon-thumbs-up"></i>' . '</a>'
+						);
+						
+						echo(" - ");
+						
+						// downvote
+						echo ('<a class="" href="?action=vote_post&amp;order='. '-1' . '&amp;thread_id=' . $thread_id_affiche. '">'._('Downvote'). '<i class="icon-thumbs-down"></i>' . '</a>'
+						);
+						
+						echo(" - ");
 						
 						// Date
-						echo('<div class="newsundertitle">
-							'.htmlentities(transfo_date($row["date"])).'&nbsp;-&nbsp;
-							</div>');
-							
+						echo('<time class="" datetime="'.htmlentities(transfo_date($row["date"])).'">' . htmlentities(transfo_date($row["date"])) . '</time>');
+						
+						echo(" - ");
+						
+						// comments
+						affichage_comments($thread_id,false);
+						
+						// utils delete/edite/anonymize
 						if ($is_proprio || $privileges>4) // Administrateurs et propriétaires peuvent éditer et supprimer
 						{
-							echo('
-								<a href="?action=edit_post&amp;thread_id='.$thread_id_affiche.'">Editer</a>
-								<a href="?action=remove_post&amp;thread_id='.$thread_id_affiche.'">Supprimer</a>');
+							echo(' | 
+								<a class="adminutil" href="?action=edit_post&amp;thread_id='.$thread_id_affiche.'">'._('Edit').'</a>
+								 - 
+								<a class="adminutil" href="?action=remove_post&amp;thread_id='.$thread_id_affiche.'">'._('Delete').'</a>');
+							
+							// hide name
 							if ($is_proprio)
 							{
 								if (!empty($row["possibly_name"]))
 								{
-									echo('<a href="?action=anonymization&amp;order=0&amp;thread_id='.$thread_id_affiche.'#'.$thread_id_affiche.'">Masquer mon nom</a>');
+									echo(' - <a href="?action=anonymization&amp;order=0&amp;thread_id='.$thread_id_affiche.'#'.$thread_id_affiche.'">'._('Hide my name').'</a>');
 								}
 								else
 								{
-									echo('<a href="?action=anonymization&amp;order=1&amp;thread_id='.$thread_id_affiche.'#'.$thread_id_affiche.'">Afficher mon nom</a>');
+									echo(' - <a href="?action=anonymization&amp;order=1&amp;thread_id='.$thread_id_affiche.'#'.$thread_id_affiche.'">'._('Show my name').'</a>');
 								}
 							}
 						}
@@ -1360,9 +1334,41 @@ function display_post()
 								}
 							}
 						}
-						// comments
-						affichage_comments($thread_id,false);
-					echo '</small></footer></article>';
+
+					echo '</small></footer>';
+					
+					// COMMENTS
+					echo('<div class="commentbox">
+					
+					<article class="comment clearfix">
+						<header class="span1">
+							<img src="img/placeholder_50x50.gif" alt="icon" class="avatar bordered"/>
+						</header>
+						<div class="com-content span4">
+						Lorem Ipsum
+						</div>
+						<footer>');
+						
+						//upvote
+						echo ('<a class="" href="?action=vote_post&amp;order='. '1' . '&amp;thread_id=' . $thread_id_affiche. '">'._('Upvote'). '<i class="icon-thumbs-up"></i>' . '</a>'
+						);
+						
+						echo(" - ");
+						
+						// downvote
+						echo ('<a class="" href="?action=vote_post&amp;order='. '-1' . '&amp;thread_id=' . $thread_id_affiche. '">'._('Downvote'). '<i class="icon-thumbs-down"></i>' . '</a>'
+						);
+						
+						echo(" - ");
+						
+						// timestamp
+						echo ('<time datetime="2010-12-16T11:15Z">16/12/2010 11:15</time>
+						</footer>
+
+					</article>
+					
+					</div><!-- .commentbox-->
+					</article><!-- .feeditem -->');
 					}
 				}
 				

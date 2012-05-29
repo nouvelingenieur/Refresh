@@ -76,6 +76,8 @@ class action {
 	}
 }
 
+
+
 /**
  * inserts a new idea in the database
  *
