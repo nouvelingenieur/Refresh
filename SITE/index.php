@@ -251,7 +251,7 @@ if(isset($_POST) && !(empty($_POST)) && $treat_post)
 <!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-	<meta charset="utf-8">
+	<meta charset="iso-8859-1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="description" content="<?=_("Refresh is a collaborative platform for the crowdsourcing of ideas in order to improve education.")?>">
 	<meta name="author" content="">
