@@ -7,7 +7,18 @@ TODO
 - add option for local install (local jquery+remove sns links)
 
 Feed
-- add link to name 
+- add link to name
+- permalink to post date 
 
 
+fix datetime for article+ comments
+Comments
+- fix comments permalinks
+- fix user link
+- user avatar
 
+
+international
+-localize select menu posts.php (line 673)
+
+feedback user on post submit

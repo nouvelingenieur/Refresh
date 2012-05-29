@@ -15,20 +15,6 @@
 /* Google Font API */
 @import url(http://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700|Droid+Sans:700);
 
-/* import core styles | Basis-Stylesheets einbinden */
-@import url(yaml/core/base.css);
-
-/* import screen layout | Screen-Layout einbinden */
-@import url(yaml/navigation/hlist.css);
-@import url(yaml/forms/gray-theme.css);
-
-@import url(yaml/screen/typography.css);
-@import url(yaml/screen/screen-PAGE-layout.css);
-
-/* import print layout | Druck-Layout einbinden */
-@import url(yaml/print/print.css);
-
-
 /*  General  -----------------------------------------------*/
 div.clear { clear:both }
 header { background-color : transparent}
@@ -37,8 +23,12 @@ header { background-color : transparent}
 }
 /*  Header  -----------------------------------------------*/
 
+.skiplinks { 
+	display:none
+}
+
 header#branding a {
-	background: url("../uploads/logo.jpg")no-repeat top center;
+	background: url("../img/logo_petit.png")no-repeat top center;
 	display:block;
 	text-indent:-9000px;
 	width: 200px;
@@ -59,16 +49,6 @@ header#branding div.refresh p {
 	font-size: 15pt
 }
 
-
-form.shareidea input, form.shareidea input#category, form.shareidea textarea {
-	width:95%;
-	margin: 10px !important
-}
-
-
-form.shareidea label {
-	display:none
-}
 
 
 /*  NewsFeed  -----------------------------------------------*/
@@ -96,10 +76,18 @@ text-align: right
 .feed_item header .title_block { margin-left : 0.5em;    width: 500px}
 footer.utils { padding:0.5em}
 
+
+/*  NewsFeed  -----------------------------------------------*/
+
 .comments {padding:1.5em}
 .comments textarea { width: 100% }
 .comments form .ym-fbox-button {text-align:right}
 
+.comment { 
+display:none;
+padding:5px;
+margin-left: 50px;
+ }
 
 /*  Sidebar  -----------------------------------------------*/
 
